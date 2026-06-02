@@ -1,0 +1,20 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.GenericDesktopFramework.1.cpp.obj": [
+			"DesktopBytesFileAsyncAction.gen.cpp.obj",
+			"DesktopDialogAsyncAction.gen.cpp.obj",
+			"DesktopStringFileAsyncAction.gen.cpp.obj",
+			"DesktopType.gen.cpp.obj"
+		],
+		"Module.GenericDesktopFramework.2.cpp.obj": [
+			"GenericDesktopFramework.init.gen.cpp.obj",
+			"GetDesktopDebugReportAsyncAction.gen.cpp.obj",
+			"GetDesktopHardwareSnapshotAsyncAction.gen.cpp.obj",
+			"PerModuleInline.gen.cpp.obj"
+		],
+		"Module.GenericDesktopFramework.3.cpp.obj": [
+			"BPFunctions_Desktop.gen.cpp.obj"
+		]
+	}
+}
