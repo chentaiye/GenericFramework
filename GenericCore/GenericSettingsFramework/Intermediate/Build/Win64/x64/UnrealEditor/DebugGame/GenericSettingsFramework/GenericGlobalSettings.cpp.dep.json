@@ -1,0 +1,17 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericsettingsframework\\source\\genericsettingsframework\\private\\developersettings\\genericglobalsettings.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\ue\\project\\devproject\\intermediate\\build\\win64\\x64\\devprojecteditor\\debuggame\\unrealed\\sharedpch.unrealed.project.nonoptimized.valapi.valexpapi.cpp20.h.pch",
+        "Includes": [
+            "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericsettingsframework\\intermediate\\build\\win64\\x64\\unrealeditor\\debuggame\\genericsettingsframework\\definitions.genericsettingsframework.h",
+            "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericsettingsframework\\source\\genericsettingsframework\\public\\developersettings\\genericglobalsettings.h",
+            "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericsettingsframework\\source\\genericsettingsframework\\public\\developersettings\\genericdevelopersettings.h",
+            "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericsettingsframework\\intermediate\\build\\win64\\unrealeditor\\inc\\genericsettingsframework\\uht\\genericdevelopersettings.generated.h",
+            "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericsettingsframework\\intermediate\\build\\win64\\unrealeditor\\inc\\genericsettingsframework\\uht\\genericglobalsettings.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

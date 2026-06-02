@@ -1,0 +1,20 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.GenericSettingsFramework.cpp.obj": [
+			"GenericDeveloperSettings.gen.cpp.obj",
+			"GenericGlobalSettings.gen.cpp.obj",
+			"GenericSettingsFramework.init.gen.cpp.obj",
+			"GenericWorldSettings.gen.cpp.obj",
+			"GenericWorldSettingsCollection.gen.cpp.obj",
+			"GenericWorldSettingsSubsystem.gen.cpp.obj",
+			"PerModuleInline.gen.cpp.obj",
+			"GenericDeveloperSettings.cpp.obj",
+			"GenericGlobalSettings.cpp.obj",
+			"GenericSettingsFramework.cpp.obj",
+			"GenericWorldSettings.cpp.obj",
+			"GenericWorldSettingsCollection.cpp.obj",
+			"GenericWorldSettingsSubsystem.cpp.obj"
+		]
+	}
+}

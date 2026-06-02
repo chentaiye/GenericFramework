@@ -1,0 +1,33 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.UnrealMisc.cpp.obj": [
+			"BPFunctions_Audio.gen.cpp.obj",
+			"BPFunctions_Field.gen.cpp.obj",
+			"BPFunctions_Gameplay.gen.cpp.obj",
+			"BPFunctions_GameplayTag.gen.cpp.obj",
+			"BPFunctions_Math.gen.cpp.obj",
+			"BPFunctions_World.gen.cpp.obj",
+			"DateTimeType.gen.cpp.obj",
+			"UnrealMisc.init.gen.cpp.obj",
+			"WorldType.gen.cpp.obj",
+			"PerModuleInline.gen.cpp.obj",
+			"BPFunctions_Audio.cpp.obj",
+			"BPFunctions_Field.cpp.obj",
+			"BPFunctions_Gameplay.cpp.obj",
+			"BPFunctions_GameplayTag.cpp.obj",
+			"BPFunctions_Math.cpp.obj",
+			"BPFunctions_World.cpp.obj",
+			"StaticFunctions_Convert.cpp.obj",
+			"StaticFunctions_Enum.cpp.obj",
+			"StaticFunctions_Object.cpp.obj",
+			"AudioType.cpp.obj",
+			"DateTimeType.cpp.obj",
+			"DebugType.cpp.obj",
+			"FieldType.cpp.obj",
+			"GenericType.cpp.obj",
+			"WorldType.cpp.obj",
+			"UnrealMisc.cpp.obj"
+		]
+	}
+}

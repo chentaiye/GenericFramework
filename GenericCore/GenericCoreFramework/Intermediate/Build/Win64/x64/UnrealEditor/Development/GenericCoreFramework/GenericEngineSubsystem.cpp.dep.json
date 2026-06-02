@@ -1,0 +1,15 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericcoreframework\\source\\genericcoreframework\\private\\subsystem\\genericenginesubsystem.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\ue\\project\\devproject\\intermediate\\build\\win64\\x64\\devprojecteditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.valexpapi.cpp20.h.pch",
+        "Includes": [
+            "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericcoreframework\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\genericcoreframework\\definitions.genericcoreframework.h",
+            "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericcoreframework\\source\\genericcoreframework\\public\\subsystem\\genericenginesubsystem.h",
+            "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericcoreframework\\intermediate\\build\\win64\\unrealeditor\\inc\\genericcoreframework\\uht\\genericenginesubsystem.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

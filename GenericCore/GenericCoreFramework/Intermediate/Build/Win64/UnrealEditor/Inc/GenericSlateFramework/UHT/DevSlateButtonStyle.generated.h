@@ -1,0 +1,63 @@
+// Copyright Epic Games, Inc. All Rights Reserved.
+/*===========================================================================
+	Generated code exported from UnrealHeaderTool.
+	DO NOT modify this manually! Edit the corresponding .h files instead!
+===========================================================================*/
+
+// IWYU pragma: private, include "Style/DevSlateButtonStyle.h"
+
+#ifdef GENERICSLATEFRAMEWORK_DevSlateButtonStyle_generated_h
+#error "DevSlateButtonStyle.generated.h already included, missing '#pragma once' in DevSlateButtonStyle.h"
+#endif
+#define GENERICSLATEFRAMEWORK_DevSlateButtonStyle_generated_h
+
+#include "UObject/ObjectMacros.h"
+#include "UObject/ScriptMacros.h"
+
+PRAGMA_DISABLE_DEPRECATION_WARNINGS
+
+// ********** Begin Class UDevSlateButtonStyle *****************************************************
+struct Z_Construct_UClass_UDevSlateButtonStyle_Statics;
+GENERICSLATEFRAMEWORK_API UClass* Z_Construct_UClass_UDevSlateButtonStyle_NoRegister();
+
+#define FID_Project_DevProject_Plugins_GenericFramework_GenericCore_GenericCoreFramework_Source_GenericSlateFramework_Public_Style_DevSlateButtonStyle_h_13_INCLASS_NO_PURE_DECLS \
+private: \
+	static void StaticRegisterNativesUDevSlateButtonStyle(); \
+	friend struct ::Z_Construct_UClass_UDevSlateButtonStyle_Statics; \
+	static UClass* GetPrivateStaticClass(); \
+	friend GENERICSLATEFRAMEWORK_API UClass* ::Z_Construct_UClass_UDevSlateButtonStyle_NoRegister(); \
+public: \
+	DECLARE_CLASS2(UDevSlateButtonStyle, UObject, COMPILED_IN_FLAGS(CLASS_Abstract), CASTCLASS_None, TEXT("/Script/GenericSlateFramework"), Z_Construct_UClass_UDevSlateButtonStyle_NoRegister) \
+	DECLARE_SERIALIZER(UDevSlateButtonStyle)
+
+
+#define FID_Project_DevProject_Plugins_GenericFramework_GenericCore_GenericCoreFramework_Source_GenericSlateFramework_Public_Style_DevSlateButtonStyle_h_13_ENHANCED_CONSTRUCTORS \
+	/** Standard constructor, called after all reflected properties have been initialized */ \
+	GENERICSLATEFRAMEWORK_API UDevSlateButtonStyle(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+	/** Deleted move- and copy-constructors, should never be used */ \
+	UDevSlateButtonStyle(UDevSlateButtonStyle&&) = delete; \
+	UDevSlateButtonStyle(const UDevSlateButtonStyle&) = delete; \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(GENERICSLATEFRAMEWORK_API, UDevSlateButtonStyle); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UDevSlateButtonStyle); \
+	DEFINE_ABSTRACT_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UDevSlateButtonStyle) \
+	GENERICSLATEFRAMEWORK_API virtual ~UDevSlateButtonStyle();
+
+
+#define FID_Project_DevProject_Plugins_GenericFramework_GenericCore_GenericCoreFramework_Source_GenericSlateFramework_Public_Style_DevSlateButtonStyle_h_10_PROLOG
+#define FID_Project_DevProject_Plugins_GenericFramework_GenericCore_GenericCoreFramework_Source_GenericSlateFramework_Public_Style_DevSlateButtonStyle_h_13_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Project_DevProject_Plugins_GenericFramework_GenericCore_GenericCoreFramework_Source_GenericSlateFramework_Public_Style_DevSlateButtonStyle_h_13_INCLASS_NO_PURE_DECLS \
+	FID_Project_DevProject_Plugins_GenericFramework_GenericCore_GenericCoreFramework_Source_GenericSlateFramework_Public_Style_DevSlateButtonStyle_h_13_ENHANCED_CONSTRUCTORS \
+private: \
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+
+class UDevSlateButtonStyle;
+
+// ********** End Class UDevSlateButtonStyle *******************************************************
+
+#undef CURRENT_FILE_ID
+#define CURRENT_FILE_ID FID_Project_DevProject_Plugins_GenericFramework_GenericCore_GenericCoreFramework_Source_GenericSlateFramework_Public_Style_DevSlateButtonStyle_h
+
+PRAGMA_ENABLE_DEPRECATION_WARNINGS

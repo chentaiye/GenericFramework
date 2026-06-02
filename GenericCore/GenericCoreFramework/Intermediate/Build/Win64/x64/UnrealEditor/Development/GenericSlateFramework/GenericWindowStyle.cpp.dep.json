@@ -1,0 +1,20 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericcoreframework\\source\\genericslateframework\\private\\style\\genericwindowstyle.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\ue\\project\\devproject\\intermediate\\build\\win64\\x64\\devprojecteditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.valexpapi.cpp20.h.pch",
+        "Includes": [
+            "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericcoreframework\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\genericslateframework\\definitions.genericslateframework.h",
+            "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericcoreframework\\source\\genericslateframework\\public\\style\\genericwindowstyle.h",
+            "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericcoreframework\\intermediate\\build\\win64\\unrealeditor\\inc\\genericslateframework\\uht\\genericwindowstyle.generated.h",
+            "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericcoreframework\\source\\genericslateframework\\public\\style\\devslatebuttonstyle.h",
+            "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericcoreframework\\intermediate\\build\\win64\\unrealeditor\\inc\\genericslateframework\\uht\\devslatebuttonstyle.generated.h",
+            "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericcoreframework\\source\\genericslateframework\\public\\style\\generictextblockstyle.h",
+            "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericcoreframework\\intermediate\\build\\win64\\unrealeditor\\inc\\genericslateframework\\uht\\generictextblockstyle.generated.h",
+            "c:\\ue\\ue_5.7\\engine\\source\\runtime\\core\\public\\misc\\engineversioncomparison.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

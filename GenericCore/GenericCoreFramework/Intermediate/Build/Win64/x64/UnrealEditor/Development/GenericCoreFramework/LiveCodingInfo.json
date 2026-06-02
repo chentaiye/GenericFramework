@@ -1,0 +1,27 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.GenericCoreFramework.cpp.obj": [
+			"GenericActor.gen.cpp.obj",
+			"GenericCoreFramework.init.gen.cpp.obj",
+			"GenericEngineSubsystem.gen.cpp.obj",
+			"GenericGameInstanceSubsystem.gen.cpp.obj",
+			"GenericLocalPlayerSubsystem.gen.cpp.obj",
+			"GenericObject.gen.cpp.obj",
+			"GenericTickableWorldSubsystem.gen.cpp.obj",
+			"GenericWorldSubsystem.gen.cpp.obj",
+			"StateInterface.gen.cpp.obj",
+			"PerModuleInline.gen.cpp.obj",
+			"GenericActor.cpp.obj",
+			"CoreType.cpp.obj",
+			"GenericCoreFramework.cpp.obj",
+			"StateInterface.cpp.obj",
+			"GenericObject.cpp.obj",
+			"GenericEngineSubsystem.cpp.obj",
+			"GenericGameInstanceSubsystem.cpp.obj",
+			"GenericLocalPlayerSubsystem.cpp.obj",
+			"GenericTickableWorldSubsystem.cpp.obj",
+			"GenericWorldSubsystem.cpp.obj"
+		]
+	}
+}

@@ -1,0 +1,13 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.GenericMessageNode.cpp.obj": [
+			"GenericMessageNode.init.gen.cpp.obj",
+			"K2Node_BroadcastGameplayMessage.gen.cpp.obj",
+			"PerModuleInline.gen.cpp.obj",
+			"GenericMessageNodeModule.cpp.obj",
+			"K2Node_BroadcastGameplayMessage.cpp.obj",
+			"K2Node_ListenForGameplayMessages.cpp.obj"
+		]
+	}
+}

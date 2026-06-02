@@ -1,0 +1,15 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.GenericMessageFramework.cpp.obj": [
+			"GameplayMessageType.gen.cpp.obj",
+			"GenericMessageFramework.init.gen.cpp.obj",
+			"PerModuleInline.gen.cpp.obj",
+			"BroadcastGameplayMessageAsyncAction.cpp.obj",
+			"ListenForGameplayMessagesAsyncAction.cpp.obj",
+			"GameplayMessageSubsystem.cpp.obj",
+			"GameplayMessageType.cpp.obj",
+			"GenericMessageFramework.cpp.obj"
+		]
+	}
+}

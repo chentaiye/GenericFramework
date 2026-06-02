@@ -1,0 +1,66 @@
+// Copyright ChenTaiye 2025. All Rights Reserved.
+
+#include "Tools/FastSwitchLanguage.h"
+
+#include "Base/GenericSlateStyle.h"
+#include "Internationalization/Culture.h"
+#include "Kismet2/BlueprintEditorUtils.h"
+#include "Subsystem/GenericFrameworkEdSubsystem.h"
+
+#define LOCTEXT_NAMESPACE "FApplicationEditorModule"
+
+void UFastSwitchLanguage::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
+	UGenericFrameworkEdSubsystem::OnToolBarSectionExtend.AddUObject(this, &UFastSwitchLanguage::OnToolBarSectionExtend);
+}
+
+void UFastSwitchLanguage::Deinitialize()
+{
+	Super::Deinitialize();
+	UGenericFrameworkEdSubsystem::OnToolBarSectionExtend.RemoveAll(this);
+}
+
+void UFastSwitchLanguage::OnToolBarSectionExtend(FToolMenuSection& InToolMenuSection)
+{
+	InToolMenuSection.AddEntry
+	(
+		FToolMenuEntry::InitToolBarButton
+		(
+			"FastSwitchLanguage",
+			FUIAction(FExecuteAction::CreateUObject(this, &UFastSwitchLanguage::ToggleSwitchLanguage)),
+			TAttribute<FText>(),
+			LOCTEXT("FastSwitchLanguage_ToolTip", "Toggle To Switch Language Between Chinese And English"),
+			FSlateIcon(FGenericSlateStyle::GetStyleSetName(), "FastSwitchLanguage", "FastSwitchLanguage.Small")
+		)
+	);
+}
+
+void UFastSwitchLanguage::ToggleSwitchLanguage()
+{
+	if (FInternationalization::Get().GetCurrentLanguage()->GetName() == "zh-Hans")
+	{
+		FInternationalization::Get().SetCurrentLanguage("en");
+	}
+	else if (FInternationalization::Get().GetCurrentLanguage()->GetName() == "en")
+	{
+		FInternationalization::Get().SetCurrentLanguage("zh-Hans");
+	}
+}
+
+void UFastSwitchLanguage::RefreshBlueprints()
+{
+	UAssetEditorSubsystem* AssetEditorSubsystem = GEditor->GetEditorSubsystem<UAssetEditorSubsystem>();
+	TArray<UObject*> EditedAssets = AssetEditorSubsystem->GetAllEditedAssets();
+
+	if (EditedAssets.Num() > 0)
+	{
+		for (UObject* Data : EditedAssets)
+		{
+			TWeakObjectPtr<UBlueprint> Blueprint = Cast<UBlueprint>(Data);
+			FBlueprintEditorUtils::RefreshAllNodes(Blueprint.Get());
+		}
+	}
+}
+
+#undef LOCTEXT_NAMESPACE

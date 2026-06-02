@@ -1,0 +1,13 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-GenericDocumentFramework-Win64-DebugGame.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"C:/UE/Project/DevProject/Intermediate/Build/Win64/x64/DevProjectEditor/DebugGame/UnrealEd/SharedPCH.UnrealEd.Project.NonOptimized.ValApi.ValExpApi.Cpp20.h.obj"
+"C:/UE/Project/DevProject/Plugins/GenericFramework/GenericCore/GenericDocumentFramework/Intermediate/Build/Win64/x64/UnrealEditor/DebugGame/GenericDocumentFramework/Module.GenericDocumentFramework.cpp.obj"
+"C:/UE/Project/DevProject/Plugins/GenericFramework/GenericCore/GenericDocumentFramework/Intermediate/Build/Win64/x64/UnrealEditor/DebugGame/GenericDocumentFramework/GenericDocumentFramework.cpp.obj"
+"C:/UE/Project/DevProject/Plugins/GenericFramework/GenericCore/GenericDocumentFramework/Intermediate/Build/Win64/x64/UnrealEditor/DebugGame/GenericDocumentFramework/Default.rc2.res"
+/OUT:"C:/UE/Project/DevProject/Plugins/GenericFramework/GenericCore/GenericDocumentFramework/Intermediate/Build/Win64/x64/UnrealEditor/DebugGame/GenericDocumentFramework/UnrealEditor-GenericDocumentFramework-Win64-DebugGame.lib"

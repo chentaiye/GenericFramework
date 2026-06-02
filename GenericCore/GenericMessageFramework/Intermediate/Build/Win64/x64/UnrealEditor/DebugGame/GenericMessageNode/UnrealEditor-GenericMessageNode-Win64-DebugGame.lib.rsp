@@ -1,0 +1,15 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-GenericMessageNode-Win64-DebugGame.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"C:/UE/Project/DevProject/Intermediate/Build/Win64/x64/DevProjectEditor/DebugGame/UnrealEd/SharedPCH.UnrealEd.Project.NonOptimized.ValApi.ValExpApi.Cpp20.h.obj"
+"C:/UE/Project/DevProject/Plugins/GenericFramework/GenericCore/GenericMessageFramework/Intermediate/Build/Win64/x64/UnrealEditor/DebugGame/GenericMessageNode/Module.GenericMessageNode.cpp.obj"
+"C:/UE/Project/DevProject/Plugins/GenericFramework/GenericCore/GenericMessageFramework/Intermediate/Build/Win64/x64/UnrealEditor/DebugGame/GenericMessageNode/GenericMessageNodeModule.cpp.obj"
+"C:/UE/Project/DevProject/Plugins/GenericFramework/GenericCore/GenericMessageFramework/Intermediate/Build/Win64/x64/UnrealEditor/DebugGame/GenericMessageNode/K2Node_BroadcastGameplayMessage.cpp.obj"
+"C:/UE/Project/DevProject/Plugins/GenericFramework/GenericCore/GenericMessageFramework/Intermediate/Build/Win64/x64/UnrealEditor/DebugGame/GenericMessageNode/K2Node_ListenForGameplayMessages.cpp.obj"
+"C:/UE/Project/DevProject/Plugins/GenericFramework/GenericCore/GenericMessageFramework/Intermediate/Build/Win64/x64/UnrealEditor/DebugGame/GenericMessageNode/Default.rc2.res"
+/OUT:"C:/UE/Project/DevProject/Plugins/GenericFramework/GenericCore/GenericMessageFramework/Intermediate/Build/Win64/x64/UnrealEditor/DebugGame/GenericMessageNode/UnrealEditor-GenericMessageNode-Win64-DebugGame.lib"

@@ -1,0 +1,15 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericcoreframework\\source\\genericslateframework\\private\\style\\devslatebuttonstyle.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\ue\\project\\devproject\\intermediate\\build\\win64\\x64\\devprojecteditor\\debuggame\\unrealed\\sharedpch.unrealed.project.nonoptimized.valapi.valexpapi.cpp20.h.pch",
+        "Includes": [
+            "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericcoreframework\\intermediate\\build\\win64\\x64\\unrealeditor\\debuggame\\genericslateframework\\definitions.genericslateframework.h",
+            "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericcoreframework\\source\\genericslateframework\\public\\style\\devslatebuttonstyle.h",
+            "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericcoreframework\\intermediate\\build\\win64\\unrealeditor\\inc\\genericslateframework\\uht\\devslatebuttonstyle.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

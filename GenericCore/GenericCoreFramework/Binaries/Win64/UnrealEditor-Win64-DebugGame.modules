@@ -1,0 +1,10 @@
+{
+	"BuildId": "47537391",
+	"Modules": 
+	{
+		"GenericCoreFramework": "UnrealEditor-GenericCoreFramework-Win64-DebugGame.dll",
+		"GenericEditorFramework": "UnrealEditor-GenericEditorFramework-Win64-DebugGame.dll",
+		"GenericSlateFramework": "UnrealEditor-GenericSlateFramework-Win64-DebugGame.dll",
+		"UnrealMisc": "UnrealEditor-UnrealMisc-Win64-DebugGame.dll"
+	}
+}

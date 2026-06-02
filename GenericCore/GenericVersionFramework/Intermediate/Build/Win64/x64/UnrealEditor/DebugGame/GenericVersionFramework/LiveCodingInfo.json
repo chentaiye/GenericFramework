@@ -1,0 +1,23 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.GenericVersionFramework.cpp.obj": [
+			"GenericVersionDataSubsystem.gen.cpp.obj",
+			"GenericVersionFramework.init.gen.cpp.obj",
+			"GenericVersionMigrationSubsystem.gen.cpp.obj",
+			"GenericVersionSettings.gen.cpp.obj",
+			"GenericVersionTypes.gen.cpp.obj",
+			"GenericVersionValidationSubsystem.gen.cpp.obj",
+			"PerModuleInline.gen.cpp.obj",
+			"GenericVersionMigrationObject.cpp.obj",
+			"GenericVersionObject.cpp.obj",
+			"GenericVersionValidationObject.cpp.obj",
+			"GenericVersionFramework.cpp.obj",
+			"GenericVersionSettings.cpp.obj",
+			"GenericVersionDataSubsystem.cpp.obj",
+			"GenericVersionMigrationSubsystem.cpp.obj",
+			"GenericVersionValidationSubsystem.cpp.obj",
+			"GenericVersionTypes.cpp.obj"
+		]
+	}
+}

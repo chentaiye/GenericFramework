@@ -1,0 +1,25 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericcoreframework\\source\\unrealmisc\\private\\bpfunctions\\bpfunctions_field.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\ue\\project\\devproject\\intermediate\\build\\win64\\x64\\devprojecteditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.valexpapi.cpp20.h.pch",
+        "Includes": [
+            "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericcoreframework\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unrealmisc\\definitions.unrealmisc.h",
+            "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericcoreframework\\source\\unrealmisc\\public\\bpfunctions\\bpfunctions_field.h",
+            "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericcoreframework\\source\\unrealmisc\\public\\type\\debugtype.h",
+            "c:\\ue\\ue_5.7\\engine\\source\\runtime\\slate\\public\\widgets\\notifications\\snotificationlist.h",
+            "c:\\ue\\ue_5.7\\engine\\source\\runtime\\slate\\public\\framework\\notifications\\notificationmanager.h",
+            "c:\\ue\\ue_5.7\\engine\\source\\runtime\\core\\public\\misc\\coreasynctasknotificationimpl.h",
+            "c:\\ue\\ue_5.7\\engine\\source\\runtime\\core\\public\\misc\\asynctasknotification.h",
+            "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericcoreframework\\source\\unrealmisc\\public\\type\\fieldtype.h",
+            "c:\\ue\\ue_5.7\\engine\\source\\runtime\\coreuobject\\public\\uobject\\propertyaccessutil.h",
+            "c:\\ue\\ue_5.7\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\coreuobject\\uht\\propertyaccessutil.generated.h",
+            "c:\\ue\\project\\devproject\\plugins\\genericframework\\genericcore\\genericcoreframework\\intermediate\\build\\win64\\unrealeditor\\inc\\unrealmisc\\uht\\bpfunctions_field.generated.h",
+            "c:\\ue\\ue_5.7\\engine\\source\\runtime\\core\\public\\misc\\engineversioncomparison.h",
+            "c:\\ue\\ue_5.7\\engine\\source\\runtime\\coreuobject\\public\\blueprint\\blueprintexceptioninfo.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
