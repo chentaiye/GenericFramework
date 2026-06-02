@@ -1,8 +1,0 @@
-{
-	"BuildId": "47537391",
-	"Modules": 
-	{
-		"GenericMessageFramework": "UnrealEditor-GenericMessageFramework-Win64-DebugGame.dll",
-		"GenericMessageNode": "UnrealEditor-GenericMessageNode-Win64-DebugGame.dll"
-	}
-}

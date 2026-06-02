@@ -1,2 +1,0 @@
-# GenericFramework
-UnrealEngine Generic Framework
