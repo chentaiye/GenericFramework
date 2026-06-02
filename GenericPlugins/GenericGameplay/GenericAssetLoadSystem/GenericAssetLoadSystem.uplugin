@@ -1,0 +1,41 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0",
+  "FriendlyName": "GenericAssetLoadSystem",
+  "Description": "",
+  "Category": "Generic Gameplay",
+  "CreatedBy": "Chan",
+  "CreatedByURL": "",
+  "DocsURL": "",
+  "MarketplaceURL": "",
+  "CanContainContent": false,
+  "IsBetaVersion": false,
+  "IsExperimentalVersion": false,
+  "Installed": false,
+  "Plugins": [
+    {
+      "Name": "GenericCoreFramework",
+      "Enabled": true
+    },
+    {
+      "Name": "GenericWidgetFramework",
+      "Enabled": true
+    },
+    {
+      "Name": "GenericGameplaySystem",
+      "Enabled": true
+    },
+    {
+      "Name": "ModelViewViewModel",
+      "Enabled": true
+    }
+  ],
+  "Modules": [
+    {
+      "Name": "GenericAssetLoadSystem",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    }
+  ]
+}

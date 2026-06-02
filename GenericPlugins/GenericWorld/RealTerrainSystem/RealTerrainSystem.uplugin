@@ -1,0 +1,23 @@
+﻿{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0",
+  "FriendlyName": "RealTerrainSystem",
+  "Description": "",
+  "Category": "Other",
+  "CreatedBy": "Chan",
+  "CreatedByURL": "",
+  "DocsURL": "",
+  "MarketplaceURL": "",
+  "CanContainContent": false,
+  "IsBetaVersion": false,
+  "IsExperimentalVersion": false,
+  "Installed": false,
+  "Modules": [
+    {
+      "Name": "RealTerrainSystem",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    }
+  ]
+}

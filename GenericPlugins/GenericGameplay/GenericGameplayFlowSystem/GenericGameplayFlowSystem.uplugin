@@ -1,0 +1,37 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "GenericGameplayFlowSystem",
+	"Description": "",
+	"Category": "Generic Gameplay",
+	"CreatedBy": "Chan",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Plugins": [
+		{
+			"Name": "GenericCoreFramework",
+			"Enabled": true
+		},
+		{
+			"Name": "GenericSettingsFramework",
+			"Enabled": true
+		},
+		{
+			"Name": "StateTree",
+			"Enabled": true
+		}
+	],
+	"Modules": [
+		{
+			"Name": "GenericGameplayFlowSystem",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}

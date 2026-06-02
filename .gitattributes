@@ -1,0 +1,13 @@
+GenericPlugins/GenericWeb/GenericWebFramework/Source/ThirdParty/CefViewCore/bin/Win64/libcef.dll filter=lfs diff=lfs merge=lfs -text
+GenericPlugins/GenericWeb/GenericWebFramework/Source/ThirdParty/CefViewCore/bin/Linux/libcef.so filter=lfs diff=lfs merge=lfs -text
+GenericPlugins/GenericWeb/GenericWebFramework/Source/ThirdParty/CefViewCore/bin/LinuxArm64/libcef.so filter=lfs diff=lfs merge=lfs -text
+GenericPlugins/GenericWeb/GenericWebFramework/Source/ThirdParty/CefViewCore/bin/Mac/x86_64/Chromium[[:space:]]Embedded[[:space:]]Framework.framework/Chromium[[:space:]]Embedded[[:space:]]Framework filter=lfs diff=lfs merge=lfs -text
+GenericPlugins/GenericWeb/GenericWebFramework/Source/ThirdParty/CefViewCore/bin/Mac/arm64/Chromium[[:space:]]Embedded[[:space:]]Framework.framework/Chromium[[:space:]]Embedded[[:space:]]Framework filter=lfs diff=lfs merge=lfs -text
+GenericPlugins/GenericAuthorization/GenericAuthorizationSigner/publish/win-x64/GenericAuthorizationSigner.exe filter=lfs diff=lfs merge=lfs -text
+GenericPlugins/GenericWeb/GenericWebFramework/Source/ThirdParty/CefViewCore/bin/LinuxArm64/libvk_swiftshader.so filter=lfs diff=lfs merge=lfs -text
+GenericPlugins/**/*.dll filter=lfs diff=lfs merge=lfs -text
+GenericPlugins/**/*.lib filter=lfs diff=lfs merge=lfs -text
+GenericPlugins/**/*.so filter=lfs diff=lfs merge=lfs -text
+GenericPlugins/**/*.dylib filter=lfs diff=lfs merge=lfs -text
+GenericPlugins/**/*.exe filter=lfs diff=lfs merge=lfs -text
+GenericPlugins/**/*.a filter=lfs diff=lfs merge=lfs -text

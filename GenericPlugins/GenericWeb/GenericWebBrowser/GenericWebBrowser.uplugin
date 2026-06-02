@@ -1,0 +1,52 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0",
+  "FriendlyName": "GenericWebBrowser",
+  "Description": "Generic Web Browser backend powered by CEF.",
+  "Category": "Generic Web",
+  "CreatedBy": "Chan",
+  "CreatedByURL": "",
+  "DocsURL": "",
+  "MarketplaceURL": "",
+  "CanContainContent": true,
+  "IsBetaVersion": false,
+  "IsExperimentalVersion": false,
+  "Installed": false,
+  "SupportedTargetPlatforms": [
+    "Win64",
+    "Mac",
+    "Linux",
+    "LinuxArm64"
+  ],
+  "Plugins": [
+    {
+      "Name": "GenericWebFramework",
+      "Enabled": true
+    }
+  ],
+  "Modules": [
+    {
+      "Name": "GenericWebBrowserCore",
+      "Type": "Runtime",
+      "LoadingPhase": "Default",
+      "PlatformAllowList": [
+        "Win64",
+        "Mac",
+        "Linux",
+        "LinuxArm64"
+      ]
+    },
+    {
+      "Name": "GenericWebBrowser",
+      "Type": "Runtime",
+      "LoadingPhase": "Default",
+      "PlatformAllowList": [
+        "Win64",
+        "Mac",
+        "Linux",
+        "LinuxArm64"
+      ]
+    }
+  ]
+}

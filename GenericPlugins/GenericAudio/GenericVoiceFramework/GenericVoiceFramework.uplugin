@@ -1,0 +1,31 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0.0",
+  "FriendlyName": "GenericVoiceFramework",
+  "Description": "Generic voice shared framework plugin.",
+  "Category": "Generic Audio",
+  "CreatedBy": "Chan",
+  "CreatedByURL": "",
+  "DocsURL": "",
+  "MarketplaceURL": "",
+  "CanContainContent": false,
+  "IsBetaVersion": true,
+  "IsExperimentalVersion": false,
+  "Installed": false,
+  "EnabledByDefault": true,
+  "Plugins": [
+    {
+      "Name": "GenericCoreFramework",
+      "Enabled": true
+    }
+  ],
+  "Modules": [
+    {
+      "Name": "GenericVoiceFramework",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    }
+  ]
+}
+

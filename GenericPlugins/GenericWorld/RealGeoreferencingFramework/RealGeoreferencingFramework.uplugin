@@ -1,0 +1,42 @@
+﻿{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "RealGeoreferencingFramework",
+	"Description": "",
+	"Category": "Other",
+	"CreatedBy": "Chan",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"CanContainContent": false,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Plugins": [
+		{
+			"Name": "GenericCoreFramework",
+			"Enabled": true
+		},
+		{
+			"Name": "GenericSettingsFramework",
+			"Enabled": true
+		},
+		{
+			"Name": "GeoReferencing",
+			"Enabled": true
+		}
+	],
+	"Modules": [
+		{
+			"Name": "RealGeoreferencingFramework",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "RealGeoreferencingEdFramework",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		}
+	]
+}

@@ -1,0 +1,13 @@
+// Copyright ChenTaiye 2025. All Rights Reserved.
+
+#include "RealGeoreferencingType.h"
+
+UE_DEFINE_GAMEPLAY_TAG(TAG_GameplayGeoreferencing, "GameplayGeoreferencing");
+UE_DEFINE_GAMEPLAY_TAG(TAG_GameplayGeoreferencing_CoordinateSystem, "GameplayGeoreferencing.CoordinateSystem");
+UE_DEFINE_GAMEPLAY_TAG(TAG_GameplayGeoreferencing_CoordinateSystem_WGS84, "GameplayGeoreferencing.CoordinateSystem.WGS84");
+UE_DEFINE_GAMEPLAY_TAG(TAG_GameplayGeoreferencing_CoordinateSystem_GCJ02, "GameplayGeoreferencing.CoordinateSystem.GCJ02");
+UE_DEFINE_GAMEPLAY_TAG(TAG_GameplayGeoreferencing_CoordinateSystem_BD09, "GameplayGeoreferencing.CoordinateSystem.BD09");
+UE_DEFINE_GAMEPLAY_TAG(TAG_GameplayGeoreferencing_CoordinateSystem_CGCS2000, "GameplayGeoreferencing.CoordinateSystem.CGCS2000");
+UE_DEFINE_GAMEPLAY_TAG(TAG_GameplayGeoreferencing_CoordinateSystem_UTM, "GameplayGeoreferencing.CoordinateSystem.UTM");
+UE_DEFINE_GAMEPLAY_TAG(TAG_GameplayGeoreferencing_CoordinateSystem_Mercator, "GameplayGeoreferencing.CoordinateSystem.Mercator");
+UE_DEFINE_GAMEPLAY_TAG(TAG_GameplayGeoreferencing_CoordinateSystem_GaussKruger, "GameplayGeoreferencing.CoordinateSystem.GaussKruger");

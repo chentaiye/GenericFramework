@@ -1,0 +1,34 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0.0",
+  "FriendlyName": "VoiceConversationSystem",
+  "Description": "Voice conversation capability plugin.",
+  "Category": "Generic Audio",
+  "CreatedBy": "Chan",
+  "CreatedByURL": "",
+  "DocsURL": "",
+  "MarketplaceURL": "",
+  "CanContainContent": false,
+  "IsBetaVersion": true,
+  "IsExperimentalVersion": false,
+  "Installed": false,
+  "EnabledByDefault": true,
+  "Plugins": [
+    {
+      "Name": "GenericCoreFramework",
+      "Enabled": true
+    },
+    {
+      "Name": "GenericVoiceFramework",
+      "Enabled": true
+    }
+  ],
+  "Modules": [
+    { "Name": "GenericVoiceConversationFramework", "Type": "Runtime", "LoadingPhase": "Default" },
+    { "Name": "VoiceConversationDify", "Type": "Runtime", "LoadingPhase": "Default" },
+    { "Name": "VoiceConversationDoubao", "Type": "Runtime", "LoadingPhase": "Default" },
+    { "Name": "VoiceConversationWenxin", "Type": "Runtime", "LoadingPhase": "Default" },
+    { "Name": "VoiceConversationLocal", "Type": "Runtime", "LoadingPhase": "Default" }
+  ]
+}

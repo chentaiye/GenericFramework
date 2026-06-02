@@ -1,0 +1,84 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.5",
+	"FriendlyName": "GenericWidgetFramework",
+	"Description": "",
+	"Category": "Generic Widget",
+	"CreatedBy": "Chan",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Plugins": [
+		{
+			"Name": "GenericCoreFramework",
+			"Enabled": true
+		},
+		{
+			"Name": "GenericSettingsFramework",
+			"Enabled": true
+		},
+		{
+			"Name": "GenericMessageFramework",
+			"Enabled": true
+		},
+		{
+			"Name": "StateTree",
+			"Enabled": true
+		},
+		{
+			"Name": "ModelViewViewModel",
+			"Enabled": true
+		},
+		{
+			"Name": "EnhancedInput",
+			"Enabled": true
+		}
+	],
+	"Modules": [
+		{
+			"Name": "GenericWidgetFramework",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "GenericWidgetNode",
+			"Type": "UncookedOnly",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "GenericButtonFramework",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "GenericMenuFramework",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "GenericMenuEdFramework",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "GenericWorldWidgetFramework",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "GenericWorldWidgetEdFramework",
+			"Type": "Editor",
+			"LoadingPhase": "PreDefault"
+		},
+		{
+			"Name": "GenericWindowFramework",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}

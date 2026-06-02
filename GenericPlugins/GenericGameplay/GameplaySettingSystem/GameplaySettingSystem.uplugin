@@ -1,0 +1,33 @@
+﻿{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0",
+  "FriendlyName": "GameplaySettingSystem",
+  "Description": "",
+  "Category": "Generic Gameplay",
+  "CreatedBy": "Chan",
+  "CreatedByURL": "",
+  "DocsURL": "",
+  "MarketplaceURL": "",
+  "CanContainContent": false,
+  "IsBetaVersion": false,
+  "IsExperimentalVersion": false,
+  "Installed": false,
+  "Plugins": [
+    {
+      "Name": "GenericSaveGameSystem",
+      "Enabled": true
+    },
+    {
+      "Name": "GenericPropertyFramework",
+      "Enabled": true
+    }
+  ],
+  "Modules": [
+    {
+      "Name": "GameplaySettingSystem",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0",
+  "FriendlyName": "IOTPlatformHomeAssistant",
+  "Description": "Home Assistant platform adapter for GenericIOT.",
+  "Category": "Generic IOT",
+  "CreatedBy": "Chan",
+  "CreatedByURL": "",
+  "DocsURL": "",
+  "MarketplaceURL": "",
+  "CanContainContent": false,
+  "IsBetaVersion": false,
+  "IsExperimentalVersion": false,
+  "Installed": false,
+  "Plugins": [
+    {
+      "Name": "GenericIOTFramework",
+      "Enabled": true
+    },
+    {
+      "Name": "CommunicationFramework",
+      "Enabled": true
+    }
+  ],
+  "Modules": [
+    {
+      "Name": "IOTPlatformHomeAssistant",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0",
+  "FriendlyName": "NativeAPI",
+  "Description": "",
+  "Category": "Generic Communication",
+  "CreatedBy": "Chan",
+  "CreatedByURL": "",
+  "DocsURL": "",
+  "MarketplaceURL": "",
+  "CanContainContent": true,
+  "IsBetaVersion": false,
+  "IsExperimentalVersion": false,
+  "Installed": false,
+  "Plugins": [
+    {
+      "Name": "GenericCoreFramework",
+      "Enabled": true
+    },
+    {
+      "Name": "GenericSettingsFramework",
+      "Enabled": true
+    },
+    {
+      "Name": "CommunicationFramework",
+      "Enabled": true
+    }
+  ],
+  "Modules": [
+    {
+      "Name": "NativeAPI",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    }
+  ]
+}

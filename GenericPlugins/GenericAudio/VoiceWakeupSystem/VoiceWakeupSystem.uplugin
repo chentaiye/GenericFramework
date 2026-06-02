@@ -1,0 +1,54 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0.0",
+  "FriendlyName": "VoiceWakeupSystem",
+  "Description": "Voice wakeup capability plugin.",
+  "Category": "Generic Audio",
+  "CreatedBy": "Chan",
+  "CreatedByURL": "",
+  "DocsURL": "",
+  "MarketplaceURL": "",
+  "CanContainContent": false,
+  "IsBetaVersion": true,
+  "IsExperimentalVersion": false,
+  "Installed": false,
+  "EnabledByDefault": true,
+  "Plugins": [
+    {
+      "Name": "GenericCoreFramework",
+      "Enabled": true
+    },
+    {
+      "Name": "GenericVoiceFramework",
+      "Enabled": true
+    }
+  ],
+  "Modules": [
+    {
+      "Name": "GenericVoiceWakeupFramework",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    },
+    {
+      "Name": "VoiceWakeupXfyun",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    },
+    {
+      "Name": "VoiceWakeupDoubao",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    },
+    {
+      "Name": "VoiceWakeupSherpaOnnx",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    },
+    {
+      "Name": "VoiceWakeupPicovoice",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0.0",
+  "FriendlyName": "Generic Authorization Local Provider",
+  "Description": "Provides a local file authorization provider for GenericAuthorization.",
+  "Category": "Generic Authorization",
+  "CreatedBy": "Chan",
+  "CreatedByURL": "",
+  "CanContainContent": false,
+  "IsBetaVersion": true,
+  "Installed": false,
+  "EnabledByDefault": true,
+  "Modules": [
+    {
+      "Name": "GenericAuthLocal",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    }
+  ],
+  "Plugins": [
+    {
+      "Name": "GenericAuthorizationCore",
+      "Enabled": true
+    }
+  ]
+}

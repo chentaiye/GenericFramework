@@ -1,0 +1,27 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0.0",
+  "FriendlyName": "Generic Authorization Online",
+  "Description": "Online authorization extension placeholder for GenericAuthorization.",
+  "Category": "Generic Authorization",
+  "CreatedBy": "Chan",
+  "CreatedByURL": "",
+  "CanContainContent": false,
+  "IsBetaVersion": true,
+  "Installed": false,
+  "EnabledByDefault": true,
+  "Plugins": [
+    {
+      "Name": "GenericAuthorizationCore",
+      "Enabled": true
+    }
+  ],
+  "Modules": [
+    {
+      "Name": "GenericAuthOnline",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    }
+  ]
+}

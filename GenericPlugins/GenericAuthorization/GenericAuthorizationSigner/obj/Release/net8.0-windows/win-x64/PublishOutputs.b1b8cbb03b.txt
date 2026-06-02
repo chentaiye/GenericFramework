@@ -1,0 +1,2 @@
+C:\UE\Project\DevProject\Tools\GenericAuthorizationSigner\publish\win-x64\GenericAuthorizationSigner.pdb
+C:\UE\Project\DevProject\Tools\GenericAuthorizationSigner\publish\win-x64\GenericAuthorizationSigner.exe

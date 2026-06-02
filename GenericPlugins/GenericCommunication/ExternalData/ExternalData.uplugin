@@ -1,0 +1,51 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0",
+  "FriendlyName": "ExternalData",
+  "Description": "",
+  "Category": "Generic Communication",
+  "CreatedBy": "Chan",
+  "CreatedByURL": "",
+  "DocsURL": "",
+  "MarketplaceURL": "",
+  "CanContainContent": true,
+  "IsBetaVersion": false,
+  "IsExperimentalVersion": false,
+  "Installed": false,
+  "Plugins": [
+    {
+      "Name": "GenericCoreFramework",
+      "Enabled": true
+    },
+    {
+      "Name": "CommunicationFramework",
+      "Enabled": true
+    },
+    {
+      "Name": "StructUtils",
+      "Enabled": true
+    },
+    {
+      "Name": "GenericDesktopFramework",
+      "Enabled": true
+    }
+  ],
+  "Modules": [
+    {
+      "Name": "ExternalData",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    },
+    {
+      "Name": "ExternalDataEditor",
+      "Type": "Editor",
+      "LoadingPhase": "PostEngineInit"
+    },
+    {
+      "Name": "ExternalDataNode",
+      "Type": "UncookedOnly",
+      "LoadingPhase": "Default"
+    }
+  ]
+}

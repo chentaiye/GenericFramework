@@ -1,0 +1,59 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0.0",
+  "FriendlyName": "VoiceSynthesisSystem",
+  "Description": "Voice synthesis capability plugin.",
+  "Category": "Generic Audio",
+  "CreatedBy": "Chan",
+  "CreatedByURL": "",
+  "DocsURL": "",
+  "MarketplaceURL": "",
+  "CanContainContent": false,
+  "IsBetaVersion": true,
+  "IsExperimentalVersion": false,
+  "Installed": false,
+  "EnabledByDefault": true,
+  "Plugins": [
+    {
+      "Name": "GenericCoreFramework",
+      "Enabled": true
+    },
+    {
+      "Name": "GenericVoiceFramework",
+      "Enabled": true
+    }
+  ],
+  "Modules": [
+    {
+      "Name": "GenericVoiceSynthesisFramework",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    },
+    {
+      "Name": "VoiceSynthesisVolcengine",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    },
+    {
+      "Name": "VoiceSynthesisDify",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    },
+    {
+      "Name": "VoiceSynthesisDoubao",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    },
+    {
+      "Name": "VoiceSynthesisWenxin",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    },
+    {
+      "Name": "VoiceSynthesisSherpaOnnx",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    }
+  ]
+}

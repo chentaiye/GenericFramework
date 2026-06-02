@@ -1,0 +1,49 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "GenericSaveGameSystem",
+	"Description": "",
+	"Category": "Generic Gameplay",
+	"CreatedBy": "Chan",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"CanContainContent": false,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Plugins": [
+		{
+			"Name": "GenericCoreFramework",
+			"Enabled": true
+		},
+		{
+			"Name": "GenericGameplaySystem",
+			"Enabled": true
+		},
+		{
+			"Name": "GenericMessageFramework",
+			"Enabled": true
+		},
+		{
+			"Name": "GenericDesktopFramework",
+			"Enabled": true
+		},
+		{
+			"Name": "GenericSettingsFramework",
+			"Enabled": true
+		},
+		{
+			"Name": "GenericVersionFramework",
+			"Enabled": true
+		}
+	],
+	"Modules": [
+		{
+			"Name": "GenericSaveGameSystem",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}

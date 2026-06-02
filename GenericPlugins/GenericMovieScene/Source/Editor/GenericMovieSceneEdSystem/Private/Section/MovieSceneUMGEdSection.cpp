@@ -1,0 +1,39 @@
+// Copyright ChenTaiye 2025. All Rights Reserved.
+
+#include "Section/MovieSceneUMGEdSection.h"
+
+#include "ISequencerSection.h"
+#include "MovieSceneSection.h"
+#include "Section/MovieSceneUMGSection.h"
+
+FMovieSceneUMGEdSection::FMovieSceneUMGEdSection(UMovieSceneSection& InSectionObject)
+	: FSequencerSection(InSectionObject)
+{
+}
+
+FText FMovieSceneUMGEdSection::GetSectionTitle() const
+{
+	return FSequencerSection::GetSectionTitle();
+}
+
+FText FMovieSceneUMGEdSection::GetSectionToolTip() const
+{
+	return FSequencerSection::GetSectionToolTip();
+}
+
+#if !UE_VERSION_OLDER_THAN(5, 4, 0)
+float FMovieSceneUMGEdSection::GetSectionHeight(const UE::Sequencer::FViewDensityInfo& ViewDensity) const
+{
+	return FSequencerSection::GetSectionHeight(ViewDensity);
+}
+#else
+float FMovieSceneUMGEdSection::GetSectionHeight() const
+{
+	return FSequencerSection::GetSectionHeight();
+}
+#endif
+
+int32 FMovieSceneUMGEdSection::OnPaintSection(FSequencerSectionPainter& InPainter) const
+{
+	return FSequencerSection::OnPaintSection(InPainter);
+}

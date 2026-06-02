@@ -1,0 +1,24 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0",
+  "FriendlyName": "GenericIOTWindows",
+  "Description": "Windows platform discovery helpers for GenericIOT.",
+  "Category": "Generic IOT",
+  "CreatedBy": "Chan",
+  "CanContainContent": false,
+  "Installed": false,
+  "Plugins": [
+    {
+      "Name": "GenericIOTFramework",
+      "Enabled": true
+    }
+  ],
+  "Modules": [
+    {
+      "Name": "GenericIOTWindows",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    }
+  ]
+}

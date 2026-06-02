@@ -1,0 +1,3 @@
+C:\UE\Project\DevProject\Plugins\GenericFramework\GenericPlugins\GenericAuthorization\GenericAuthorizationSigner\publish\win-x64\GenericAuthorizationSigner.pdb
+C:\UE\Project\DevProject\Plugins\GenericFramework\GenericPlugins\GenericAuthorization\GenericAuthorizationSigner\publish\win-x64\signer.settings.json
+C:\UE\Project\DevProject\Plugins\GenericFramework\GenericPlugins\GenericAuthorization\GenericAuthorizationSigner\publish\win-x64\GenericAuthorizationSigner.exe

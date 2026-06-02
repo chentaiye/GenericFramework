@@ -1,0 +1,16 @@
+{
+  "ConfigVersion": "2.0",
+  "ProductId": "DevProject",
+  "VerificationKey": "GenericAuthorizationDevKey",
+  "WindowTitle": "授权签发工具",
+  "DefaultDurationValue": 7,
+  "DefaultDurationUnit": "Day",
+  "Scopes": [
+    {
+      "ScopeId": "base_app",
+      "DisplayName": "基础包",
+      "Version": "1.0",
+      "ScopeType": "BaseApp"
+    }
+  ]
+}

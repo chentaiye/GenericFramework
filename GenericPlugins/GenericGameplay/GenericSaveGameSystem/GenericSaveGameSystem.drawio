@@ -1,0 +1,121 @@
+<mxfile host="Electron">
+  <diagram name="第 1 页" id="N0qaohGd4MqlFeTGACvk">
+    <mxGraphModel dx="3041" dy="1614" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-26" edge="1" parent="1" source="5P4B9qDA6rN5Tj_sdBaZ-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="5P4B9qDA6rN5Tj_sdBaZ-25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-7" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=38;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;autosize=1;" value="GenericSaveGameSubsystem" vertex="1">
+          <mxGeometry height="88" width="690" x="685" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-8" parent="5P4B9qDA6rN5Tj_sdBaZ-7" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;autosize=1;" value="&lt;div style=&quot;background-color:#262626;color:#d0d0d0&quot;&gt;&lt;pre style=&quot;font-family: &amp;quot;JetBrains Mono&amp;quot;, monospace; line-height: 100%;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;span style=&quot;color: rgb(193, 145, 255);&quot;&gt;TMap&lt;/span&gt;&lt;span style=&quot;color: rgb(189, 189, 189);&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&quot;color: rgb(193, 145, 255);&quot;&gt;FString&lt;/span&gt;&lt;span style=&quot;color: rgb(189, 189, 189);&quot;&gt;, &lt;/span&gt;&lt;span style=&quot;color: rgb(225, 191, 255);&quot;&gt;TObjectPtr&lt;/span&gt;&lt;span style=&quot;color: rgb(189, 189, 189);&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&quot;color: rgb(193, 145, 255);&quot;&gt;UGenericSaveGame&lt;/span&gt;&lt;span style=&quot;color: rgb(189, 189, 189);&quot;&gt;&amp;gt;&amp;gt; &lt;/span&gt;RegisteredSaveGames&lt;/font&gt;&lt;/pre&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="50" width="690" y="38" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-48" edge="1" parent="1" source="5P4B9qDA6rN5Tj_sdBaZ-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="5P4B9qDA6rN5Tj_sdBaZ-47">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-25" parent="1" style="html=1;whiteSpace=wrap;autosize=1;" value="GenericSaveGameSubsystem" vertex="1">
+          <mxGeometry height="30" width="180" x="940" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-37" edge="1" parent="1" source="5P4B9qDA6rN5Tj_sdBaZ-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="5P4B9qDA6rN5Tj_sdBaZ-25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-35" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=38;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;autosize=1;" value="GenericGlobalSaveGameSubsystem" vertex="1">
+          <mxGeometry height="98" width="690" x="-5" y="556" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-36" parent="5P4B9qDA6rN5Tj_sdBaZ-35" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;autosize=1;" value="&lt;div style=&quot;background-color: rgb(38, 38, 38);&quot;&gt;&lt;pre style=&quot;font-family: &amp;quot;JetBrains Mono&amp;quot;, monospace;&quot;&gt;&lt;div style=&quot;&quot;&gt;&lt;pre style=&quot;font-family: &amp;quot;JetBrains Mono&amp;quot;, monospace;&quot;&gt;&lt;font style=&quot;color: rgb(255, 255, 255); font-size: 18px;&quot;&gt;SavePath : Saved/SaveGames/Global&lt;/font&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="690" y="38" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-41" edge="1" parent="1" source="5P4B9qDA6rN5Tj_sdBaZ-38" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="5P4B9qDA6rN5Tj_sdBaZ-25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-44" edge="1" parent="1" source="5P4B9qDA6rN5Tj_sdBaZ-38" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="5P4B9qDA6rN5Tj_sdBaZ-42">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-46" edge="1" parent="1" source="5P4B9qDA6rN5Tj_sdBaZ-38" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="5P4B9qDA6rN5Tj_sdBaZ-45">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-38" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=38;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;autosize=1;" value="GenericSaveGameSlotSubsystem" vertex="1">
+          <mxGeometry height="178" width="690" x="-5" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-39" parent="5P4B9qDA6rN5Tj_sdBaZ-38" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;autosize=1;autosizeText=0;fontSize=18;" value="&lt;div style=&quot;background-color: rgb(38, 38, 38);&quot;&gt;&lt;pre style=&quot;font-family: &amp;quot;JetBrains Mono&amp;quot;, monospace;&quot;&gt;&lt;div&gt;&lt;pre style=&quot;font-family: &amp;quot;JetBrains Mono&amp;quot;, monospace;&quot;&gt;&lt;font style=&quot;color: rgb(255, 255, 255);&quot;&gt;SavePath : Saved/SaveGames/Slots&lt;/font&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="690" y="38" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-40" parent="5P4B9qDA6rN5Tj_sdBaZ-38" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;autosize=1;autosizeText=0;fontSize=18;" value="&lt;pre style=&quot;background-color: rgb(38, 38, 38); font-family: &amp;quot;JetBrains Mono&amp;quot;, monospace;&quot;&gt;&lt;span style=&quot;font-style: italic;&quot;&gt;Add Slot/Remove Slot&lt;/span&gt;&lt;/pre&gt;" vertex="1">
+          <mxGeometry height="70" width="690" y="108" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-50" edge="1" parent="1" source="5P4B9qDA6rN5Tj_sdBaZ-42" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="5P4B9qDA6rN5Tj_sdBaZ-49">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-52" edge="1" parent="1" source="5P4B9qDA6rN5Tj_sdBaZ-42" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="5P4B9qDA6rN5Tj_sdBaZ-51">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-54" edge="1" parent="1" source="5P4B9qDA6rN5Tj_sdBaZ-42" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="5P4B9qDA6rN5Tj_sdBaZ-53">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-68" edge="1" parent="1" source="5P4B9qDA6rN5Tj_sdBaZ-42" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="5P4B9qDA6rN5Tj_sdBaZ-67">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-42" parent="1" style="html=1;whiteSpace=wrap;autosize=1;" value="SlotA&lt;br&gt;SavePath : Saved/SaveGames/Slots/SlotGuid" vertex="1">
+          <mxGeometry height="40" width="270" x="390" y="955" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-45" parent="1" style="html=1;whiteSpace=wrap;autosize=1;" value="SlotB&lt;br&gt;SavePath : Saved/SaveGames/Slots/SlotGuid" vertex="1">
+          <mxGeometry height="40" width="270" x="390" y="1040" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-47" parent="1" style="html=1;whiteSpace=wrap;autosize=1;" value="GenericSaveGame" vertex="1">
+          <mxGeometry height="30" width="130" x="965" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-49" parent="1" style="html=1;whiteSpace=wrap;autosize=1;" value="SlotGlobalSaveGame&lt;br&gt;SavePath : Saved/SaveGames/Slots/SlotGuid" vertex="1">
+          <mxGeometry height="40" width="270" x="827" y="955" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-56" edge="1" parent="1" source="5P4B9qDA6rN5Tj_sdBaZ-51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="5P4B9qDA6rN5Tj_sdBaZ-55">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-58" edge="1" parent="1" source="5P4B9qDA6rN5Tj_sdBaZ-51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="5P4B9qDA6rN5Tj_sdBaZ-57">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-51" parent="1" style="html=1;whiteSpace=wrap;autosize=1;" value="SlotWorldSaveGame&lt;br&gt;SavePath : Saved/SaveGames/Slots/SlotGuid/World" vertex="1">
+          <mxGeometry height="40" width="300" x="827" y="1220" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-60" edge="1" parent="1" source="5P4B9qDA6rN5Tj_sdBaZ-53" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="5P4B9qDA6rN5Tj_sdBaZ-59">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-62" edge="1" parent="1" source="5P4B9qDA6rN5Tj_sdBaZ-53" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="5P4B9qDA6rN5Tj_sdBaZ-61">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-53" parent="1" style="html=1;whiteSpace=wrap;autosize=1;" value="SlotPlayerSaveGame&lt;br&gt;SavePath : Saved/SaveGames/Slots/SlotGuid/Player" vertex="1">
+          <mxGeometry height="40" width="310" x="827" y="1420" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-55" parent="1" style="html=1;whiteSpace=wrap;autosize=1;" value="WorldA&lt;br&gt;SavePath : Saved/SaveGames/Slots/SlotGuid/World/WorldId" vertex="1">
+          <mxGeometry height="40" width="350" x="1241" y="1220" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-57" parent="1" style="html=1;whiteSpace=wrap;autosize=1;" value="WorldB&lt;div&gt;SavePath : Saved/SaveGames/Slots/SlotGuid/World/WorldId&lt;/div&gt;" vertex="1">
+          <mxGeometry height="40" width="350" x="1241" y="1300" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-64" edge="1" parent="1" source="5P4B9qDA6rN5Tj_sdBaZ-59" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="5P4B9qDA6rN5Tj_sdBaZ-63">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-66" edge="1" parent="1" source="5P4B9qDA6rN5Tj_sdBaZ-59" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="5P4B9qDA6rN5Tj_sdBaZ-65">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-59" parent="1" style="html=1;whiteSpace=wrap;autosize=1;" value="PlayerA&lt;br&gt;SavePath : Saved/SaveGames/Slots/SlotGuid/World/PlayerId" vertex="1">
+          <mxGeometry height="40" width="350" x="1241" y="1420" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-61" parent="1" style="html=1;whiteSpace=wrap;autosize=1;" value="PlayerB&lt;br&gt;SavePath : Saved/SaveGames/Slots/SlotGuid/World/PlayerId" vertex="1">
+          <mxGeometry height="40" width="350" x="1241" y="1500" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-63" parent="1" style="html=1;whiteSpace=wrap;autosize=1;" value="Shared&lt;br&gt;SavePath : Saved/SaveGames/Slots/SlotGuid/World/PlayerId/Shared" vertex="1">
+          <mxGeometry height="40" width="390" x="1720" y="1420" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-65" parent="1" style="html=1;whiteSpace=wrap;autosize=1;" value="Local&lt;br&gt;SavePath : Saved/SaveGames/Slots/SlotGuid/World/PlayerId/Local" vertex="1">
+          <mxGeometry height="40" width="380" x="1725" y="1500" as="geometry" />
+        </mxCell>
+        <mxCell id="5P4B9qDA6rN5Tj_sdBaZ-67" parent="1" style="html=1;whiteSpace=wrap;autosize=1;" value="SlotGlobalSaveGame&lt;br&gt;SavePath : Saved/SaveGames/Slots/SlotGuid/Global" vertex="1">
+          <mxGeometry height="40" width="310" x="827" y="1080" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

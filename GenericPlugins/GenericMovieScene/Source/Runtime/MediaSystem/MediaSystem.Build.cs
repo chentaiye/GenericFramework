@@ -1,0 +1,34 @@
+using UnrealBuildTool;
+
+public class MediaSystem : ModuleRules
+{
+	public MediaSystem(ReadOnlyTargetRules Target) : base(Target)
+	{
+		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+
+		PublicDependencyModuleNames.AddRange(
+			new string[]
+			{
+				"Core",
+				"GenericCoreFramework",
+				"GenericMovieSceneSystem",
+				"GameplayTags",
+			}
+		);
+
+		PrivateDependencyModuleNames.AddRange(
+			new string[]
+			{
+				"CoreUObject",
+				"Engine",
+				"Slate",
+				"SlateCore",
+
+				"UMG",
+				"MediaAssets",
+				"MediaUtils",
+				"GenericMessageFramework",
+			}
+		);
+	}
+}
