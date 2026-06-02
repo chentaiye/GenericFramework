@@ -1,0 +1,6 @@
+[submodule "UnrealThirdParty"]
+	path = UnrealThirdParty
+	url = https://github.com/chentaiye/UnrealThirdParty.git
+[submodule "UnrealMarketplace"]
+	path = UnrealMarketplace
+	url = https://github.com/chentaiye/UnrealMarketplace.git
