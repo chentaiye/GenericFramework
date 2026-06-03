@@ -21,7 +21,7 @@ USlotPlayerSaveGameSubsystem* USlotPlayerSaveGameSubsystem::Get(const ULocalPlay
 
 USlotPlayerSaveGameSubsystem* USlotPlayerSaveGameSubsystem::Get(const APlayerController* PlayerController)
 {
-	return ULocalPlayer::GetSubsystemFromController<USlotPlayerSaveGameSubsystem>(PlayerController);
+	return PlayerController ? ULocalPlayer::GetSubsystem<USlotPlayerSaveGameSubsystem>(PlayerController->GetLocalPlayer()) : nullptr;
 }
 
 UGenericSaveGame* USlotPlayerSaveGameSubsystem::CreateSlotPlayerSaveGame(const FString& SlotName, const TSubclassOf<UGenericSaveGame> SaveGameClass)

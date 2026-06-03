@@ -15,13 +15,7 @@ namespace UE::GenericCamera::LoadDefaultCameraTask
 {
 	static UWorld* ResolveWorld(FStateTreeExecutionContext& Context)
 	{
-		if (UWorld* World = Context.GetWorld())
-		{
-			return World;
-		}
-
-		const FStateTreeDataView WorldData = Context.GetContextDataByName(FName(TEXT("World")));
-		return WorldData.GetMutablePtr<UWorld>();
+		return Context.GetWorld();
 	}
 
 	static UGenericCameraSwitchMethod* CreateRuntimeSwitchMethod(UObject* Outer, const UGenericCameraSwitchMethod* SwitchMethodTemplate)

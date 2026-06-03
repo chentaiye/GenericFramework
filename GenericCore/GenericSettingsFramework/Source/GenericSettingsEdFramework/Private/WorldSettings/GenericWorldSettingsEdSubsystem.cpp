@@ -11,6 +11,7 @@
 #include "FileHelpers.h"
 #include "Framework/Docking/TabManager.h"
 #include "GameFramework/WorldSettings.h"
+#include "Misc/EngineVersionComparison.h"
 #include "Misc/PackageName.h"
 #include "ScopedTransaction.h"
 #include "UObject/ObjectSaveContext.h"
@@ -36,6 +37,24 @@ TArray<TWeakObjectPtr<UClass>>& GetManualWorldSettingsClasses()
 {
 	static TArray<TWeakObjectPtr<UClass>> ManualClasses;
 	return ManualClasses;
+}
+
+bool IsPostSaveFromAutoSave(const FObjectPostSaveContext& ObjectSaveContext)
+{
+#if UE_VERSION_OLDER_THAN(5, 7, 0)
+	return false;
+#else
+	return ObjectSaveContext.IsFromAutoSave();
+#endif
+}
+
+bool IsAssetRegistryBusy(const IAssetRegistry& AssetRegistry)
+{
+#if UE_VERSION_OLDER_THAN(5, 7, 0)
+	return AssetRegistry.IsLoadingAssets();
+#else
+	return AssetRegistry.IsLoadingAssets() || AssetRegistry.IsGathering();
+#endif
 }
 }
 
@@ -133,7 +152,7 @@ void UGenericWorldSettingsEdSubsystem::HandleEditorMapChanged(uint32 MapChangeFl
 
 void UGenericWorldSettingsEdSubsystem::HandleEditorPostSaveWorld(UWorld* World, FObjectPostSaveContext ObjectSaveContext)
 {
-	if (!World || World != GetEditorWorld() || !ObjectSaveContext.SaveSucceeded() || ObjectSaveContext.IsFromAutoSave())
+	if (!World || World != GetEditorWorld() || !ObjectSaveContext.SaveSucceeded() || IsPostSaveFromAutoSave(ObjectSaveContext))
 	{
 		return;
 	}
@@ -437,7 +456,7 @@ bool UGenericWorldSettingsEdSubsystem::TickCollectDiscoveredWorldSettingsClassPa
 	}
 
 	IAssetRegistry& AssetRegistry = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry").Get();
-	if (AssetRegistry.IsLoadingAssets() || AssetRegistry.IsGathering())
+	if (IsAssetRegistryBusy(AssetRegistry))
 	{
 		return true;
 	}

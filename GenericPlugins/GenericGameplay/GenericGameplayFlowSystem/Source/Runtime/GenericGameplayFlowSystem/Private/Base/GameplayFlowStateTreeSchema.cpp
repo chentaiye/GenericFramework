@@ -61,10 +61,12 @@ bool UGameplayFlowStateTreeSchema::IsExternalItemAllowed(const UStruct& InStruct
 	return true;
 }
 
+#if !UE_VERSION_OLDER_THAN(5, 7, 0)
 bool UGameplayFlowStateTreeSchema::IsScheduledTickAllowed() const
 {
 	return true;
 }
+#endif
 
 TConstArrayView<FStateTreeExternalDataDesc> UGameplayFlowStateTreeSchema::GetContextDataDescs() const
 {

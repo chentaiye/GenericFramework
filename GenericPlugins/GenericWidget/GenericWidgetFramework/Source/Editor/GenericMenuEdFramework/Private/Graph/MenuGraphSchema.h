@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "EdGraph/EdGraphSchema.h"
+#include "Misc/EngineVersionComparison.h"
 #include "MenuGraphSchema.generated.h"
 
 class UMenuGraphNode;
@@ -15,7 +16,11 @@ struct FMenuGraphSchemaAction_NewNode : public FEdGraphSchemaAction
 
 	FMenuGraphSchemaAction_NewNode();
 	FMenuGraphSchemaAction_NewNode(FText InNodeCategory, FText InMenuDesc, FText InToolTip, int32 InGrouping, int32 InChildIndex);
+#if UE_VERSION_OLDER_THAN(5, 6, 0)
+	virtual UEdGraphNode* PerformAction(UEdGraph* ParentGraph, UEdGraphPin* FromPin, const FVector2D Location, bool bSelectNewNode = true) override;
+#else
 	virtual UEdGraphNode* PerformAction(UEdGraph* ParentGraph, UEdGraphPin* FromPin, const FVector2f& Location, bool bSelectNewNode = true) override;
+#endif
 
 	int32 ChildIndex = INDEX_NONE;
 };

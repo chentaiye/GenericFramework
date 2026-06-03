@@ -11,13 +11,7 @@ namespace UE::GenericLevelStreaming::LoadCurrentWorldLevelStreamingTask
 {
 	static UWorld* ResolveWorld(FStateTreeExecutionContext& Context)
 	{
-		if (UWorld* World = Context.GetWorld())
-		{
-			return World;
-		}
-
-		const FStateTreeDataView WorldData = Context.GetContextDataByName(FName(TEXT("World")));
-		return WorldData.GetMutablePtr<UWorld>();
+		return Context.GetWorld();
 	}
 
 	static UGenericLevelStreamingSubsystem* ResolveSubsystem(FStateTreeExecutionContext& Context)

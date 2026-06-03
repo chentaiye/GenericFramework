@@ -76,7 +76,7 @@ UWorldWidgetComponent::UWorldWidgetComponent(const FObjectInitializer& ObjectIni
 	SetDrawAtDesiredSize(false);
 
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface> GenericWorldWidgetMaterialFinder(
-		TEXT("/GenericWidgetFramework/Material/Widget3DPassThrough_Translucent_OneSided.Widget3DPassThrough_Translucent_OneSided"));
+		TEXT("/Engine/EngineMaterials/Widget3DPassThrough_Translucent_OneSided.Widget3DPassThrough_Translucent_OneSided"));
 	if (GenericWorldWidgetMaterialFinder.Succeeded())
 	{
 		SetMaterial(0, GenericWorldWidgetMaterialFinder.Object);

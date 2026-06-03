@@ -49,6 +49,7 @@ SourceArt/**/*.tga
 # Binary Files
 Binaries/*
 Plugins/**/Binaries/*
+**/Binaries/**
 
 # Builds
 Build/*
@@ -86,3 +87,5 @@ DerivedDataCache/*
 GenericCore/**/Build/**
 GenericPlatform/**/Build/**
 GenericPlugins/**/Build/**
+UnrealMarketplace/**
+UnrealThirdParty/**

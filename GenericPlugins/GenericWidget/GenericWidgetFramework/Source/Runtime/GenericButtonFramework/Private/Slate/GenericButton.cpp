@@ -5,6 +5,7 @@
 #include "Components/ButtonSlot.h"
 #include "Input/Events.h"
 #include "InputCoreTypes.h"
+#include "Misc/EngineVersionComparison.h"
 #include "Widgets/Input/SButton.h"
 #include "Widgets/Layout/SBackgroundBlur.h"
 #include "Widgets/Layout/SBox.h"
@@ -102,6 +103,7 @@ TSharedRef<SWidget> UGenericButton::RebuildWidget()
 		.OnReleased(BIND_UOBJECT_DELEGATE(FSimpleDelegate, SlateHandleReleased))
 		.OnHovered_UObject(this, &ThisClass::SlateHandleHovered)
 		.OnUnhovered_UObject(this, &ThisClass::SlateHandleUnhovered)
+#if !UE_VERSION_OLDER_THAN(5, 7, 0)
 		.OnReceivedFocus_UObject(this, &ThisClass::SlateHandleOnReceivedFocus)
 		.OnLostFocus_UObject(this, &ThisClass::SlateHandleOnLostFocus)
 		.OnSlateButtonDragDetected(BIND_UOBJECT_DELEGATE(FOnDragDetected, SlateHandleDragDetected))
@@ -109,15 +111,20 @@ TSharedRef<SWidget> UGenericButton::RebuildWidget()
 		.OnSlateButtonDragLeave(BIND_UOBJECT_DELEGATE(FOnDragLeave, SlateHandleDragLeave))
 		.OnSlateButtonDragOver(BIND_UOBJECT_DELEGATE(FOnDragOver, SlateHandleDragOver))
 		.OnSlateButtonDrop(BIND_UOBJECT_DELEGATE(FOnDrop, SlateHandleDrop))
+#endif
 		.ButtonStyle(&GetStyle())
 		.ContentPadding(FMargin())
+#if !UE_VERSION_OLDER_THAN(5, 7, 0)
 		.NormalPaddingOverride(FMargin())
 		.PressedPaddingOverride(FMargin())
+#endif
 		.ClickMethod(GetClickMethod())
 		.TouchMethod(GetTouchMethod())
 		.PressMethod(GetPressMethod())
 		.IsFocusable(GetIsFocusable())
+#if !UE_VERSION_OLDER_THAN(5, 7, 0)
 		.AllowDragDrop(bAllowDragDrop)
+#endif
 	);
 	GenericButton->SetDoubleClickedDelegate(BIND_UOBJECT_DELEGATE(FOnClicked, SlateHandleGenericDoubleClicked));
 

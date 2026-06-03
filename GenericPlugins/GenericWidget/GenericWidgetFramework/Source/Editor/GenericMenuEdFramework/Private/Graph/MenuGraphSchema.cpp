@@ -21,7 +21,11 @@ FMenuGraphSchemaAction_NewNode::FMenuGraphSchemaAction_NewNode(FText InNodeCateg
 {
 }
 
+#if UE_VERSION_OLDER_THAN(5, 6, 0)
+UEdGraphNode* FMenuGraphSchemaAction_NewNode::PerformAction(UEdGraph* ParentGraph, UEdGraphPin* FromPin, const FVector2D Location, bool bSelectNewNode)
+#else
 UEdGraphNode* FMenuGraphSchemaAction_NewNode::PerformAction(UEdGraph* ParentGraph, UEdGraphPin* FromPin, const FVector2f& Location, bool bSelectNewNode)
+#endif
 {
 	UMenuGraph* MenuGraph = Cast<UMenuGraph>(ParentGraph);
 	UMenuGraphNode* SourceGraphNode = FromPin ? Cast<UMenuGraphNode>(FromPin->GetOwningNode()) : nullptr;
@@ -36,7 +40,12 @@ UEdGraphNode* FMenuGraphSchemaAction_NewNode::PerformAction(UEdGraph* ParentGrap
 	MenuGraph->MenuAsset->Modify();
 
 	const int32 TargetChildIndex = ChildIndex == INDEX_NONE ? SourceGraphNode->MenuNode->Children.Num() : ChildIndex;
-	UMenuNode* NewMenuNode = MenuGraph->MenuAsset->CreateChildNodeAtIndex(SourceGraphNode->MenuNode, TargetChildIndex, FVector2D(Location));
+#if UE_VERSION_OLDER_THAN(5, 6, 0)
+	const FVector2D NodeLocation = Location;
+#else
+	const FVector2D NodeLocation(Location);
+#endif
+	UMenuNode* NewMenuNode = MenuGraph->MenuAsset->CreateChildNodeAtIndex(SourceGraphNode->MenuNode, TargetChildIndex, NodeLocation);
 
 	if (!NewMenuNode)
 	{

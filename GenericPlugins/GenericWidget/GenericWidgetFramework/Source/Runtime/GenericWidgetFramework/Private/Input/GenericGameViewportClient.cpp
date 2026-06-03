@@ -18,6 +18,10 @@ namespace
 		return GEngine ? GEngine->GetLocalPlayerFromInputDevice(ViewportClient, InputDevice) : nullptr;
 	}
 
+	ULocalPlayer* GetLocalPlayerFromControllerId(const UGameViewportClient* ViewportClient, int32 ControllerId)
+	{
+		return GEngine ? GEngine->GetLocalPlayerFromControllerId(ViewportClient, ControllerId) : nullptr;
+	}
 }
 
 bool UGenericGameViewportClient::InputKey(const FInputKeyEventArgs& EventArgs)
@@ -33,6 +37,21 @@ bool UGenericGameViewportClient::InputKey(const FInputKeyEventArgs& EventArgs)
 	return Super::InputKey(EventArgs);
 }
 
+#if UE_VERSION_OLDER_THAN(5, 7, 0)
+bool UGenericGameViewportClient::InputTouch(FViewport* InViewport, int32 ControllerId, uint32 Handle, ETouchType::Type Type, const FVector2D& TouchLocation, float Force, FDateTime DeviceTimestamp, uint32 TouchpadIndex)
+{
+	if (UGenericActionSubsystem* ActionSubsystem = GetActionSubsystem(GetLocalPlayerFromControllerId(this, ControllerId)))
+	{
+		const FInputDeviceId DeviceId = FInputDeviceId::CreateFromInternalId(ControllerId);
+		if (ActionSubsystem->HandleViewportInputTouch(InViewport, DeviceId, Handle, Type, TouchLocation, Force, TouchpadIndex, 0))
+		{
+			return true;
+		}
+	}
+
+	return Super::InputTouch(InViewport, ControllerId, Handle, Type, TouchLocation, Force, DeviceTimestamp, TouchpadIndex);
+}
+#else
 bool UGenericGameViewportClient::InputTouch(FViewport* InViewport, const FInputDeviceId DeviceId, uint32 Handle, ETouchType::Type Type, const FVector2D& TouchLocation, float Force, uint32 TouchpadIndex, const uint64 Timestamp)
 {
 	if (UGenericActionSubsystem* ActionSubsystem = GetActionSubsystem(GetLocalPlayerFromInputDevice(this, DeviceId)))
@@ -45,3 +64,4 @@ bool UGenericGameViewportClient::InputTouch(FViewport* InViewport, const FInputD
 
 	return Super::InputTouch(InViewport, DeviceId, Handle, Type, TouchLocation, Force, TouchpadIndex, Timestamp);
 }
+#endif
