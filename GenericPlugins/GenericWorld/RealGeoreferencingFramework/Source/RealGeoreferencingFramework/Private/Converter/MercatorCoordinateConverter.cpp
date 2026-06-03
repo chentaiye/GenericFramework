@@ -6,8 +6,8 @@
 
 namespace
 {
-const FString WGS84CRS(TEXT("EPSG:4326"));
-const FString MercatorCRS(TEXT("EPSG:3857"));
+const FString MercatorWGS84CRS(TEXT("EPSG:4326"));
+const FString MercatorProjectedCRS(TEXT("EPSG:3857"));
 }
 
 FGameplayTag UMercatorCoordinateConverter::GetCoordinateSystem() const
@@ -24,10 +24,10 @@ bool UMercatorCoordinateConverter::RealCoordinateToECEF(const FGenericRealCoordi
 {
 	if (InCoordinate.CoordinateFormat == EGenericCoordinateFormat::Geographic)
 	{
-		return GenericProjectionUtilities::GeographicToECEFCentimeters(WGS84CRS, InCoordinate.GeographicCoordinate, OutECEFCentimeters);
+		return GenericProjectionUtilities::GeographicToECEFCentimeters(MercatorWGS84CRS, InCoordinate.GeographicCoordinate, OutECEFCentimeters);
 	}
 
-	return GenericProjectionUtilities::ProjectedToECEFCentimeters(MercatorCRS, InCoordinate.ProjectedCoordinate, OutECEFCentimeters);
+	return GenericProjectionUtilities::ProjectedToECEFCentimeters(MercatorProjectedCRS, InCoordinate.ProjectedCoordinate, OutECEFCentimeters);
 }
 
 bool UMercatorCoordinateConverter::ECEFToRealCoordinate(const FVector& InECEFCentimeters, EGenericCoordinateFormat TargetFormat, FGenericRealCoordinate& OutCoordinate) const
@@ -37,8 +37,8 @@ bool UMercatorCoordinateConverter::ECEFToRealCoordinate(const FVector& InECEFCen
 
 	if (TargetFormat == EGenericCoordinateFormat::Geographic)
 	{
-		return GenericProjectionUtilities::ECEFCentimetersToGeographic(WGS84CRS, InECEFCentimeters, OutCoordinate.GeographicCoordinate);
+		return GenericProjectionUtilities::ECEFCentimetersToGeographic(MercatorWGS84CRS, InECEFCentimeters, OutCoordinate.GeographicCoordinate);
 	}
 
-	return GenericProjectionUtilities::ECEFCentimetersToProjected(MercatorCRS, InECEFCentimeters, OutCoordinate.ProjectedCoordinate);
+	return GenericProjectionUtilities::ECEFCentimetersToProjected(MercatorProjectedCRS, InECEFCentimeters, OutCoordinate.ProjectedCoordinate);
 }

@@ -1065,9 +1065,9 @@ FORCEINLINE EImageFormat ConvertToDesktopImageFormat(const EDesktopImageFormat I
 	case EDesktopImageFormat::GrayscaleUEJPEG:
 		return EImageFormat::GrayscaleUEJPEG;
 #else
-	case EWindowImageFormat::UEJPEG:
+	case EDesktopImageFormat::UEJPEG:
 		return EImageFormat::JPEG;
-	case EWindowImageFormat::GrayscaleUEJPEG:
+	case EDesktopImageFormat::GrayscaleUEJPEG:
 		return EImageFormat::GrayscaleJPEG;
 #endif
 	default:

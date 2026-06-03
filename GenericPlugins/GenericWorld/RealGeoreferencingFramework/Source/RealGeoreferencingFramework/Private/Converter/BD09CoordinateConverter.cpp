@@ -7,7 +7,7 @@
 
 namespace
 {
-const FString WGS84CRS(TEXT("EPSG:4326"));
+const FString BD09WGS84CRS(TEXT("EPSG:4326"));
 }
 
 FGameplayTag UBD09CoordinateConverter::GetCoordinateSystem() const
@@ -29,7 +29,7 @@ bool UBD09CoordinateConverter::RealCoordinateToECEF(const FGenericRealCoordinate
 
 	const FGenericCoordinate GCJ02Coordinate = ChinaCoordinateOffset::BD09ToGCJ02(InCoordinate.GeographicCoordinate);
 	const FGenericCoordinate WGS84Coordinate = ChinaCoordinateOffset::GCJ02ToWGS84(GCJ02Coordinate);
-	return GenericProjectionUtilities::GeographicToECEFCentimeters(WGS84CRS, WGS84Coordinate, OutECEFCentimeters);
+	return GenericProjectionUtilities::GeographicToECEFCentimeters(BD09WGS84CRS, WGS84Coordinate, OutECEFCentimeters);
 }
 
 bool UBD09CoordinateConverter::ECEFToRealCoordinate(const FVector& InECEFCentimeters, EGenericCoordinateFormat TargetFormat, FGenericRealCoordinate& OutCoordinate) const
@@ -40,7 +40,7 @@ bool UBD09CoordinateConverter::ECEFToRealCoordinate(const FVector& InECEFCentime
 	}
 
 	FGenericCoordinate WGS84Coordinate;
-	if (!GenericProjectionUtilities::ECEFCentimetersToGeographic(WGS84CRS, InECEFCentimeters, WGS84Coordinate))
+	if (!GenericProjectionUtilities::ECEFCentimetersToGeographic(BD09WGS84CRS, InECEFCentimeters, WGS84Coordinate))
 	{
 		return false;
 	}

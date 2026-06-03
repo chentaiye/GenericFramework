@@ -1,0 +1,12 @@
+{
+	"BuildId": "27405482",
+	"Modules": 
+	{
+		"GenericVoiceSynthesisFramework": "UnrealEditor-GenericVoiceSynthesisFramework.dll",
+		"VoiceSynthesisDify": "UnrealEditor-VoiceSynthesisDify.dll",
+		"VoiceSynthesisDoubao": "UnrealEditor-VoiceSynthesisDoubao.dll",
+		"VoiceSynthesisSherpaOnnx": "UnrealEditor-VoiceSynthesisSherpaOnnx.dll",
+		"VoiceSynthesisVolcengine": "UnrealEditor-VoiceSynthesisVolcengine.dll",
+		"VoiceSynthesisWenxin": "UnrealEditor-VoiceSynthesisWenxin.dll"
+	}
+}

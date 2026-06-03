@@ -4,6 +4,7 @@
 
 #include "Engine/Engine.h"
 #include "Engine/LocalPlayer.h"
+#include "Misc/EngineVersionComparison.h"
 #include "Subsystem/GenericActionSubsystem.h"
 
 namespace
@@ -33,6 +34,21 @@ bool UGenericGameViewportClient::InputKey(const FInputKeyEventArgs& EventArgs)
 	return Super::InputKey(EventArgs);
 }
 
+#if UE_VERSION_OLDER_THAN(5, 7, 0)
+bool UGenericGameViewportClient::InputTouch(FViewport* InViewport, int32 ControllerId, uint32 Handle, ETouchType::Type Type, const FVector2D& TouchLocation, float Force, FDateTime DeviceTimestamp, uint32 TouchpadIndex)
+{
+	const FInputDeviceId DeviceId = FInputDeviceId::CreateFromInternalId(ControllerId);
+	if (UGenericActionSubsystem* ActionSubsystem = GetActionSubsystem(GetLocalPlayerFromInputDevice(this, DeviceId)))
+	{
+		if (ActionSubsystem->HandleViewportInputTouch(InViewport, DeviceId, Handle, Type, TouchLocation, Force, TouchpadIndex, static_cast<uint64>(DeviceTimestamp.GetTicks())))
+		{
+			return true;
+		}
+	}
+
+	return Super::InputTouch(InViewport, ControllerId, Handle, Type, TouchLocation, Force, DeviceTimestamp, TouchpadIndex);
+}
+#else
 bool UGenericGameViewportClient::InputTouch(FViewport* InViewport, const FInputDeviceId DeviceId, uint32 Handle, ETouchType::Type Type, const FVector2D& TouchLocation, float Force, uint32 TouchpadIndex, const uint64 Timestamp)
 {
 	if (UGenericActionSubsystem* ActionSubsystem = GetActionSubsystem(GetLocalPlayerFromInputDevice(this, DeviceId)))
@@ -45,3 +61,4 @@ bool UGenericGameViewportClient::InputTouch(FViewport* InViewport, const FInputD
 
 	return Super::InputTouch(InViewport, DeviceId, Handle, Type, TouchLocation, Force, TouchpadIndex, Timestamp);
 }
+#endif

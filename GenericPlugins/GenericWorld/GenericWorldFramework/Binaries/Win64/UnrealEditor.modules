@@ -1,0 +1,9 @@
+{
+	"BuildId": "27405482",
+	"Modules": 
+	{
+		"GenericLevelStreamingFramework": "UnrealEditor-GenericLevelStreamingFramework.dll",
+		"GenericLevelStreamingNode": "UnrealEditor-GenericLevelStreamingNode.dll",
+		"GenericWorldPartitionFramework": "UnrealEditor-GenericWorldPartitionFramework.dll"
+	}
+}

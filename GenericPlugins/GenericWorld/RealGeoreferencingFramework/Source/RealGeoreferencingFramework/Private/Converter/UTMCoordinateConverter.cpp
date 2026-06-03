@@ -6,7 +6,7 @@
 
 namespace
 {
-const FString WGS84CRS(TEXT("EPSG:4326"));
+const FString UTMWGS84CRS(TEXT("EPSG:4326"));
 }
 
 FGameplayTag UUTMCoordinateConverter::GetCoordinateSystem() const
@@ -23,7 +23,7 @@ bool UUTMCoordinateConverter::RealCoordinateToECEF(const FGenericRealCoordinate&
 {
 	if (InCoordinate.CoordinateFormat == EGenericCoordinateFormat::Geographic)
 	{
-		return GenericProjectionUtilities::GeographicToECEFCentimeters(WGS84CRS, InCoordinate.GeographicCoordinate, OutECEFCentimeters);
+		return GenericProjectionUtilities::GeographicToECEFCentimeters(UTMWGS84CRS, InCoordinate.GeographicCoordinate, OutECEFCentimeters);
 	}
 
 	return GenericProjectionUtilities::ProjectedToECEFCentimeters(GenericProjectionUtilities::BuildUTMCRSString(Zone, bSouthernHemisphere), InCoordinate.ProjectedCoordinate, OutECEFCentimeters);
@@ -36,7 +36,7 @@ bool UUTMCoordinateConverter::ECEFToRealCoordinate(const FVector& InECEFCentimet
 
 	if (TargetFormat == EGenericCoordinateFormat::Geographic)
 	{
-		return GenericProjectionUtilities::ECEFCentimetersToGeographic(WGS84CRS, InECEFCentimeters, OutCoordinate.GeographicCoordinate);
+		return GenericProjectionUtilities::ECEFCentimetersToGeographic(UTMWGS84CRS, InECEFCentimeters, OutCoordinate.GeographicCoordinate);
 	}
 
 	return GenericProjectionUtilities::ECEFCentimetersToProjected(GenericProjectionUtilities::BuildUTMCRSString(Zone, bSouthernHemisphere), InECEFCentimeters, OutCoordinate.ProjectedCoordinate);

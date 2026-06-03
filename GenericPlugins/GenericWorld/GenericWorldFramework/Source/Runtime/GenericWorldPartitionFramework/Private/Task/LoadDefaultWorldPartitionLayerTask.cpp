@@ -3,6 +3,7 @@
 #include "Task/LoadDefaultWorldPartitionLayerTask.h"
 
 #include "Engine/World.h"
+#include "Misc/EngineVersionComparison.h"
 #include "StateTreeExecutionContext.h"
 #include "Subsystem/GenericWorldPartitionSubsystem.h"
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
@@ -17,8 +18,19 @@ namespace UE::GenericWorldPartition::LoadDefaultWorldPartitionLayerTask
 			return World;
 		}
 
+#if UE_VERSION_OLDER_THAN(5, 7, 0)
+		for (const FStateTreeExternalDataDesc& Desc : Context.GetContextDataDescs())
+		{
+			if (Desc.Name == FName(TEXT("World")))
+			{
+				return Context.GetExternalDataView(Desc.Handle).GetMutablePtr<UWorld>();
+			}
+		}
+		return nullptr;
+#else
 		const FStateTreeDataView WorldData = Context.GetContextDataByName(FName(TEXT("World")));
 		return WorldData.GetMutablePtr<UWorld>();
+#endif
 	}
 
 	static void AddUniqueValidDataLayer(TArray<TObjectPtr<UDataLayerAsset>>& OutDataLayers, UDataLayerAsset* InDataLayer)

@@ -1,0 +1,11 @@
+{
+	"BuildId": "27405482",
+	"Modules": 
+	{
+		"GenericVoiceConversationFramework": "UnrealEditor-GenericVoiceConversationFramework.dll",
+		"VoiceConversationDify": "UnrealEditor-VoiceConversationDify.dll",
+		"VoiceConversationDoubao": "UnrealEditor-VoiceConversationDoubao.dll",
+		"VoiceConversationLocal": "UnrealEditor-VoiceConversationLocal.dll",
+		"VoiceConversationWenxin": "UnrealEditor-VoiceConversationWenxin.dll"
+	}
+}

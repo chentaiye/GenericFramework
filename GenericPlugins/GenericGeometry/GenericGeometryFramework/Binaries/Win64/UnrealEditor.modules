@@ -1,0 +1,11 @@
+{
+	"BuildId": "27405482",
+	"Modules": 
+	{
+		"AspectSystem": "UnrealEditor-AspectSystem.dll",
+		"FlyLineSystem": "UnrealEditor-FlyLineSystem.dll",
+		"GenericGeometryFramework": "UnrealEditor-GenericGeometryFramework.dll",
+		"SkylineSystem": "UnrealEditor-SkylineSystem.dll",
+		"SlopeHeatmapSystem": "UnrealEditor-SlopeHeatmapSystem.dll"
+	}
+}

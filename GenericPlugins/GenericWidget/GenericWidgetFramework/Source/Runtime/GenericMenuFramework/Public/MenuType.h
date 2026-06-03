@@ -11,6 +11,7 @@
 #include "Engine/DataTable.h"
 #include "GameplayTagContainer.h"
 #include "Group/SingleSelectionButtonGroup.h"
+#include "Misc/EngineVersionComparison.h"
 #include "NativeGameplayTags.h"
 #include "Styling/SlateBrush.h"
 #include "UObject/SoftObjectPtr.h"
@@ -40,7 +41,11 @@ struct GENERICMENUFRAMEWORK_API FMenuIDTableRow : public FTableRowBase
 	virtual void OnDataTableChanged(const UDataTable* InDataTable, const FName InRowName) override;
 
 #if WITH_EDITOR
+#if UE_VERSION_OLDER_THAN(5, 5, 0)
+	virtual EDataValidationResult IsDataValid(FDataValidationContext& Context) const;
+#else
 	virtual EDataValidationResult IsDataValid(FDataValidationContext& Context) const override;
+#endif
 #endif
 
 	/** 将有效的菜单标签写回文本标识，保证表格导入后的 ID 与标签一致。 */
@@ -157,6 +162,10 @@ struct GENERICMENUFRAMEWORK_API FMenuTableRow : public FTableRowBase
 	virtual void OnDataTableChanged(const UDataTable* InDataTable, const FName InRowName) override;
 
 #if WITH_EDITOR
+#if UE_VERSION_OLDER_THAN(5, 5, 0)
+	virtual EDataValidationResult IsDataValid(FDataValidationContext& Context) const;
+#else
 	virtual EDataValidationResult IsDataValid(FDataValidationContext& Context) const override;
+#endif
 #endif
 };

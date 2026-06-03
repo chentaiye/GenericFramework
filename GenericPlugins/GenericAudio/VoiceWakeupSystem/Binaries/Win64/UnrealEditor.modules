@@ -1,0 +1,11 @@
+{
+	"BuildId": "27405482",
+	"Modules": 
+	{
+		"GenericVoiceWakeupFramework": "UnrealEditor-GenericVoiceWakeupFramework.dll",
+		"VoiceWakeupDoubao": "UnrealEditor-VoiceWakeupDoubao.dll",
+		"VoiceWakeupPicovoice": "UnrealEditor-VoiceWakeupPicovoice.dll",
+		"VoiceWakeupSherpaOnnx": "UnrealEditor-VoiceWakeupSherpaOnnx.dll",
+		"VoiceWakeupXfyun": "UnrealEditor-VoiceWakeupXfyun.dll"
+	}
+}

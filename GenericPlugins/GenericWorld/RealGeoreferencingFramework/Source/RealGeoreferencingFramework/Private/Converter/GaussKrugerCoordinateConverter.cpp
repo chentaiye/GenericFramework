@@ -6,7 +6,7 @@
 
 namespace
 {
-const FString WGS84CRS(TEXT("EPSG:4326"));
+const FString GaussKrugerWGS84CRS(TEXT("EPSG:4326"));
 }
 
 FGameplayTag UGaussKrugerCoordinateConverter::GetCoordinateSystem() const
@@ -23,7 +23,7 @@ bool UGaussKrugerCoordinateConverter::RealCoordinateToECEF(const FGenericRealCoo
 {
 	if (InCoordinate.CoordinateFormat == EGenericCoordinateFormat::Geographic)
 	{
-		return GenericProjectionUtilities::GeographicToECEFCentimeters(WGS84CRS, InCoordinate.GeographicCoordinate, OutECEFCentimeters);
+		return GenericProjectionUtilities::GeographicToECEFCentimeters(GaussKrugerWGS84CRS, InCoordinate.GeographicCoordinate, OutECEFCentimeters);
 	}
 
 	return GenericProjectionUtilities::ProjectedToECEFCentimeters(
@@ -39,7 +39,7 @@ bool UGaussKrugerCoordinateConverter::ECEFToRealCoordinate(const FVector& InECEF
 
 	if (TargetFormat == EGenericCoordinateFormat::Geographic)
 	{
-		return GenericProjectionUtilities::ECEFCentimetersToGeographic(WGS84CRS, InECEFCentimeters, OutCoordinate.GeographicCoordinate);
+		return GenericProjectionUtilities::ECEFCentimetersToGeographic(GaussKrugerWGS84CRS, InECEFCentimeters, OutCoordinate.GeographicCoordinate);
 	}
 
 	return GenericProjectionUtilities::ECEFCentimetersToProjected(

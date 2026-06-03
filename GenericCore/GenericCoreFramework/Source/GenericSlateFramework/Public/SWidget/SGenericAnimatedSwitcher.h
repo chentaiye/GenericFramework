@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/CurveSequence.h"
+#include "Misc/EngineVersionComparison.h"
 #include "Widgets/Layout/SWidgetSwitcher.h"
 #include "SGenericAnimatedSwitcher.generated.h"
 
@@ -151,8 +152,10 @@ public:
 	bool IsTransitionFallbackEnabled() const { return TransitionFallbackStrategy != EGenericSwitcherTransitionFallbackStrategy::None; }
 
 protected:
+#if !UE_VERSION_OLDER_THAN(5, 5, 0)
 	virtual void OnSlotAdded(int32 AddedIndex) override;
 	virtual void OnSlotRemoved(int32 RemovedIndex, TSharedRef<SWidget> RemovedWidget, bool bWasActiveSlot) override;
+#endif
 
 private:
 	/** 推进切换动画计时，根据曲线进度更新当前绘制状态。 */

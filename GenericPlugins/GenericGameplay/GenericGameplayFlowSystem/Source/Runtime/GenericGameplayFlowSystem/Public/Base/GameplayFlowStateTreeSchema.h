@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Misc/EngineVersionComparison.h"
 #include "StateTreeSchema.h"
 #include "GameplayFlowStateTreeSchema.generated.h"
 
@@ -26,15 +27,19 @@ protected:
 	virtual bool IsStructAllowed(const UScriptStruct* InScriptStruct) const override;
 	virtual bool IsClassAllowed(const UClass* InClass) const override;
 	virtual bool IsExternalItemAllowed(const UStruct& InStruct) const override;
+#if !UE_VERSION_OLDER_THAN(5, 7, 0)
 	virtual bool IsScheduledTickAllowed() const override;
+#endif
 	virtual TConstArrayView<FStateTreeExternalDataDesc> GetContextDataDescs() const override;
 
 #if WITH_EDITOR
 	virtual bool AllowEnterConditions() const override { return true; }
 	virtual bool AllowEvaluators() const override { return true; }
 	virtual bool AllowMultipleTasks() const override { return true; }
+#if !UE_VERSION_OLDER_THAN(5, 7, 0)
 	virtual bool AllowGlobalParameters() const override { return true; }
 	virtual bool AllowTasksCompletion() const override { return true; }
+#endif
 #endif
 
 private:

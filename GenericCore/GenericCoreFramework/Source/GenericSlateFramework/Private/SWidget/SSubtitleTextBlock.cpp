@@ -4,6 +4,7 @@
 
 #include "Framework/Text/SlateTextLayout.h"
 #include "Framework/Text/SlateTextRun.h"
+#include "Misc/EngineVersionComparison.h"
 
 SLATE_IMPLEMENT_WIDGET(SSubtitleTextBlock)
 void SSubtitleTextBlock::PrivateRegisterAttributes(FSlateAttributeInitializer& AttributeInitializer)
@@ -261,7 +262,9 @@ void SSubtitleTextBlock::ApplyCommonLayoutSettings(FSlateTextLayout& InLayout, f
 	InLayout.SetMargin(Margin);
 	InLayout.SetJustification(Justification);
 	InLayout.SetLineHeightPercentage(LineHeightPercentage);
+#if !UE_VERSION_OLDER_THAN(5, 5, 0)
 	InLayout.SetApplyLineHeightToBottomLine(bApplyLineHeightToBottomLine);
+#endif
 	InLayout.SetTextOverflowPolicy(InOverflowPolicy);
 	if (TextShapingMethod.IsSet())
 	{

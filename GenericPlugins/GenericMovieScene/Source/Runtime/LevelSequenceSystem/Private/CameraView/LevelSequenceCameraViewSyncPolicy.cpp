@@ -11,6 +11,7 @@
 #include "GenericLevelSequenceHandle.h"
 #include "LevelSequenceActor.h"
 #include "LevelSequencePlayer.h"
+#include "Misc/EngineVersionComparison.h"
 
 void ULevelSequenceCameraViewSyncPolicy::InitializeCameraViewSyncPolicy(USyncCameraViewComponent* InOwnerComponent)
 {
@@ -218,16 +219,20 @@ void ULevelSequenceCameraViewSyncPolicy::ApplyCameraViewParameters(const FMinima
 	InTargetCameraComponent->SetConstraintAspectRatio(InSourceCameraView.bConstrainAspectRatio);
 	InTargetCameraComponent->SetUseFieldOfViewForLOD(InSourceCameraView.bUseFieldOfViewForLOD);
 	InTargetCameraComponent->SetOrthoWidth(InSourceCameraView.OrthoWidth);
+#if !UE_VERSION_OLDER_THAN(5, 7, 0)
 	InTargetCameraComponent->SetAutoCalculateOrthoPlanes(InSourceCameraView.bAutoCalculateOrthoPlanes);
 	InTargetCameraComponent->SetAutoPlaneShift(InSourceCameraView.AutoPlaneShift);
+#endif
 	InTargetCameraComponent->SetOrthoNearClipPlane(InSourceCameraView.OrthoNearClipPlane);
 	InTargetCameraComponent->SetOrthoFarClipPlane(InSourceCameraView.OrthoFarClipPlane);
+#if !UE_VERSION_OLDER_THAN(5, 7, 0)
 	InTargetCameraComponent->SetUpdateOrthoPlanes(InSourceCameraView.bUpdateOrthoPlanes);
 	InTargetCameraComponent->SetUseCameraHeightAsViewTarget(InSourceCameraView.bUseCameraHeightAsViewTarget);
 	InTargetCameraComponent->SetEnableFirstPersonFieldOfView(InSourceCameraView.bUseFirstPersonParameters);
 	InTargetCameraComponent->SetEnableFirstPersonScale(InSourceCameraView.bUseFirstPersonParameters);
 	InTargetCameraComponent->SetFirstPersonFieldOfView(InSourceCameraView.FirstPersonFOV);
 	InTargetCameraComponent->SetFirstPersonScale(InSourceCameraView.FirstPersonScale);
+#endif
 	InTargetCameraComponent->SetPostProcessBlendWeight(InSourceCameraView.PostProcessBlendWeight);
 	InTargetCameraComponent->PostProcessSettings = InSourceCameraView.PostProcessSettings;
 	if (InSourceCameraView.AspectRatioAxisConstraint.IsSet())

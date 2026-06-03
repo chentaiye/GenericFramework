@@ -95,7 +95,7 @@ UGenericAutoSaveSubsystem* UGenericAutoSaveSubsystem::Get(const ULocalPlayer* Lo
 
 UGenericAutoSaveSubsystem* UGenericAutoSaveSubsystem::Get(const APlayerController* PlayerController)
 {
-	return ULocalPlayer::GetSubsystemFromController<UGenericAutoSaveSubsystem>(PlayerController);
+	return ULocalPlayer::GetSubsystem<UGenericAutoSaveSubsystem>(PlayerController ? PlayerController->GetLocalPlayer() : nullptr);
 }
 
 UGenericAutoSaveSubsystem* UGenericAutoSaveSubsystem::Get(const UObject* WorldContextObject)

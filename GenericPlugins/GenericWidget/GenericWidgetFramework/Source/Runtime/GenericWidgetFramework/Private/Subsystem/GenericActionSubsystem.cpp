@@ -8,6 +8,7 @@
 #include "GameFramework/PlayerController.h"
 #include "GameplayMessageSubsystem.h"
 #include "Input/GenericInputActionDataAsset.h"
+#include "Misc/EngineVersionComparison.h"
 #include "Subsystem/GenericLayerSubsystem.h"
 #include "Subsystem/GenericRouteSubsystem.h"
 #include "WidgetType.h"
@@ -32,7 +33,11 @@ namespace
 		InputEvent.Key = EventArgs.Key;
 		InputEvent.InputValue = FInputActionValue(bIsPressed);
 		InputEvent.bIsPressed = bIsPressed;
+#if UE_VERSION_OLDER_THAN(5, 7, 0)
+		InputEvent.DeltaTime = 0.0f;
+#else
 		InputEvent.DeltaTime = EventArgs.DeltaTime;
+#endif
 		return InputEvent;
 	}
 

@@ -1,0 +1,11 @@
+{
+	"BuildId": "27405482",
+	"Modules": 
+	{
+		"BinkMediaSystem": "UnrealEditor-BinkMediaSystem.dll",
+		"GenericMovieSceneEdSystem": "UnrealEditor-GenericMovieSceneEdSystem.dll",
+		"GenericMovieSceneSystem": "UnrealEditor-GenericMovieSceneSystem.dll",
+		"LevelSequenceSystem": "UnrealEditor-LevelSequenceSystem.dll",
+		"MediaSystem": "UnrealEditor-MediaSystem.dll"
+	}
+}

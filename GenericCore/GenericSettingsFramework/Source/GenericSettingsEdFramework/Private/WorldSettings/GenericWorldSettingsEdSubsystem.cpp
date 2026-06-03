@@ -11,6 +11,7 @@
 #include "FileHelpers.h"
 #include "Framework/Docking/TabManager.h"
 #include "GameFramework/WorldSettings.h"
+#include "Misc/EngineVersionComparison.h"
 #include "Misc/PackageName.h"
 #include "ScopedTransaction.h"
 #include "UObject/ObjectSaveContext.h"
@@ -133,7 +134,12 @@ void UGenericWorldSettingsEdSubsystem::HandleEditorMapChanged(uint32 MapChangeFl
 
 void UGenericWorldSettingsEdSubsystem::HandleEditorPostSaveWorld(UWorld* World, FObjectPostSaveContext ObjectSaveContext)
 {
-	if (!World || World != GetEditorWorld() || !ObjectSaveContext.SaveSucceeded() || ObjectSaveContext.IsFromAutoSave())
+#if UE_VERSION_OLDER_THAN(5, 7, 0)
+	const bool bIsFromAutoSave = false;
+#else
+	const bool bIsFromAutoSave = ObjectSaveContext.IsFromAutoSave();
+#endif
+	if (!World || World != GetEditorWorld() || !ObjectSaveContext.SaveSucceeded() || bIsFromAutoSave)
 	{
 		return;
 	}
@@ -437,7 +443,11 @@ bool UGenericWorldSettingsEdSubsystem::TickCollectDiscoveredWorldSettingsClassPa
 	}
 
 	IAssetRegistry& AssetRegistry = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry").Get();
+#if UE_VERSION_OLDER_THAN(5, 7, 0)
+	if (AssetRegistry.IsLoadingAssets())
+#else
 	if (AssetRegistry.IsLoadingAssets() || AssetRegistry.IsGathering())
+#endif
 	{
 		return true;
 	}
@@ -504,7 +514,11 @@ bool UGenericWorldSettingsEdSubsystem::TickResolveDiscoveredWorldSettingsClasses
 
 	for (int32 Index = 0; Index < MaxWorldSettingsClassLoadsPerTick && !PendingWorldSettingsClassPaths.IsEmpty(); ++Index)
 	{
+#if UE_VERSION_OLDER_THAN(5, 5, 0)
+		const FString ClassObjectPath = PendingWorldSettingsClassPaths.Pop(false);
+#else
 		const FString ClassObjectPath = PendingWorldSettingsClassPaths.Pop(EAllowShrinking::No);
+#endif
 		UClass* GeneratedClass = Cast<UClass>(StaticLoadObject(UClass::StaticClass(), nullptr, *ClassObjectPath, nullptr, LOAD_NoWarn));
 		AddUniqueSettingsClass(GeneratedClass, PendingWorldSettingsClasses, SeenClasses);
 	}

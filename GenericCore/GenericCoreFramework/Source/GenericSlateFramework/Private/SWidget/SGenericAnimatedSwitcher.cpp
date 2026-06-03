@@ -3,6 +3,7 @@
 #include "SWidget/SGenericAnimatedSwitcher.h"
 
 #include "Containers/Ticker.h"
+#include "Misc/EngineVersionComparison.h"
 
 SLATE_IMPLEMENT_WIDGET(SGenericAnimatedSwitcher)
 void SGenericAnimatedSwitcher::PrivateRegisterAttributes(FSlateAttributeInitializer& AttributeInitializer)
@@ -143,6 +144,7 @@ void SGenericAnimatedSwitcher::SetTransitionType(const EGenericSwitcherTransitio
 	TransitionType = NewTransitionType;
 }
 
+#if !UE_VERSION_OLDER_THAN(5, 5, 0)
 void SGenericAnimatedSwitcher::OnSlotAdded(const int32 AddedIndex)
 {
 	SWidgetSwitcher::OnSlotAdded(AddedIndex);
@@ -186,6 +188,7 @@ void SGenericAnimatedSwitcher::OnSlotRemoved(const int32 RemovedIndex, TSharedRe
 		}
 	}
 }
+#endif
 
 EActiveTimerReturnType SGenericAnimatedSwitcher::UpdateTransition(double InCurrentTime, float InDeltaTime)
 {

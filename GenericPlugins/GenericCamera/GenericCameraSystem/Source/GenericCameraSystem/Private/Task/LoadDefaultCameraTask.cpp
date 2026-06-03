@@ -7,6 +7,7 @@
 #include "CameraType.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
+#include "Misc/EngineVersionComparison.h"
 #include "StateTreeExecutionContext.h"
 #include "Subsystem/GenericCameraLocalPlayerSubsystem.h"
 #include "Subsystem/GenericCameraSubsystem.h"
@@ -20,8 +21,19 @@ namespace UE::GenericCamera::LoadDefaultCameraTask
 			return World;
 		}
 
+#if UE_VERSION_OLDER_THAN(5, 7, 0)
+		for (const FStateTreeExternalDataDesc& Desc : Context.GetContextDataDescs())
+		{
+			if (Desc.Name == FName(TEXT("World")))
+			{
+				return Context.GetExternalDataView(Desc.Handle).GetMutablePtr<UWorld>();
+			}
+		}
+		return nullptr;
+#else
 		const FStateTreeDataView WorldData = Context.GetContextDataByName(FName(TEXT("World")));
 		return WorldData.GetMutablePtr<UWorld>();
+#endif
 	}
 
 	static UGenericCameraSwitchMethod* CreateRuntimeSwitchMethod(UObject* Outer, const UGenericCameraSwitchMethod* SwitchMethodTemplate)

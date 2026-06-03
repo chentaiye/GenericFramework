@@ -76,6 +76,8 @@ DerivedDataCache/*
 .codex
 .genericframework
 .svn
+UnrealMarketplace/**
+UnrealThirdParty/**
 
 # Third-party payloads must stay trackable even when they contain binaries.
 !**/ThirdParty/

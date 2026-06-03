@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/TextWidgetTypes.h"
 #include "Fonts/SlateFontInfo.h"
+#include "Misc/EngineVersionComparison.h"
 #include "Styling/SlateColor.h"
 #include "Containers/Ticker.h"
 #include "SubtitleTextBlock.generated.h"
@@ -212,6 +213,7 @@ protected:
 #endif
 
 	GENERICSLATEFRAMEWORK_API virtual TSharedRef<SWidget> RebuildWidget() override;
+#if !UE_VERSION_OLDER_THAN(5, 5, 0)
 	GENERICSLATEFRAMEWORK_API virtual void OnShapedTextOptionsChanged(FShapedTextOptions InShapedTextOptions) override;
 	GENERICSLATEFRAMEWORK_API virtual void OnJustificationChanged(ETextJustify::Type InJustification) override;
 	GENERICSLATEFRAMEWORK_API virtual void OnWrappingPolicyChanged(ETextWrappingPolicy InWrappingPolicy) override;
@@ -220,6 +222,7 @@ protected:
 	GENERICSLATEFRAMEWORK_API virtual void OnLineHeightPercentageChanged(float InLineHeightPercentage) override;
 	GENERICSLATEFRAMEWORK_API virtual void OnApplyLineHeightToBottomLineChanged(bool InApplyLineHeightToBottomLine) override;
 	GENERICSLATEFRAMEWORK_API virtual void OnMarginChanged(const FMargin& InMargin) override;
+#endif
 
 private:
 	/** 汇总缓存字幕行数据，便于 Slate、UMG 或蓝图在同一结构中传递配置。 */

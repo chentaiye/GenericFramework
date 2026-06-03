@@ -11,7 +11,7 @@
 
 namespace
 {
-	constexpr const TCHAR* SlotRootDirectoryName = TEXT("Slots");
+	constexpr const TCHAR* SlotGlobalRootDirectoryName = TEXT("Slots");
 	constexpr const TCHAR* SlotGlobalDirectoryName = TEXT("Global");
 }
 
@@ -149,7 +149,7 @@ FString USlotGlobalSaveGameSubsystem::BuildSlotGlobalSlotName(const FString& Slo
 		return FString();
 	}
 
-	return FString::Printf(TEXT("%s/%s/%s/%s"), SlotRootDirectoryName, *ActiveSlotGuid.ToString(EGuidFormats::DigitsWithHyphens), SlotGlobalDirectoryName, *NormalizedSlotName);
+	return FString::Printf(TEXT("%s/%s/%s/%s"), SlotGlobalRootDirectoryName, *ActiveSlotGuid.ToString(EGuidFormats::DigitsWithHyphens), SlotGlobalDirectoryName, *NormalizedSlotName);
 }
 
 FGuid USlotGlobalSaveGameSubsystem::GetActiveSlotGuid() const

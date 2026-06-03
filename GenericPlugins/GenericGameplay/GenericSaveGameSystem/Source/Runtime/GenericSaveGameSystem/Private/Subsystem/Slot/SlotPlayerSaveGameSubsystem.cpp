@@ -10,7 +10,7 @@
 
 namespace
 {
-	constexpr const TCHAR* SlotRootDirectoryName = TEXT("Slots");
+	constexpr const TCHAR* SlotPlayerRootDirectoryName = TEXT("Slots");
 	constexpr const TCHAR* SlotPlayerDirectoryName = TEXT("Player");
 }
 
@@ -21,7 +21,7 @@ USlotPlayerSaveGameSubsystem* USlotPlayerSaveGameSubsystem::Get(const ULocalPlay
 
 USlotPlayerSaveGameSubsystem* USlotPlayerSaveGameSubsystem::Get(const APlayerController* PlayerController)
 {
-	return ULocalPlayer::GetSubsystemFromController<USlotPlayerSaveGameSubsystem>(PlayerController);
+	return ULocalPlayer::GetSubsystem<USlotPlayerSaveGameSubsystem>(PlayerController ? PlayerController->GetLocalPlayer() : nullptr);
 }
 
 UGenericSaveGame* USlotPlayerSaveGameSubsystem::CreateSlotPlayerSaveGame(const FString& SlotName, const TSubclassOf<UGenericSaveGame> SaveGameClass)
@@ -143,7 +143,7 @@ FString USlotPlayerSaveGameSubsystem::BuildSlotPlayerSlotName(const FString& Slo
 		return FString();
 	}
 
-	return FString::Printf(TEXT("%s/%s/%s/%s/%s"), SlotRootDirectoryName, *ActiveSlotGuid.ToString(EGuidFormats::DigitsWithHyphens), SlotPlayerDirectoryName, *PlayerIdentifier, *NormalizedSlotName);
+	return FString::Printf(TEXT("%s/%s/%s/%s/%s"), SlotPlayerRootDirectoryName, *ActiveSlotGuid.ToString(EGuidFormats::DigitsWithHyphens), SlotPlayerDirectoryName, *PlayerIdentifier, *NormalizedSlotName);
 }
 
 FString USlotPlayerSaveGameSubsystem::GetPlayerIdentifier() const

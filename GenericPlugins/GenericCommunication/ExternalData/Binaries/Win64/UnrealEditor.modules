@@ -1,0 +1,9 @@
+{
+	"BuildId": "27405482",
+	"Modules": 
+	{
+		"ExternalData": "UnrealEditor-ExternalData.dll",
+		"ExternalDataEditor": "UnrealEditor-ExternalDataEditor.dll",
+		"ExternalDataNode": "UnrealEditor-ExternalDataNode.dll"
+	}
+}

@@ -5,6 +5,7 @@
 #include "Base/MenuCollection.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
+#include "Misc/EngineVersionComparison.h"
 #include "StateTreeExecutionContext.h"
 #include "Subsystem/MenuSubsystem.h"
 #include "WidgetType.h"
@@ -18,8 +19,19 @@ namespace UE::GenericMenu::LoadDefaultMenuTask
 			return World;
 		}
 
+#if UE_VERSION_OLDER_THAN(5, 7, 0)
+		for (const FStateTreeExternalDataDesc& Desc : Context.GetContextDataDescs())
+		{
+			if (Desc.Name == FName(TEXT("World")))
+			{
+				return Context.GetExternalDataView(Desc.Handle).GetMutablePtr<UWorld>();
+			}
+		}
+		return nullptr;
+#else
 		const FStateTreeDataView WorldData = Context.GetContextDataByName(FName(TEXT("World")));
 		return WorldData.GetMutablePtr<UWorld>();
+#endif
 	}
 
 	static bool HasLocalPlayerController(UWorld* World)

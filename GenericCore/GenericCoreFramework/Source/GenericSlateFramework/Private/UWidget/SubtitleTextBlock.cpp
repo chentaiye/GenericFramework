@@ -3,6 +3,7 @@
 #include "UWidget/SubtitleTextBlock.h"
 
 #include "Engine/Font.h"
+#include "Misc/EngineVersionComparison.h"
 #include "SWidget/SSubtitleTextBlock.h"
 #include "UObject/ConstructorHelpers.h"
 
@@ -14,7 +15,9 @@ USubtitleTextBlock::USubtitleTextBlock(const FObjectInitializer& ObjectInitializ
 	ShadowColorAndOpacity = FLinearColor(0.0f, 0.0f, 0.0f, 0.75f);
 	WrappingPolicy = ETextWrappingPolicy::DefaultWrapping;
 	AutoWrapText = true;
+#if !UE_VERSION_OLDER_THAN(5, 5, 0)
 	ApplyLineHeightToBottomLine = true;
+#endif
 	WrapTextAt = 0.0f;
 	Margin = FMargin(0.0f);
 	LineHeightPercentage = 1.0f;
@@ -313,6 +316,7 @@ TSharedRef<SWidget> USubtitleTextBlock::RebuildWidget()
 	return MySubtitleTextBlock.ToSharedRef();
 }
 
+#if !UE_VERSION_OLDER_THAN(5, 5, 0)
 void USubtitleTextBlock::OnShapedTextOptionsChanged(FShapedTextOptions InShapedTextOptions)
 {
 	if (MySubtitleTextBlock.IsValid())
@@ -377,6 +381,7 @@ void USubtitleTextBlock::OnMarginChanged(const FMargin& InMargin)
 		MySubtitleTextBlock->SetMargin(InMargin);
 	}
 }
+#endif
 
 void USubtitleTextBlock::ParseTextIntoStoredLines(const FText& InText, float InLifetimeSeconds)
 {

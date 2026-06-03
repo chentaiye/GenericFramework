@@ -10,7 +10,7 @@
 
 namespace
 {
-	constexpr const TCHAR* SlotRootDirectoryName = TEXT("Slots");
+	constexpr const TCHAR* SlotWorldRootDirectoryName = TEXT("Slots");
 	constexpr const TCHAR* SlotWorldDirectoryName = TEXT("World");
 }
 
@@ -146,7 +146,7 @@ FString USlotWorldSaveGameSubsystem::BuildSlotWorldSlotName(const FString& SlotN
 		return FString();
 	}
 
-	return FString::Printf(TEXT("%s/%s/%s/%s/%s"), SlotRootDirectoryName, *ActiveSlotGuid.ToString(EGuidFormats::DigitsWithHyphens), SlotWorldDirectoryName, *WorldIdentifier, *NormalizedSlotName);
+	return FString::Printf(TEXT("%s/%s/%s/%s/%s"), SlotWorldRootDirectoryName, *ActiveSlotGuid.ToString(EGuidFormats::DigitsWithHyphens), SlotWorldDirectoryName, *WorldIdentifier, *NormalizedSlotName);
 }
 
 FString USlotWorldSaveGameSubsystem::GetWorldIdentifier() const

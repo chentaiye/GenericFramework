@@ -5,6 +5,7 @@
 #include "Base/GenericLayout.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
+#include "Misc/EngineVersionComparison.h"
 #include "StateTreeExecutionContext.h"
 #include "Subsystem/GenericLayoutSubsystem.h"
 #include "TimerManager.h"
@@ -19,8 +20,19 @@ namespace UE::GenericWidget::LoadDefaultLayoutTask
 			return World;
 		}
 
+#if UE_VERSION_OLDER_THAN(5, 7, 0)
+		for (const FStateTreeExternalDataDesc& Desc : Context.GetContextDataDescs())
+		{
+			if (Desc.Name == FName(TEXT("World")))
+			{
+				return Context.GetExternalDataView(Desc.Handle).GetMutablePtr<UWorld>();
+			}
+		}
+		return nullptr;
+#else
 		const FStateTreeDataView WorldData = Context.GetContextDataByName(FName(TEXT("World")));
 		return WorldData.GetMutablePtr<UWorld>();
+#endif
 	}
 
 	static bool HasLocalPlayerController(UWorld* World)

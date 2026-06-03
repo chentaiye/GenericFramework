@@ -15,7 +15,7 @@ class UGameplayFlowWorldSettings : public UGenericWorldSettings
 
 public:
 	/** 世界 BeginPlay 后进入的 Gameplay Flow 状态树，资产必须使用 GameplayFlowStateTreeSchema。 */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GameplayFlow", meta=(Schema="/Script/GenericGameplayFlowSystem.GameplayFlowStateTreeSchema"))
+	UPROPERTY(EditAnywhere, Category="GameplayFlow", meta=(Schema="/Script/GenericGameplayFlowSystem.GameplayFlowStateTreeSchema"))
 	FStateTreeReference StateTreeReference;
 
 protected:

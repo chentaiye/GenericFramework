@@ -16,6 +16,7 @@
 #include "Kismet2/BlueprintEditorUtils.h"
 #include "Kismet2/CompilerResultsLog.h"
 #include "KismetCompiler.h"
+#include "Misc/EngineVersionComparison.h"
 #include "Styling/AppStyle.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(K2Node_GameplayUIAction)
@@ -324,7 +325,11 @@ void UK2Node_GameplayUIAction::ExpandNode(FKismetCompilerContext& CompilerContex
 	AddEventDataPins(CustomEventNode);
 
 	UK2Node_SwitchEnum* SwitchNode = CompilerContext.SpawnIntermediateNode<UK2Node_SwitchEnum>(this, SourceGraph);
+#if UE_VERSION_OLDER_THAN(5, 7, 0)
+	SwitchNode->Enum = StaticEnum<EGenericActionTriggerEvent>();
+#else
 	SwitchNode->SetEnum(StaticEnum<EGenericActionTriggerEvent>());
+#endif
 	SwitchNode->AllocateDefaultPins();
 
 	Schema->TryCreateConnection(CustomEventNode->FindPinChecked(UEdGraphSchema_K2::PN_Then), SwitchNode->FindPinChecked(UEdGraphSchema_K2::PN_Execute));

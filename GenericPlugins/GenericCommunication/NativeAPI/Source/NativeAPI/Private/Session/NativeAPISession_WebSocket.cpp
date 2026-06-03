@@ -20,7 +20,7 @@
 
 namespace
 {
-	const UNativeAPIWorldSettings* GetActiveNativeAPIWorldSettings()
+	const UNativeAPIWorldSettings* GetActiveWebSocketNativeAPIWorldSettings()
 	{
 		const UNativeAPISubsystem* NativeAPISubsystem = GEngine ? GEngine->GetEngineSubsystem<UNativeAPISubsystem>() : nullptr;
 		return NativeAPISubsystem ? NativeAPISubsystem->GetActiveWorldSettings() : nullptr;
@@ -40,7 +40,7 @@ FName FNativeAPISession_WebSocket::GetSessionName()
 
 bool FNativeAPISession_WebSocket::StartSession()
 {
-	const UNativeAPIWorldSettings* Settings = GetActiveNativeAPIWorldSettings();
+	const UNativeAPIWorldSettings* Settings = GetActiveWebSocketNativeAPIWorldSettings();
 	if (Settings == nullptr)
 	{
 		return false;
@@ -106,7 +106,7 @@ void FNativeAPISession_WebSocket::HandleOnWebSocketConnectionError(const FString
 {
 	GenericLOG(LogNativeAPI, Warning, TEXT("Native API WebSocket Session Connect Error, [URL] %s, [Error] %s"), *Connection.GetUrl(), *Error);
 
-	const UNativeAPIWorldSettings* Settings = GetActiveNativeAPIWorldSettings();
+	const UNativeAPIWorldSettings* Settings = GetActiveWebSocketNativeAPIWorldSettings();
 	if (Settings != nullptr && Settings->bConnectWebSocketUntilSuccess && WebSocket.IsValid())
 	{
 		WebSocket->Connect();

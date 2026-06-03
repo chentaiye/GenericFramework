@@ -15,7 +15,7 @@
 
 namespace
 {
-	constexpr const TCHAR* SlotRootDirectoryName = TEXT("Slots");
+	constexpr const TCHAR* GenericSlotRootDirectoryName = TEXT("Slots");
 	constexpr const TCHAR* SlotManifestFileName = TEXT("Manifest");
 
 	struct FSaveGameSlotLoadState
@@ -389,7 +389,7 @@ FString UGenericSlotSaveGameSubsystem::BuildSlotSaveName(const FGuid& SlotGuid) 
 		return FString();
 	}
 
-	return FString::Printf(TEXT("%s/%s/%s"), SlotRootDirectoryName, *SlotGuid.ToString(EGuidFormats::DigitsWithHyphens), SlotManifestFileName);
+	return FString::Printf(TEXT("%s/%s/%s"), GenericSlotRootDirectoryName, *SlotGuid.ToString(EGuidFormats::DigitsWithHyphens), SlotManifestFileName);
 }
 
 FString UGenericSlotSaveGameSubsystem::BuildSlotDirectory(const FGuid& SlotGuid) const
@@ -399,7 +399,7 @@ FString UGenericSlotSaveGameSubsystem::BuildSlotDirectory(const FGuid& SlotGuid)
 
 FString UGenericSlotSaveGameSubsystem::GetSlotsRootDirectory() const
 {
-	return FPaths::Combine(FPaths::ProjectSavedDir(), TEXT("SaveGames"), SlotRootDirectoryName);
+	return FPaths::Combine(FPaths::ProjectSavedDir(), TEXT("SaveGames"), GenericSlotRootDirectoryName);
 }
 
 bool UGenericSlotSaveGameSubsystem::EnsureSlotDirectory(const FGuid& SlotGuid) const

@@ -1,0 +1,14 @@
+{
+	"BuildId": "27405482",
+	"Modules": 
+	{
+		"GenericButtonFramework": "UnrealEditor-GenericButtonFramework.dll",
+		"GenericMenuEdFramework": "UnrealEditor-GenericMenuEdFramework.dll",
+		"GenericMenuFramework": "UnrealEditor-GenericMenuFramework.dll",
+		"GenericWidgetFramework": "UnrealEditor-GenericWidgetFramework.dll",
+		"GenericWidgetNode": "UnrealEditor-GenericWidgetNode.dll",
+		"GenericWindowFramework": "UnrealEditor-GenericWindowFramework.dll",
+		"GenericWorldWidgetEdFramework": "UnrealEditor-GenericWorldWidgetEdFramework.dll",
+		"GenericWorldWidgetFramework": "UnrealEditor-GenericWorldWidgetFramework.dll"
+	}
+}

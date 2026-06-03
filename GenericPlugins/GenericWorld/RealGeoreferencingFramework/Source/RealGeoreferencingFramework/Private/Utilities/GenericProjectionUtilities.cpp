@@ -12,8 +12,8 @@ namespace
 {
 constexpr double CentimetersPerMeter = 100.0;
 const FString ECEFCRS(TEXT("EPSG:4978"));
-const FString WGS84CRS(TEXT("EPSG:4326"));
-const FString MercatorCRS(TEXT("EPSG:3857"));
+const FString ProjectionWGS84CRS(TEXT("EPSG:4326"));
+const FString ProjectionMercatorCRS(TEXT("EPSG:3857"));
 
 static void GenericProjLog(void* AppData, int Level, const char* Message)
 {
@@ -253,7 +253,7 @@ FString BuildProjectionCRSString(const FGenericProjectionSettings& ProjectionSet
 	case EGenericProjectedCrsType::UTM:
 		return BuildUTMCRSString(ProjectionSettings.UTMZone, ProjectionSettings.bUTMSouthernHemisphere);
 	case EGenericProjectedCrsType::Mercator:
-		return MercatorCRS;
+		return ProjectionMercatorCRS;
 	case EGenericProjectedCrsType::GaussKruger:
 		return BuildGaussKrugerCRSString(
 			ProjectionSettings.bGaussKrugerUseZoneNumber,
@@ -266,10 +266,10 @@ FString BuildProjectionCRSString(const FGenericProjectionSettings& ProjectionSet
 	case EGenericProjectedCrsType::Custom:
 	{
 		const FString CustomCRS = ProjectionSettings.CustomCrsString.TrimStartAndEnd();
-		return CustomCRS.IsEmpty() ? MercatorCRS : CustomCRS;
+		return CustomCRS.IsEmpty() ? ProjectionMercatorCRS : CustomCRS;
 	}
 	default:
-		return MercatorCRS;
+		return ProjectionMercatorCRS;
 	}
 }
 

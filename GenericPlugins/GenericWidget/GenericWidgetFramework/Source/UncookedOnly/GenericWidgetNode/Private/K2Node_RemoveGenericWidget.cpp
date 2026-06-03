@@ -26,14 +26,14 @@
 
 namespace
 {
-	static const FName Pin_PlayerController(TEXT("PlayerController"));
+	static const FName RemoveWidgetPin_PlayerController(TEXT("PlayerController"));
 
 	static const FName Unregister_FunctionName = GET_FUNCTION_NAME_CHECKED(UBPFunctions_Widget, UnregisterWidgetBySlotTag);
 	static const FName Unregister_PlayerController(TEXT("PlayerController"));
 	static const FName Unregister_InSlotTag(TEXT("InSlotTag"));
 	static const FName Unregister_bClearSlot(TEXT("bClearSlot"));
 
-	void CopyPinLinksOrDefaults(const UEdGraphSchema_K2* Schema, UEdGraphPin* SourcePin, UEdGraphPin* TargetPin)
+	void CopyRemoveWidgetPinLinksOrDefaults(const UEdGraphSchema_K2* Schema, UEdGraphPin* SourcePin, UEdGraphPin* TargetPin)
 	{
 		if (!SourcePin || !TargetPin)
 		{
@@ -61,7 +61,7 @@ void UK2Node_RemoveGenericWidget::AllocateDefaultPins()
 	CreatePin(EGPD_Input, UEdGraphSchema_K2::PC_Exec, UEdGraphSchema_K2::PN_Execute);
 	CreatePin(EGPD_Output, UEdGraphSchema_K2::PC_Exec, UEdGraphSchema_K2::PN_Then);
 
-	UEdGraphPin* PlayerControllerPin = CreatePin(EGPD_Input, UEdGraphSchema_K2::PC_Object, APlayerController::StaticClass(), Pin_PlayerController);
+	UEdGraphPin* PlayerControllerPin = CreatePin(EGPD_Input, UEdGraphSchema_K2::PC_Object, APlayerController::StaticClass(), RemoveWidgetPin_PlayerController);
 	PlayerControllerPin->PinToolTip = TEXT("Player controller that owns the GenericWidget subsystem.");
 
 	NumSlotTagPins = FMath::Max(1, NumSlotTagPins);
@@ -121,8 +121,8 @@ void UK2Node_RemoveGenericWidget::ExpandNode(FKismetCompilerContext& CompilerCon
 			Schema->TryCreateConnection(PreviousThenPin, CallUnregisterNode->GetExecPin());
 		}
 
-		CopyPinLinksOrDefaults(Schema, GetPlayerControllerPin(), CallUnregisterNode->FindPinChecked(Unregister_PlayerController));
-		CopyPinLinksOrDefaults(Schema, SlotTagPins[Index], CallUnregisterNode->FindPinChecked(Unregister_InSlotTag));
+		CopyRemoveWidgetPinLinksOrDefaults(Schema, GetPlayerControllerPin(), CallUnregisterNode->FindPinChecked(Unregister_PlayerController));
+		CopyRemoveWidgetPinLinksOrDefaults(Schema, SlotTagPins[Index], CallUnregisterNode->FindPinChecked(Unregister_InSlotTag));
 		CallUnregisterNode->FindPinChecked(Unregister_bClearSlot)->DefaultValue = TEXT("true");
 
 		PreviousThenPin = CallUnregisterNode->GetThenPin();
@@ -271,7 +271,7 @@ UEdGraphPin* UK2Node_RemoveGenericWidget::CreateSlotTagPin(int32 PinIndex)
 
 UEdGraphPin* UK2Node_RemoveGenericWidget::GetPlayerControllerPin() const
 {
-	return FindPin(Pin_PlayerController);
+	return FindPin(RemoveWidgetPin_PlayerController);
 }
 
 TArray<UEdGraphPin*> UK2Node_RemoveGenericWidget::GetSlotTagPins() const

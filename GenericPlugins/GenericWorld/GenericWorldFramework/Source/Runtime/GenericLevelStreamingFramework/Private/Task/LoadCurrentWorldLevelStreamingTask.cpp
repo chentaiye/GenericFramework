@@ -4,6 +4,7 @@
 
 #include "Handle/LevelStreamingHandle.h"
 #include "Handle/LoadLevelStreamingHandle.h"
+#include "Misc/EngineVersionComparison.h"
 #include "StateTreeExecutionContext.h"
 #include "Subsystem/GenericLevelStreamingSubsystem.h"
 
@@ -16,8 +17,19 @@ namespace UE::GenericLevelStreaming::LoadCurrentWorldLevelStreamingTask
 			return World;
 		}
 
+#if UE_VERSION_OLDER_THAN(5, 7, 0)
+		for (const FStateTreeExternalDataDesc& Desc : Context.GetContextDataDescs())
+		{
+			if (Desc.Name == FName(TEXT("World")))
+			{
+				return Context.GetExternalDataView(Desc.Handle).GetMutablePtr<UWorld>();
+			}
+		}
+		return nullptr;
+#else
 		const FStateTreeDataView WorldData = Context.GetContextDataByName(FName(TEXT("World")));
 		return WorldData.GetMutablePtr<UWorld>();
+#endif
 	}
 
 	static UGenericLevelStreamingSubsystem* ResolveSubsystem(FStateTreeExecutionContext& Context)
@@ -50,6 +62,15 @@ namespace UE::GenericLevelStreaming::LoadCurrentWorldLevelStreamingTask
 		InstanceData.RuntimeState.Reset();
 	}
 
+	static FLoadCurrentWorldLevelStreamingTaskInstanceData* GetInstanceDataPtr(TStateTreeInstanceDataStructRef<FLoadCurrentWorldLevelStreamingTaskInstanceData>& InstanceDataRef)
+	{
+#if UE_VERSION_OLDER_THAN(5, 5, 0)
+		return InstanceDataRef.IsValid() ? &(*InstanceDataRef) : nullptr;
+#else
+		return InstanceDataRef.GetPtr();
+#endif
+	}
+
 	static EStateTreeRunStatus StartTask(FLoadCurrentWorldLevelStreamingTaskInstanceData& InstanceData, ULevelStreamingHandle* Handle, const bool bAllowNoHandleAsSuccess, TStateTreeInstanceDataStructRef<FLoadCurrentWorldLevelStreamingTaskInstanceData> InstanceDataRef)
 	{
 		InstanceData.RuntimeState = MakeShared<FLoadCurrentWorldLevelStreamingTaskRuntimeState>();
@@ -66,14 +87,14 @@ namespace UE::GenericLevelStreaming::LoadCurrentWorldLevelStreamingTask
 		RuntimeState->Handle = Handle;
 
 		RuntimeState->OnceFinishHandle = Handle->GetHandleOnceFinishEvent().AddLambda(
-			[InstanceDataRef, RuntimeState](ULevelStreamingHandle* InHandle, TSoftObjectPtr<UWorld> InLevel)
+			[InstanceDataRef, RuntimeState](ULevelStreamingHandle* InHandle, TSoftObjectPtr<UWorld> InLevel) mutable
 			{
 				if (RuntimeState->bHasFailed || RuntimeState->bIsFinished)
 				{
 					return;
 				}
 
-				if (FLoadCurrentWorldLevelStreamingTaskInstanceData* InstanceData = InstanceDataRef.GetPtr())
+				if (FLoadCurrentWorldLevelStreamingTaskInstanceData* InstanceData = GetInstanceDataPtr(InstanceDataRef))
 				{
 					InstanceData->LastFinishedLevel = InLevel;
 					++InstanceData->FinishedCount;
@@ -81,7 +102,7 @@ namespace UE::GenericLevelStreaming::LoadCurrentWorldLevelStreamingTask
 			});
 
 		RuntimeState->FinishHandle = Handle->GetHandleFinishEvent().AddLambda(
-			[InstanceDataRef, RuntimeState](ULevelStreamingHandle* InHandle)
+			[InstanceDataRef, RuntimeState](ULevelStreamingHandle* InHandle) mutable
 			{
 				if (RuntimeState->bHasFailed)
 				{
@@ -89,7 +110,7 @@ namespace UE::GenericLevelStreaming::LoadCurrentWorldLevelStreamingTask
 				}
 
 				RuntimeState->bIsFinished = true;
-				if (FLoadCurrentWorldLevelStreamingTaskInstanceData* InstanceData = InstanceDataRef.GetPtr())
+				if (FLoadCurrentWorldLevelStreamingTaskInstanceData* InstanceData = GetInstanceDataPtr(InstanceDataRef))
 				{
 					InstanceData->bIsFinished = true;
 				}

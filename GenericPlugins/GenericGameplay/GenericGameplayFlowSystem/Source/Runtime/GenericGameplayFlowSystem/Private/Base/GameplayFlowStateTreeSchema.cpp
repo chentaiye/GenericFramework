@@ -3,9 +3,12 @@
 #include "Base/GameplayFlowStateTreeSchema.h"
 
 #include "Engine/World.h"
+#include "Misc/EngineVersionComparison.h"
 #include "Settings/GameplayFlowWorldSettings.h"
 #include "StateTreeConditionBase.h"
+#if !UE_VERSION_OLDER_THAN(5, 5, 0)
 #include "StateTreeConsiderationBase.h"
+#endif
 #include "StateTreeEvaluatorBase.h"
 #include "StateTreeExecutionTypes.h"
 #include "StateTreeTaskBase.h"
@@ -46,14 +49,16 @@ bool UGameplayFlowStateTreeSchema::IsStructAllowed(const UScriptStruct* InScript
 {
 	return InScriptStruct
 		&& (InScriptStruct->IsChildOf(FStateTreeConditionCommonBase::StaticStruct())
+#if !UE_VERSION_OLDER_THAN(5, 5, 0)
 			|| InScriptStruct->IsChildOf(FStateTreeConsiderationCommonBase::StaticStruct())
+#endif
 			|| InScriptStruct->IsChildOf(FStateTreeEvaluatorCommonBase::StaticStruct())
 			|| InScriptStruct->IsChildOf(FStateTreeTaskCommonBase::StaticStruct()));
 }
 
 bool UGameplayFlowStateTreeSchema::IsClassAllowed(const UClass* InClass) const
 {
-	return UStateTreeSchema::IsChildOfBlueprintBase(InClass);
+	return IsChildOfBlueprintBase(InClass);
 }
 
 bool UGameplayFlowStateTreeSchema::IsExternalItemAllowed(const UStruct& InStruct) const
@@ -61,10 +66,12 @@ bool UGameplayFlowStateTreeSchema::IsExternalItemAllowed(const UStruct& InStruct
 	return true;
 }
 
+#if !UE_VERSION_OLDER_THAN(5, 7, 0)
 bool UGameplayFlowStateTreeSchema::IsScheduledTickAllowed() const
 {
 	return true;
 }
+#endif
 
 TConstArrayView<FStateTreeExternalDataDesc> UGameplayFlowStateTreeSchema::GetContextDataDescs() const
 {

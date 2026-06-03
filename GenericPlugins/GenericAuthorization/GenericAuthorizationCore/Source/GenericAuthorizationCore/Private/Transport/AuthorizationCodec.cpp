@@ -7,6 +7,7 @@
 #include "GenericPlatform/GenericPlatformMisc.h"
 #include "Misc/AES.h"
 #include "Misc/Base64.h"
+#include "Misc/EngineVersionComparison.h"
 #include "Policies/CondensedJsonPrintPolicy.h"
 #include "Serialization/JsonSerializer.h"
 #include "Serialization/JsonWriter.h"
@@ -72,7 +73,11 @@ namespace AuthorizationCodecPrivate
 
 		while (EncodedText.EndsWith(TEXT("=")))
 		{
+#if UE_VERSION_OLDER_THAN(5, 5, 0)
+			EncodedText.LeftChopInline(1, false);
+#else
 			EncodedText.LeftChopInline(1, EAllowShrinking::No);
+#endif
 		}
 
 		return EncodedText;
@@ -156,7 +161,11 @@ namespace AuthorizationCodecPrivate
 			}
 		}
 
+#if UE_VERSION_OLDER_THAN(5, 5, 0)
+		InOutBytes.RemoveAt(InOutBytes.Num() - PaddingSize, PaddingSize, false);
+#else
 		InOutBytes.RemoveAt(InOutBytes.Num() - PaddingSize, PaddingSize, EAllowShrinking::No);
+#endif
 		return true;
 	}
 

@@ -17,6 +17,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "KismetCompiler.h"
 #include "KismetCompilerMisc.h"
+#include "Misc/EngineVersionComparison.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(K2Node_CreateGenericWidget)
 
@@ -136,7 +137,11 @@ void UK2Node_CreateGenericWidget::ExpandNode(FKismetCompilerContext& CompilerCon
 		CopyPinLinksOrDefaults(Schema, SpawnWorldContextPin, CallCreateWorldContextPin);
 	}
 
+#if UE_VERSION_OLDER_THAN(5, 7, 0)
+	UEdGraphPin* LastThen = FKismetCompilerUtilities::GenerateAssignmentNodes(CompilerContext, SourceGraph, CallCreateNode, this, CallCreateResultPin, ClassToSpawn);
+#else
 	UEdGraphPin* LastThen = FKismetCompilerUtilities::GenerateAssignmentNodes(CompilerContext, SourceGraph, CallCreateNode, this, CallCreateResultPin, ClassToSpawn, CallCreateWidgetTypePin);
+#endif
 
 	UK2Node_CallFunction* CallRegisterNode = CompilerContext.SpawnIntermediateNode<UK2Node_CallFunction>(this, SourceGraph);
 	CallRegisterNode->FunctionReference.SetExternalMember(Register_FunctionName, UBPFunctions_Widget::StaticClass());
