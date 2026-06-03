@@ -77,12 +77,12 @@ DerivedDataCache/*
 .genericframework
 .svn
 
-# Project rules
+# Third-party payloads must stay trackable even when they contain binaries.
+!**/ThirdParty/
+!**/ThirdParty/**
+
+# Project rules. These stay ignored even if they contain ThirdParty files.
 **/Intermediate/**
 GenericCore/**/Build/**
 GenericPlatform/**/Build/**
 GenericPlugins/**/Build/**
-
-# Third-party payloads must stay trackable even when they contain binaries.
-!**/ThirdParty/
-!**/ThirdParty/**
