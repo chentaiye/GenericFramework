@@ -6,6 +6,8 @@
 #include "Graph/MenuGraphNode.h"
 #include "Base/MenuAsset.h"
 #include "Base/MenuNode.h"
+#include "Node/RootMenuDataNode.h"
+#include "UObject/UObjectIterator.h"
 #include "ScopedTransaction.h"
 
 #define LOCTEXT_NAMESPACE "MenuGraphSchema"
@@ -15,9 +17,10 @@ FMenuGraphSchemaAction_NewNode::FMenuGraphSchemaAction_NewNode()
 {
 }
 
-FMenuGraphSchemaAction_NewNode::FMenuGraphSchemaAction_NewNode(FText InNodeCategory, FText InMenuDesc, FText InToolTip, int32 InGrouping, int32 InChildIndex)
+FMenuGraphSchemaAction_NewNode::FMenuGraphSchemaAction_NewNode(FText InNodeCategory, FText InMenuDesc, FText InToolTip, int32 InGrouping, int32 InChildIndex, TSubclassOf<UMenuNode> InNodeClass)
 	: FEdGraphSchemaAction(MoveTemp(InNodeCategory), MoveTemp(InMenuDesc), MoveTemp(InToolTip), InGrouping)
 	  , ChildIndex(InChildIndex)
+	  , NodeClass(InNodeClass)
 {
 }
 
@@ -36,7 +39,7 @@ UEdGraphNode* FMenuGraphSchemaAction_NewNode::PerformAction(UEdGraph* ParentGrap
 	MenuGraph->MenuAsset->Modify();
 
 	const int32 TargetChildIndex = ChildIndex == INDEX_NONE ? SourceGraphNode->MenuNode->Children.Num() : ChildIndex;
-	UMenuNode* NewMenuNode = MenuGraph->MenuAsset->CreateChildNodeAtIndex(SourceGraphNode->MenuNode, TargetChildIndex, FVector2D(Location));
+	UMenuNode* NewMenuNode = MenuGraph->MenuAsset->CreateChildNodeAtIndex(SourceGraphNode->MenuNode, NodeClass, TargetChildIndex, FVector2D(Location));
 
 	if (!NewMenuNode)
 	{
@@ -67,12 +70,27 @@ void UMenuGraphSchema::GetGraphContextActions(FGraphContextMenuBuilder& ContextM
 
 	if (UMenuGraphNode::IsAddChildPin(FromPin))
 	{
-		ContextMenuBuilder.AddAction(MakeShared<FMenuGraphSchemaAction_NewNode>(
-			LOCTEXT("MenuNodeCategory", "Menu"),
-			LOCTEXT("AddChildNode", "Add Child Node"),
-			LOCTEXT("AddChildNodeTooltip", "Create a child node under this menu node."),
-			0,
-			SourceGraphNode->MenuNode ? SourceGraphNode->MenuNode->Children.Num() : INDEX_NONE));
+		for (TObjectIterator<UClass> ClassIt; ClassIt; ++ClassIt)
+		{
+			UClass* NodeClass = *ClassIt;
+			if (!NodeClass
+				|| NodeClass == UMenuNode::StaticClass()
+				|| !NodeClass->IsChildOf(UMenuNode::StaticClass())
+				|| NodeClass->IsChildOf(URootMenuDataNode::StaticClass())
+				|| NodeClass->HasAnyClassFlags(CLASS_Abstract | CLASS_Deprecated | CLASS_NewerVersionExists))
+			{
+				continue;
+			}
+
+			const FString NodeClassName = NodeClass->GetName();
+			ContextMenuBuilder.AddAction(MakeShared<FMenuGraphSchemaAction_NewNode>(
+				LOCTEXT("MenuNodeCategory", "Menu"),
+				FText::FromString(FString::Printf(TEXT("Add %s"), *NodeClassName)),
+				FText::Format(LOCTEXT("AddTypedNodeTooltip", "Create a {0} under this menu node."), FText::FromString(NodeClassName)),
+				0,
+				SourceGraphNode->MenuNode ? SourceGraphNode->MenuNode->Children.Num() : INDEX_NONE,
+				NodeClass));
+		}
 	}
 }
 

@@ -14,6 +14,8 @@
 #include "Graph/MenuGraphNode.h"
 #include "Base/MenuAsset.h"
 #include "Base/MenuNode.h"
+#include "Node/MenuDataNode.h"
+#include "Node/RootMenuDataNode.h"
 #include "MenuType.h"
 #include "IContentBrowserSingleton.h"
 #include "Misc/DataValidation.h"
@@ -22,7 +24,13 @@
 #include "ScopedTransaction.h"
 #include "Styling/AppStyle.h"
 #include "Widgets/Docking/SDockTab.h"
+#include "Widgets/Input/SButton.h"
+#include "Widgets/Input/SComboBox.h"
+#include "Widgets/Layout/SUniformGridPanel.h"
 #include "Widgets/Notifications/SNotificationList.h"
+#include "Widgets/SBoxPanel.h"
+#include "Widgets/SWindow.h"
+#include "Widgets/Text/STextBlock.h"
 
 #define LOCTEXT_NAMESPACE "MenuAssetEditorToolkit"
 
@@ -33,51 +41,292 @@ struct FMenuImportRow
 	FName RowName;
 	FMenuTableRow MenuData;
 	FString MenuID;
-	FString ParentMenuID;
+	FString InferredParentMenuID;
+	int32 SourceIndex = 0;
+	int32 Depth = 0;
+	bool bDerived = false;
+};
+
+struct FRootMenuIDCandidate
+{
+	FString MenuID;
+	bool bDerived = false;
+	int32 SourceIndex = 0;
 	int32 Depth = 0;
 };
 
-bool SplitMenuID(const FString& InMenuID, TArray<FString>& OutSegments)
+FString JoinMenuIDSegments(const TArray<FString>& InSegments, int32 InSegmentCount = INDEX_NONE)
 {
-	InMenuID.ParseIntoArray(OutSegments, TEXT("."), false);
-	if (OutSegments.IsEmpty())
+	const int32 SegmentCount = InSegmentCount == INDEX_NONE ? InSegments.Num() : FMath::Clamp(InSegmentCount, 0, InSegments.Num());
+	FString Result;
+	for (int32 SegmentIndex = 0; SegmentIndex < SegmentCount; ++SegmentIndex)
 	{
-		return false;
-	}
-
-	FString RebuiltMenuID;
-	for (int32 SegmentIndex = 0; SegmentIndex < OutSegments.Num(); ++SegmentIndex)
-	{
-		OutSegments[SegmentIndex] = OutSegments[SegmentIndex].TrimStartAndEnd();
-		if (OutSegments[SegmentIndex].IsEmpty())
+		if (!Result.IsEmpty())
 		{
-			return false;
+			Result += TEXT(".");
 		}
-
-		if (SegmentIndex > 0)
-		{
-			RebuiltMenuID += TEXT(".");
-		}
-		RebuiltMenuID += OutSegments[SegmentIndex];
+		Result += InSegments[SegmentIndex];
 	}
-
-	return RebuiltMenuID == InMenuID.TrimStartAndEnd();
+	return Result;
 }
 
-FString GetParentMenuID(const TArray<FString>& InSegments)
+FString MakeMenuIDFromSegments(const TArray<FString>& InSegments, int32 InSegmentCount = INDEX_NONE)
 {
-	if (InSegments.Num() <= 1)
+	return FMenuIDTableRow::MakeMenuID(JoinMenuIDSegments(InSegments, InSegmentCount));
+}
+
+bool SplitMenuIDPathAllowRoot(const FString& InMenuID, TArray<FString>& OutSegments, FText* OutError = nullptr)
+{
+	const FString MenuID = FMenuIDTableRow::MakeMenuID(FMenuIDTableRow::GetEditableMenuIDPath(InMenuID)).TrimStartAndEnd();
+	if (MenuID == FMenuIDTableRow::GetMenuIDRootPath())
+	{
+		OutSegments.Reset();
+		return true;
+	}
+	return FMenuIDTableRow::SplitMenuIDPath(MenuID, OutSegments, OutError);
+}
+
+bool IsMenuIDUnderRoot(const FString& InMenuID, const FString& InRootMenuID)
+{
+	if (InMenuID == InRootMenuID)
+	{
+		return true;
+	}
+
+	if (InRootMenuID == FMenuIDTableRow::GetMenuIDRootPath())
+	{
+		return InMenuID.StartsWith(FMenuIDTableRow::GetMenuIDRootPath() + TEXT("."));
+	}
+
+	return InMenuID.StartsWith(InRootMenuID + TEXT("."));
+}
+
+int32 GetMenuIDDepth(const FString& InMenuID)
+{
+	TArray<FString> Segments;
+	return SplitMenuIDPathAllowRoot(InMenuID, Segments) ? Segments.Num() : 0;
+}
+
+int32 GetRelativeMenuIDDepth(const FString& InRootMenuID, const FString& InMenuID)
+{
+	return FMath::Max(0, GetMenuIDDepth(InMenuID) - GetMenuIDDepth(InRootMenuID));
+}
+
+FString GetParentMenuID(const FString& InMenuID)
+{
+	TArray<FString> Segments;
+	if (!SplitMenuIDPathAllowRoot(InMenuID, Segments) || Segments.IsEmpty())
 	{
 		return FString();
 	}
 
-	FString ParentMenuID = InSegments[0];
-	for (int32 SegmentIndex = 1; SegmentIndex < InSegments.Num() - 1; ++SegmentIndex)
+	return MakeMenuIDFromSegments(Segments, Segments.Num() - 1);
+}
+
+FString GetLastMenuIDSegment(const FString& InMenuID)
+{
+	TArray<FString> Segments;
+	if (!SplitMenuIDPathAllowRoot(InMenuID, Segments) || Segments.IsEmpty())
 	{
-		ParentMenuID += TEXT(".");
-		ParentMenuID += InSegments[SegmentIndex];
+		return TEXT("Root");
 	}
-	return ParentMenuID;
+	return Segments.Last();
+}
+
+void AddRootMenuIDCandidate(TMap<FString, TSharedPtr<FRootMenuIDCandidate>>& InOutCandidateMap, const FString& InMenuID, bool bDerived, int32 InSourceIndex)
+{
+	if (InMenuID.IsEmpty() || InMenuID == FMenuIDTableRow::GetMenuIDRootPath())
+	{
+		return;
+	}
+
+	TSharedPtr<FRootMenuIDCandidate>& Candidate = InOutCandidateMap.FindOrAdd(InMenuID);
+	if (!Candidate.IsValid())
+	{
+		Candidate = MakeShared<FRootMenuIDCandidate>();
+		Candidate->MenuID = InMenuID;
+		Candidate->bDerived = bDerived;
+		Candidate->SourceIndex = InSourceIndex;
+		Candidate->Depth = GetMenuIDDepth(InMenuID);
+		return;
+	}
+
+	Candidate->SourceIndex = FMath::Min(Candidate->SourceIndex, InSourceIndex);
+	if (!bDerived)
+	{
+		Candidate->bDerived = false;
+	}
+}
+
+void BuildRootMenuIDCandidates(const TArray<FMenuImportRow>& InImportRows, TArray<TSharedPtr<FRootMenuIDCandidate>>& OutCandidates)
+{
+	TMap<FString, TSharedPtr<FRootMenuIDCandidate>> CandidateMap;
+	for (const FMenuImportRow& ImportRow : InImportRows)
+	{
+		AddRootMenuIDCandidate(CandidateMap, ImportRow.MenuID, false, ImportRow.SourceIndex);
+
+		TArray<FString> Segments;
+		if (!FMenuIDTableRow::SplitMenuIDPath(ImportRow.MenuID, Segments))
+		{
+			continue;
+		}
+
+		for (int32 SegmentCount = 1; SegmentCount < Segments.Num(); ++SegmentCount)
+		{
+			AddRootMenuIDCandidate(CandidateMap, MakeMenuIDFromSegments(Segments, SegmentCount), true, ImportRow.SourceIndex);
+		}
+	}
+
+	CandidateMap.GenerateValueArray(OutCandidates);
+	OutCandidates.Sort([](const TSharedPtr<FRootMenuIDCandidate>& Left, const TSharedPtr<FRootMenuIDCandidate>& Right)
+	{
+		if (!Left.IsValid() || !Right.IsValid())
+		{
+			return Left.IsValid();
+		}
+
+		if (Left->Depth != Right->Depth)
+		{
+			return Left->Depth < Right->Depth;
+		}
+
+		if (Left->SourceIndex != Right->SourceIndex)
+		{
+			return Left->SourceIndex < Right->SourceIndex;
+		}
+
+		return Left->MenuID < Right->MenuID;
+	});
+}
+
+FText GetRootMenuIDCandidateText(const TSharedPtr<FRootMenuIDCandidate>& InCandidate)
+{
+	if (!InCandidate.IsValid())
+	{
+		return FText::GetEmpty();
+	}
+
+	return InCandidate->bDerived
+		? FText::Format(LOCTEXT("DerivedRootMenuIDCandidate", "{0} (Derived)"), FText::FromString(InCandidate->MenuID))
+		: FText::FromString(InCandidate->MenuID);
+}
+
+bool PickRootMenuID(const TArray<TSharedPtr<FRootMenuIDCandidate>>& InCandidates, FString& OutRootMenuID)
+{
+	if (InCandidates.IsEmpty() || !GEditor)
+	{
+		return false;
+	}
+
+	TSharedPtr<FRootMenuIDCandidate> SelectedCandidate = InCandidates[0];
+	bool bAccepted = false;
+
+	TSharedRef<SWindow> PickerWindow = SNew(SWindow)
+		.Title(LOCTEXT("PickRootMenuIDTitle", "Select Root MenuID"))
+		.ClientSize(FVector2D(620.0, 150.0))
+		.SupportsMaximize(false)
+		.SupportsMinimize(false);
+
+	TSharedPtr<SComboBox<TSharedPtr<FRootMenuIDCandidate>>> CandidateComboBox;
+	PickerWindow->SetContent(
+		SNew(SVerticalBox)
+		+ SVerticalBox::Slot()
+		.AutoHeight()
+		.Padding(12.0, 12.0, 12.0, 4.0)
+		[
+			SNew(STextBlock)
+			.Text(LOCTEXT("PickRootMenuIDMessage", "The DataTable does not contain the current root row. Select the MenuID used as this MenuAsset root."))
+		]
+		+ SVerticalBox::Slot()
+		.AutoHeight()
+		.Padding(12.0, 4.0)
+		[
+			SAssignNew(CandidateComboBox, SComboBox<TSharedPtr<FRootMenuIDCandidate>>)
+			.OptionsSource(&InCandidates)
+			.InitiallySelectedItem(SelectedCandidate)
+			.OnGenerateWidget_Lambda([](TSharedPtr<FRootMenuIDCandidate> InItem)
+			{
+				return SNew(STextBlock).Text(GetRootMenuIDCandidateText(InItem));
+			})
+			.OnSelectionChanged_Lambda([&SelectedCandidate](TSharedPtr<FRootMenuIDCandidate> InItem, ESelectInfo::Type)
+			{
+				SelectedCandidate = InItem;
+			})
+			[
+				SNew(STextBlock)
+				.Text_Lambda([&SelectedCandidate]()
+				{
+					return GetRootMenuIDCandidateText(SelectedCandidate);
+				})
+			]
+		]
+		+ SVerticalBox::Slot()
+		.AutoHeight()
+		.HAlign(HAlign_Right)
+		.Padding(12.0, 8.0, 12.0, 12.0)
+		[
+			SNew(SUniformGridPanel)
+			.SlotPadding(FMargin(4.0, 0.0))
+			+ SUniformGridPanel::Slot(0, 0)
+			[
+				SNew(SButton)
+				.Text(LOCTEXT("PickRootMenuIDOK", "OK"))
+				.OnClicked_Lambda([&PickerWindow, &bAccepted]()
+				{
+					bAccepted = true;
+					PickerWindow->RequestDestroyWindow();
+					return FReply::Handled();
+				})
+			]
+			+ SUniformGridPanel::Slot(1, 0)
+			[
+				SNew(SButton)
+				.Text(LOCTEXT("PickRootMenuIDCancel", "Cancel"))
+				.OnClicked_Lambda([&PickerWindow]()
+				{
+					PickerWindow->RequestDestroyWindow();
+					return FReply::Handled();
+				})
+			]
+		]
+	);
+
+	GEditor->EditorAddModalWindow(PickerWindow);
+	if (!bAccepted || !SelectedCandidate.IsValid())
+	{
+		return false;
+	}
+
+	OutRootMenuID = SelectedCandidate->MenuID;
+	return true;
+}
+
+void AddDerivedImportRow(const FString& InMenuID, const FString& InRootMenuID, int32 InSourceIndex, TMap<FString, FMenuImportRow>& InOutRowsByMenuID)
+{
+	if (InMenuID.IsEmpty() || InMenuID == InRootMenuID || InOutRowsByMenuID.Contains(InMenuID))
+	{
+		return;
+	}
+
+	FMenuImportRow DerivedRow;
+	DerivedRow.RowName = FName(*InMenuID);
+	DerivedRow.MenuID = InMenuID;
+	DerivedRow.MenuData.MenuID.MenuID = InMenuID;
+	DerivedRow.MenuData.Description.PrimaryName = FText::FromString(GetLastMenuIDSegment(InMenuID));
+	DerivedRow.SourceIndex = InSourceIndex;
+	DerivedRow.Depth = GetRelativeMenuIDDepth(InRootMenuID, InMenuID);
+	DerivedRow.bDerived = true;
+	InOutRowsByMenuID.Add(InMenuID, DerivedRow);
+}
+
+void AddMissingParentImportRows(const FString& InMenuID, const FString& InRootMenuID, int32 InSourceIndex, TMap<FString, FMenuImportRow>& InOutRowsByMenuID)
+{
+	FString ParentMenuID = GetParentMenuID(InMenuID);
+	while (!ParentMenuID.IsEmpty() && ParentMenuID != InRootMenuID && IsMenuIDUnderRoot(ParentMenuID, InRootMenuID))
+	{
+		AddDerivedImportRow(ParentMenuID, InRootMenuID, InSourceIndex, InOutRowsByMenuID);
+		ParentMenuID = GetParentMenuID(ParentMenuID);
+	}
 }
 }
 
@@ -286,7 +535,7 @@ void FMenuAssetEditorToolkit::OnSelectedNodesChanged(const TSet<UObject*>& NewSe
 
 	if (SelectedGraphNodeCount == 1)
 	{
-		SetDetailsObject(SelectedGraphNode);
+		SetDetailsObject(SelectedGraphNode->MenuNode);
 	}
 	else
 	{
@@ -299,6 +548,26 @@ void FMenuAssetEditorToolkit::OnFinishedChangingProperties(const FPropertyChange
 	if (MenuAsset)
 	{
 		MenuAsset->MarkPackageDirty();
+	}
+
+	const FName PropertyName = PropertyChangedEvent.GetPropertyName();
+	const FName MemberPropertyName = PropertyChangedEvent.MemberProperty ? PropertyChangedEvent.MemberProperty->GetFName() : NAME_None;
+	if (URootMenuDataNode* RootMenuDataNode = Cast<URootMenuDataNode>(CurrentDetailsObject.Get()))
+	{
+		const bool bShouldParseMenuTable =
+			PropertyName == GET_MEMBER_NAME_CHECKED(URootMenuDataNode, MenuTable)
+			|| PropertyName == GET_MEMBER_NAME_CHECKED(FMenuIDTableRow, MenuID)
+			|| PropertyName == GET_MEMBER_NAME_CHECKED(FMenuIDTableRow, MenuTag)
+			|| MemberPropertyName == GET_MEMBER_NAME_CHECKED(URootMenuDataNode, MenuID);
+
+		if (bShouldParseMenuTable && RootMenuDataNode->MenuTable)
+		{
+			if (ImportMenuRows(RootMenuDataNode->MenuTable))
+			{
+				ShowDataTableOperationResult(LOCTEXT("RootMenuTableParsed", "Menu table parsed."), true);
+			}
+			return;
+		}
 	}
 
 	if (GraphEditor)
@@ -582,10 +851,20 @@ bool FMenuAssetEditorToolkit::ImportMenuRows(UDataTable* InDataTable)
 		return false;
 	}
 
+	MenuAsset->EnsureRootNode();
+	URootMenuDataNode* RootMenuDataNode = Cast<URootMenuDataNode>(MenuAsset->RootNode);
+	if (!RootMenuDataNode)
+	{
+		ShowDataTableOperationResult(LOCTEXT("ImportMissingRootDataNode", "Menu import failed: MenuAsset root must be a RootMenuDataNode."), false);
+		return false;
+	}
+
 	FDataValidationContext ValidationContext;
-	TArray<FMenuImportRow> ImportRows;
+	TArray<FMenuImportRow> ExplicitRows;
 	TSet<FString> MenuIDs;
+	TMap<FString, int32> ExplicitRowIndexByMenuID;
 	bool bIsValid = true;
+	int32 SourceIndex = 0;
 
 	InDataTable->ForeachRow<FMenuTableRow>(TEXT("MenuAssetImport"), [&](const FName& RowName, const FMenuTableRow& Row)
 	{
@@ -594,6 +873,7 @@ bool FMenuAssetEditorToolkit::ImportMenuRows(UDataTable* InDataTable)
 		ImportRow.MenuData = Row;
 		ImportRow.MenuData.MenuID.SyncMenuIDFromTag();
 		ImportRow.MenuID = ImportRow.MenuData.MenuID.GetResolvedMenuID().TrimStartAndEnd();
+		ImportRow.SourceIndex = SourceIndex++;
 
 		if (ImportRow.MenuData.IsDataValid(ValidationContext) == EDataValidationResult::Invalid)
 		{
@@ -601,17 +881,20 @@ bool FMenuAssetEditorToolkit::ImportMenuRows(UDataTable* InDataTable)
 		}
 
 		TArray<FString> MenuIDSegments;
-		if (!SplitMenuID(ImportRow.MenuID, MenuIDSegments))
+		FText MenuIDError;
+		if (!FMenuIDTableRow::SplitMenuIDPath(ImportRow.MenuID, MenuIDSegments, &MenuIDError))
 		{
-			ValidationContext.AddError(FText::Format(LOCTEXT("ImportInvalidMenuID", "MenuID '{0}' in row '{1}' is not a valid dotted menu path."),
+			ValidationContext.AddError(FText::Format(LOCTEXT("ImportInvalidMenuID", "MenuID '{0}' in row '{1}' is not a valid GameplayUI.Button menu path. {2}"),
 				FText::FromString(ImportRow.MenuID),
-				FText::FromName(RowName)));
+				FText::FromName(RowName),
+				MenuIDError));
 			bIsValid = false;
 		}
 
-		if (ImportRow.MenuID == TEXT("Root"))
+		if (ImportRow.MenuID == FMenuIDTableRow::GetMenuIDRootPath())
 		{
-			ValidationContext.AddError(FText::Format(LOCTEXT("ImportRootMenuID", "MenuID 'Root' in row '{0}' is reserved by MenuAsset root."),
+			ValidationContext.AddError(FText::Format(LOCTEXT("ImportRootMenuID", "MenuID '{0}' in row '{1}' is reserved by MenuAsset root."),
+				FText::FromString(FMenuIDTableRow::GetMenuIDRootPath()),
 				FText::FromName(RowName)));
 			bIsValid = false;
 		}
@@ -627,21 +910,10 @@ bool FMenuAssetEditorToolkit::ImportMenuRows(UDataTable* InDataTable)
 			MenuIDs.Add(ImportRow.MenuID);
 		}
 
-		ImportRow.ParentMenuID = GetParentMenuID(MenuIDSegments);
 		ImportRow.Depth = MenuIDSegments.Num();
-		ImportRows.Add(ImportRow);
+		ExplicitRowIndexByMenuID.Add(ImportRow.MenuID, ExplicitRows.Num());
+		ExplicitRows.Add(ImportRow);
 	});
-
-	for (const FMenuImportRow& ImportRow : ImportRows)
-	{
-		if (!ImportRow.ParentMenuID.IsEmpty() && !MenuIDs.Contains(ImportRow.ParentMenuID))
-		{
-			ValidationContext.AddError(FText::Format(LOCTEXT("ImportMissingParent", "MenuID '{0}' requires missing parent MenuID '{1}'."),
-				FText::FromString(ImportRow.MenuID),
-				FText::FromString(ImportRow.ParentMenuID)));
-			bIsValid = false;
-		}
-	}
 
 	if (!bIsValid)
 	{
@@ -651,9 +923,90 @@ bool FMenuAssetEditorToolkit::ImportMenuRows(UDataTable* InDataTable)
 		return false;
 	}
 
+	FString RootMenuID = RootMenuDataNode->MenuID.GetResolvedMenuID().TrimStartAndEnd();
+	if (RootMenuID.IsEmpty())
+	{
+		RootMenuID = FMenuIDTableRow::GetMenuIDRootPath();
+	}
+
+	bool bRootHasExplicitRow = ExplicitRowIndexByMenuID.Contains(RootMenuID);
+	if (!bRootHasExplicitRow)
+	{
+		TArray<TSharedPtr<FRootMenuIDCandidate>> RootMenuIDCandidates;
+		BuildRootMenuIDCandidates(ExplicitRows, RootMenuIDCandidates);
+		if (!PickRootMenuID(RootMenuIDCandidates, RootMenuID))
+		{
+			ShowDataTableOperationResult(LOCTEXT("ImportRootMenuIDSelectionCanceled", "Menu import canceled: no root MenuID was selected."), false);
+			return false;
+		}
+		bRootHasExplicitRow = ExplicitRowIndexByMenuID.Contains(RootMenuID);
+	}
+
+	TArray<FString> RootMenuIDSegments;
+	if (!SplitMenuIDPathAllowRoot(RootMenuID, RootMenuIDSegments))
+	{
+		ShowDataTableOperationResult(LOCTEXT("ImportInvalidRootMenuID", "Menu import failed: selected root MenuID is invalid."), false);
+		return false;
+	}
+
+	TMap<FString, FMenuImportRow> RowsByMenuID;
+	for (FMenuImportRow ImportRow : ExplicitRows)
+	{
+		if (ImportRow.MenuID == RootMenuID || !IsMenuIDUnderRoot(ImportRow.MenuID, RootMenuID))
+		{
+			continue;
+		}
+
+		ImportRow.Depth = GetRelativeMenuIDDepth(RootMenuID, ImportRow.MenuID);
+		RowsByMenuID.Add(ImportRow.MenuID, ImportRow);
+	}
+
+	TArray<FMenuImportRow> RowsToInspect;
+	RowsByMenuID.GenerateValueArray(RowsToInspect);
+	for (const FMenuImportRow& ImportRow : RowsToInspect)
+	{
+		AddMissingParentImportRows(ImportRow.MenuID, RootMenuID, ImportRow.SourceIndex, RowsByMenuID);
+	}
+
+	TArray<FMenuImportRow> ImportRows;
+	RowsByMenuID.GenerateValueArray(ImportRows);
+	for (FMenuImportRow& ImportRow : ImportRows)
+	{
+		const FString ParentMenuID = GetParentMenuID(ImportRow.MenuID);
+		ImportRow.InferredParentMenuID = ParentMenuID == RootMenuID ? FString() : ParentMenuID;
+		ImportRow.Depth = GetRelativeMenuIDDepth(RootMenuID, ImportRow.MenuID);
+	}
+	ImportRows.Sort([](const FMenuImportRow& Left, const FMenuImportRow& Right)
+	{
+		if (Left.Depth != Right.Depth)
+		{
+			return Left.Depth < Right.Depth;
+		}
+
+		if (Left.SourceIndex != Right.SourceIndex)
+		{
+			return Left.SourceIndex < Right.SourceIndex;
+		}
+
+		return Left.MenuID < Right.MenuID;
+	});
+
 	const FScopedTransaction Transaction(LOCTEXT("ImportMenuFromDataTableTransaction", "Import Menu From DataTable"));
 	MenuAsset->Modify();
-	MenuAsset->EnsureRootNode();
+	RootMenuDataNode->Modify();
+	RootMenuDataNode->MenuTable = InDataTable;
+	if (bRootHasExplicitRow)
+	{
+		const int32 RootRowIndex = ExplicitRowIndexByMenuID.FindChecked(RootMenuID);
+		const FMenuImportRow& RootImportRow = ExplicitRows[RootRowIndex];
+		RootMenuDataNode->MenuID = RootImportRow.MenuData.MenuID;
+		RootMenuDataNode->ContainerEntry = RootImportRow.MenuData.ContainerEntry;
+	}
+	else
+	{
+		RootMenuDataNode->MenuID.MenuID = RootMenuID;
+		RootMenuDataNode->MenuID.NormalizeMenuID();
+	}
 
 	for (const TObjectPtr<UMenuNode>& ExistingNode : MenuAsset->AllNodes)
 	{
@@ -668,7 +1021,7 @@ bool FMenuAssetEditorToolkit::ImportMenuRows(UDataTable* InDataTable)
 		}
 	}
 
-	UMenuNode* RootNode = MenuAsset->RootNode;
+	UMenuNode* RootNode = RootMenuDataNode;
 	RootNode->Modify();
 	RootNode->Children.Reset();
 	MenuAsset->AllNodes.Reset();
@@ -678,7 +1031,7 @@ bool FMenuAssetEditorToolkit::ImportMenuRows(UDataTable* InDataTable)
 	for (int32 RowIndex = 0; RowIndex < ImportRows.Num(); ++RowIndex)
 	{
 		const FMenuImportRow& ImportRow = ImportRows[RowIndex];
-		UMenuNode* NewNode = NewObject<UMenuNode>(MenuAsset, NAME_None, RF_Transactional);
+		UMenuDataNode* NewNode = NewObject<UMenuDataNode>(MenuAsset, NAME_None, RF_Transactional);
 		NewNode->Modify();
 		NewNode->MenuData = ImportRow.MenuData;
 		NewNode->GraphPosition = FVector2D(static_cast<double>(ImportRow.Depth) * 360.0, static_cast<double>(RowIndex) * 160.0);
@@ -695,9 +1048,9 @@ bool FMenuAssetEditorToolkit::ImportMenuRows(UDataTable* InDataTable)
 		}
 
 		UMenuNode* ParentNode = RootNode;
-		if (!ImportRow.ParentMenuID.IsEmpty())
+		if (!ImportRow.InferredParentMenuID.IsEmpty())
 		{
-			if (UMenuNode* const* ParentNodePtr = CreatedNodes.Find(ImportRow.ParentMenuID))
+			if (UMenuNode* const* ParentNodePtr = CreatedNodes.Find(ImportRow.InferredParentMenuID))
 			{
 				ParentNode = *ParentNodePtr;
 			}
@@ -729,6 +1082,18 @@ bool FMenuAssetEditorToolkit::ExportMenuRows(UDataTable* InDataTable) const
 	TArray<FMenuTableRow> ExportRows;
 	if (MenuAsset->RootNode)
 	{
+		if (const URootMenuDataNode* RootMenuDataNode = Cast<URootMenuDataNode>(MenuAsset->RootNode))
+		{
+			const FString RootMenuID = RootMenuDataNode->MenuID.GetResolvedMenuID().TrimStartAndEnd();
+			if (!RootMenuID.IsEmpty() && RootMenuID != FMenuIDTableRow::GetMenuIDRootPath())
+			{
+				FMenuTableRow RootRow;
+				RootRow.MenuID = RootMenuDataNode->MenuID;
+				RootRow.ContainerEntry = RootMenuDataNode->ContainerEntry;
+				ExportRows.Add(RootRow);
+			}
+		}
+
 		for (const TObjectPtr<UMenuNode>& ChildNode : MenuAsset->RootNode->Children)
 		{
 			CollectExportRows(ChildNode, ExportRows);
@@ -802,7 +1167,10 @@ void FMenuAssetEditorToolkit::CollectExportRows(UMenuNode* InNode, TArray<FMenuT
 		return;
 	}
 
-	OutRows.Add(InNode->MenuData);
+	if (const UMenuDataNode* MenuDataNode = Cast<UMenuDataNode>(InNode))
+	{
+		OutRows.Add(MenuDataNode->MenuData);
+	}
 	for (const TObjectPtr<UMenuNode>& ChildNode : InNode->Children)
 	{
 		CollectExportRows(ChildNode, OutRows);

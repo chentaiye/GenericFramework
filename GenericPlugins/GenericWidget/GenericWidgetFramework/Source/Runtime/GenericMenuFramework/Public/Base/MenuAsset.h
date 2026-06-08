@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
+#include "Templates/SubclassOf.h"
 #if WITH_EDITOR
 #include "Misc/DataValidation.h"
 #endif
@@ -29,10 +30,12 @@ public:
 	/** 在指定父节点末尾创建子节点。 */
 	UFUNCTION(BlueprintCallable, Category="Menu")
 	UMenuNode* CreateChildNode(UMenuNode* InParentNode, FVector2D InGraphPosition = FVector2D::ZeroVector);
+	UMenuNode* CreateChildNode(UMenuNode* InParentNode, TSubclassOf<UMenuNode> InNodeClass, FVector2D InGraphPosition = FVector2D::ZeroVector);
 
 	/** 在指定父节点的目标顺序位置创建子节点。 */
 	UFUNCTION(BlueprintCallable, Category="Menu")
 	UMenuNode* CreateChildNodeAtIndex(UMenuNode* InParentNode, int32 InChildIndex, FVector2D InGraphPosition = FVector2D::ZeroVector);
+	UMenuNode* CreateChildNodeAtIndex(UMenuNode* InParentNode, TSubclassOf<UMenuNode> InNodeClass, int32 InChildIndex, FVector2D InGraphPosition = FVector2D::ZeroVector);
 
 	/** 使用来源节点的父级创建相邻兄弟节点，根节点不允许创建兄弟节点。 */
 	UFUNCTION(BlueprintCallable, Category="Menu")
@@ -75,7 +78,7 @@ public:
 
 private:
 	/** 执行节点创建、父子关系挂接、唯一 ID 分配和资产脏标记。 */
-	UMenuNode* CreateNodeInternal(UMenuNode* InParentNode, FVector2D InGraphPosition, int32 InChildIndex);
+	UMenuNode* CreateNodeInternal(UMenuNode* InParentNode, TSubclassOf<UMenuNode> InNodeClass, FVector2D InGraphPosition, int32 InChildIndex);
 
 	/** 从指定节点开始收集整棵子树，供删除和清理流程使用。 */
 	void CollectSubtree(UMenuNode* InNode, TArray<UMenuNode*>& OutNodes) const;

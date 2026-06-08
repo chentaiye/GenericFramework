@@ -3,6 +3,8 @@
 #include "Base/MenuAsset.h"
 
 #include "Base/MenuNode.h"
+#include "Node/MenuDataNode.h"
+#include "Node/RootMenuDataNode.h"
 #include "UObject/ObjectSaveContext.h"
 
 #if WITH_EDITOR
@@ -10,6 +12,47 @@
 #endif
 
 #define LOCTEXT_NAMESPACE "MenuAsset"
+
+namespace
+{
+FString GetNodeMenuID(const UMenuNode* InNode)
+{
+	if (const URootMenuDataNode* RootDataNode = Cast<URootMenuDataNode>(InNode))
+	{
+		return RootDataNode->MenuID.GetResolvedMenuID().TrimStartAndEnd();
+	}
+
+	if (const UMenuDataNode* MenuDataNode = Cast<UMenuDataNode>(InNode))
+	{
+		return MenuDataNode->MenuData.MenuID.GetResolvedMenuID().TrimStartAndEnd();
+	}
+
+	return FString();
+}
+
+bool IsRootMenuIDValid(const FMenuIDTableRow& InMenuID)
+{
+	const FString RootMenuID = InMenuID.GetResolvedMenuID().TrimStartAndEnd();
+	if (RootMenuID == FMenuIDTableRow::GetMenuIDRootPath())
+	{
+		return true;
+	}
+
+	TArray<FString> MenuIDSegments;
+	return FMenuIDTableRow::SplitMenuIDPath(RootMenuID, MenuIDSegments);
+}
+
+FString MakeChildBaseMenuID(const UMenuNode* InParentNode)
+{
+	const FString ParentMenuID = GetNodeMenuID(InParentNode);
+	if (ParentMenuID.IsEmpty())
+	{
+		return TEXT("Menu");
+	}
+
+	return FString::Printf(TEXT("%s.Menu"), *ParentMenuID);
+}
+}
 
 UMenuAsset::UMenuAsset()
 {
@@ -24,24 +67,64 @@ void UMenuAsset::EnsureRootNode()
 
 	if (!RootNode)
 	{
-		RootNode = NewObject<UMenuNode>(this, NAME_None, RF_Transactional);
-		RootNode->MenuData.MenuID.MenuID = TEXT("Root");
+		RootNode = NewObject<URootMenuDataNode>(this, NAME_None, RF_Transactional);
 		RootNode->GraphPosition = FVector2D::ZeroVector;
+	}
+	else if (!RootNode->IsA<URootMenuDataNode>())
+	{
+		UMenuNode* OldRootNode = RootNode;
+		URootMenuDataNode* NewRootNode = NewObject<URootMenuDataNode>(this, NAME_None, RF_Transactional);
+		NewRootNode->NodeGuid = OldRootNode->NodeGuid;
+		NewRootNode->GraphPosition = OldRootNode->GraphPosition;
+		NewRootNode->Children = OldRootNode->Children;
+
+		if (const UMenuDataNode* OldRootDataNode = Cast<UMenuDataNode>(OldRootNode))
+		{
+			const FString OldRawMenuID = OldRootDataNode->MenuData.MenuID.MenuID.TrimStartAndEnd();
+			if (OldRawMenuID != TEXT("Root") && OldRawMenuID != TEXT("GameplayUI.Button.Root"))
+			{
+				NewRootNode->MenuID = OldRootDataNode->MenuData.MenuID;
+			}
+			NewRootNode->ContainerEntry = OldRootDataNode->MenuData.ContainerEntry;
+		}
+
+		OldRootNode->Children.Reset();
+		for (const TObjectPtr<UMenuNode>& ChildNode : NewRootNode->Children)
+		{
+			if (ChildNode)
+			{
+				ChildNode->SetParent(NewRootNode);
+			}
+		}
+
+		AllNodes.Remove(OldRootNode);
+		RootNode = NewRootNode;
 	}
 
 	RootNode->EnsureNodeGuid();
 	RootNode->SetParent(nullptr);
-	AllNodes.AddUnique(RootNode);
+	AllNodes.Remove(RootNode);
+	AllNodes.Insert(RootNode, 0);
 }
 
 UMenuNode* UMenuAsset::CreateChildNode(UMenuNode* InParentNode, FVector2D InGraphPosition)
 {
-	return CreateNodeInternal(InParentNode, InGraphPosition, INDEX_NONE);
+	return CreateChildNode(InParentNode, UMenuDataNode::StaticClass(), InGraphPosition);
+}
+
+UMenuNode* UMenuAsset::CreateChildNode(UMenuNode* InParentNode, TSubclassOf<UMenuNode> InNodeClass, FVector2D InGraphPosition)
+{
+	return CreateNodeInternal(InParentNode, InNodeClass, InGraphPosition, INDEX_NONE);
 }
 
 UMenuNode* UMenuAsset::CreateChildNodeAtIndex(UMenuNode* InParentNode, int32 InChildIndex, FVector2D InGraphPosition)
 {
-	return CreateNodeInternal(InParentNode, InGraphPosition, InChildIndex);
+	return CreateChildNodeAtIndex(InParentNode, UMenuDataNode::StaticClass(), InChildIndex, InGraphPosition);
+}
+
+UMenuNode* UMenuAsset::CreateChildNodeAtIndex(UMenuNode* InParentNode, TSubclassOf<UMenuNode> InNodeClass, int32 InChildIndex, FVector2D InGraphPosition)
+{
+	return CreateNodeInternal(InParentNode, InNodeClass, InGraphPosition, InChildIndex);
 }
 
 UMenuNode* UMenuAsset::CreateSiblingNode(UMenuNode* InSourceNode, FVector2D InGraphPosition)
@@ -52,7 +135,7 @@ UMenuNode* UMenuAsset::CreateSiblingNode(UMenuNode* InSourceNode, FVector2D InGr
 	}
 
 	const int32 SourceIndex = InSourceNode->Parent ? InSourceNode->Parent->Children.IndexOfByKey(InSourceNode) : INDEX_NONE;
-	return CreateNodeInternal(InSourceNode->Parent, InGraphPosition, SourceIndex == INDEX_NONE ? INDEX_NONE : SourceIndex + 1);
+	return CreateNodeInternal(InSourceNode->Parent, UMenuDataNode::StaticClass(), InGraphPosition, SourceIndex == INDEX_NONE ? INDEX_NONE : SourceIndex + 1);
 }
 
 bool UMenuAsset::DeleteNode(UMenuNode* InNode)
@@ -200,9 +283,33 @@ EDataValidationResult UMenuAsset::IsDataValid(FDataValidationContext& Context) c
 		Context.AddError(LOCTEXT("MissingRootNode", "Menu asset must have a root node."));
 		Result = EDataValidationResult::Invalid;
 	}
+	else if (!RootNode->IsA<URootMenuDataNode>())
+	{
+		Context.AddError(LOCTEXT("InvalidRootNodeClass", "Menu asset root node must be a RootMenuDataNode."));
+		Result = EDataValidationResult::Invalid;
+	}
 
 	TSet<FGuid> NodeGuids;
 	TSet<FString> MenuIDs;
+
+	if (const URootMenuDataNode* RootMenuDataNode = Cast<URootMenuDataNode>(RootNode))
+	{
+		if (!IsRootMenuIDValid(RootMenuDataNode->MenuID))
+		{
+			Context.AddError(LOCTEXT("InvalidRootMenuID", "Menu asset root MenuID must be GameplayUI.Button or a valid GameplayUI.Button path."));
+			Result = EDataValidationResult::Invalid;
+		}
+		else
+		{
+			MenuIDs.Add(RootMenuDataNode->MenuID.GetResolvedMenuID().TrimStartAndEnd());
+		}
+
+		if (RootMenuDataNode->MenuTable && RootMenuDataNode->MenuTable->RowStruct != FMenuTableRow::StaticStruct())
+		{
+			Context.AddError(LOCTEXT("InvalidRootMenuTable", "Root MenuTable must use MenuTableRow."));
+			Result = EDataValidationResult::Invalid;
+		}
+	}
 
 	for (const TObjectPtr<UMenuNode>& Node : AllNodes)
 	{
@@ -265,12 +372,13 @@ EDataValidationResult UMenuAsset::IsDataValid(FDataValidationContext& Context) c
 			}
 		}
 
-		if (Node->MenuData.IsDataValid(Context) == EDataValidationResult::Invalid)
+		const UMenuDataNode* MenuDataNode = Cast<UMenuDataNode>(Node);
+		if (MenuDataNode && MenuDataNode->MenuData.IsDataValid(Context) == EDataValidationResult::Invalid)
 		{
 			Result = EDataValidationResult::Invalid;
 		}
 
-		const FString MenuID = Node->MenuData.MenuID.GetResolvedMenuID().TrimStartAndEnd();
+		const FString MenuID = MenuDataNode ? MenuDataNode->MenuData.MenuID.GetResolvedMenuID().TrimStartAndEnd() : FString();
 		if (!MenuID.IsEmpty())
 		{
 			if (MenuIDs.Contains(MenuID))
@@ -297,9 +405,18 @@ EDataValidationResult UMenuAsset::IsDataValid(FDataValidationContext& Context) c
 }
 #endif
 
-UMenuNode* UMenuAsset::CreateNodeInternal(UMenuNode* InParentNode, FVector2D InGraphPosition, int32 InChildIndex)
+UMenuNode* UMenuAsset::CreateNodeInternal(UMenuNode* InParentNode, TSubclassOf<UMenuNode> InNodeClass, FVector2D InGraphPosition, int32 InChildIndex)
 {
 	if (!InParentNode || !ContainsNode(InParentNode))
+	{
+		return nullptr;
+	}
+
+	UClass* NodeClass = InNodeClass.Get();
+	if (!NodeClass
+		|| !NodeClass->IsChildOf(UMenuNode::StaticClass())
+		|| NodeClass->IsChildOf(URootMenuDataNode::StaticClass())
+		|| NodeClass->HasAnyClassFlags(CLASS_Abstract | CLASS_Deprecated | CLASS_NewerVersionExists))
 	{
 		return nullptr;
 	}
@@ -307,10 +424,13 @@ UMenuNode* UMenuAsset::CreateNodeInternal(UMenuNode* InParentNode, FVector2D InG
 	Modify();
 	InParentNode->Modify();
 
-	UMenuNode* NewNode = NewObject<UMenuNode>(this, NAME_None, RF_Transactional);
+	UMenuNode* NewNode = NewObject<UMenuNode>(this, NodeClass, NAME_None, RF_Transactional);
 	NewNode->SetParent(InParentNode);
 	NewNode->GraphPosition = InGraphPosition;
-	NewNode->MenuData.MenuID.MenuID = MakeUniqueMenuID(TEXT("Menu"));
+	if (UMenuDataNode* NewMenuDataNode = Cast<UMenuDataNode>(NewNode))
+	{
+		NewMenuDataNode->MenuData.MenuID.MenuID = MakeUniqueMenuID(MakeChildBaseMenuID(InParentNode));
+	}
 
 	if (InChildIndex == INDEX_NONE)
 	{
@@ -380,7 +500,7 @@ FString UMenuAsset::MakeUniqueMenuID(const FString& InBaseMenuID) const
 	{
 		if (Node)
 		{
-			const FString ExistingID = Node->MenuData.MenuID.GetResolvedMenuID().TrimStartAndEnd();
+			const FString ExistingID = GetNodeMenuID(Node);
 			if (!ExistingID.IsEmpty())
 			{
 				UsedIDs.Add(ExistingID);
@@ -391,7 +511,7 @@ FString UMenuAsset::MakeUniqueMenuID(const FString& InBaseMenuID) const
 	FString Candidate = InBaseMenuID;
 	int32 Index = 1;
 
-	while (UsedIDs.Contains(Candidate))
+	while (UsedIDs.Contains(FMenuIDTableRow::MakeMenuID(FMenuIDTableRow::GetEditableMenuIDPath(Candidate))))
 	{
 		Candidate = FString::Printf(TEXT("%s_%d"), *InBaseMenuID, Index++);
 	}

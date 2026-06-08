@@ -4,9 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "EdGraph/EdGraphSchema.h"
+#include "Templates/SubclassOf.h"
 #include "MenuGraphSchema.generated.h"
 
 class UMenuGraphNode;
+class UMenuNode;
 
 USTRUCT()
 struct FMenuGraphSchemaAction_NewNode : public FEdGraphSchemaAction
@@ -14,10 +16,12 @@ struct FMenuGraphSchemaAction_NewNode : public FEdGraphSchemaAction
 	GENERATED_USTRUCT_BODY()
 
 	FMenuGraphSchemaAction_NewNode();
-	FMenuGraphSchemaAction_NewNode(FText InNodeCategory, FText InMenuDesc, FText InToolTip, int32 InGrouping, int32 InChildIndex);
+	FMenuGraphSchemaAction_NewNode(FText InNodeCategory, FText InMenuDesc, FText InToolTip, int32 InGrouping, int32 InChildIndex, TSubclassOf<UMenuNode> InNodeClass);
 	virtual UEdGraphNode* PerformAction(UEdGraph* ParentGraph, UEdGraphPin* FromPin, const FVector2f& Location, bool bSelectNewNode = true) override;
 
 	int32 ChildIndex = INDEX_NONE;
+	UPROPERTY()
+	TSubclassOf<UMenuNode> NodeClass;
 };
 
 /** Schema controlling menu tree graph connections and node creation. */

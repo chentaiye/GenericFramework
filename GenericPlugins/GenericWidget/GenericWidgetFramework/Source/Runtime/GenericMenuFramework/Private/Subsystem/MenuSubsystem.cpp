@@ -58,6 +58,18 @@ bool UMenuSubsystem::RegisterMenuCollection(UMenuCollection* InMenuCollection, b
 		return false;
 	}
 
+	if (FindMenuCollectionIndex(InMenuCollection) != INDEX_NONE)
+	{
+		UE_LOG(GenericLogUI, Warning, TEXT("RegisterMenuCollection failed because menu collection '%s' is already registered."), *InMenuCollection->GetName());
+		return false;
+	}
+
+	if (!InMenuCollection->CollectionName.IsNone() && FindMenuCollectionIndex(InMenuCollection->CollectionName) != INDEX_NONE)
+	{
+		UE_LOG(GenericLogUI, Warning, TEXT("RegisterMenuCollection failed because collection name '%s' is already registered."), *InMenuCollection->CollectionName.ToString());
+		return false;
+	}
+
 	APlayerController* PlayerController = GetPlayerController();
 	if (!PlayerController)
 	{
@@ -69,16 +81,6 @@ bool UMenuSubsystem::RegisterMenuCollection(UMenuCollection* InMenuCollection, b
 	{
 		UE_LOG(GenericLogUI, Warning, TEXT("RegisterMenuCollection failed to initialize menu collection '%s'."), *InMenuCollection->GetName());
 		return false;
-	}
-
-	if (FindMenuCollectionIndex(InMenuCollection) != INDEX_NONE)
-	{
-		if (bBuildMenu)
-		{
-			InMenuCollection->BuildMenu();
-		}
-
-		return true;
 	}
 
 	RegisteredMenuCollections.Add(InMenuCollection);

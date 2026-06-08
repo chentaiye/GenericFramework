@@ -4,6 +4,7 @@
 
 #include "Base/MenuAsset.h"
 #include "Base/MenuNode.h"
+#include "Node/MenuDataNode.h"
 #include "DetailCategoryBuilder.h"
 #include "DetailLayoutBuilder.h"
 #include "DetailWidgetRow.h"
@@ -199,7 +200,8 @@ void FMenuCollectionCustomization::GenerateEventGraph(EGenericButtonEvent EventT
 			continue;
 		}
 
-		const FString MenuID = MenuNode->MenuData.MenuID.GetResolvedMenuID().TrimStartAndEnd();
+		const UMenuDataNode* MenuDataNode = Cast<UMenuDataNode>(MenuNode);
+		const FString MenuID = MenuDataNode ? MenuDataNode->MenuData.MenuID.GetResolvedMenuID().TrimStartAndEnd() : FString();
 		const FName EventName = UMenuCollection::MakeMenuButtonEventFunctionName(EventType, MenuID);
 		if (EventName.IsNone())
 		{

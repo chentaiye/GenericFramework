@@ -86,7 +86,6 @@ UMenuGraphNode* UMenuGraph::CreateGraphNode(UMenuNode* InMenuNode)
 
 	UMenuGraphNode* GraphNode = NewObject<UMenuGraphNode>(this, NAME_None, RF_Transactional);
 	GraphNode->MenuNode = InMenuNode;
-	GraphNode->MenuData = InMenuNode->MenuData;
 	GraphNode->NodePosX = static_cast<int32>(InMenuNode->GraphPosition.X);
 	GraphNode->NodePosY = static_cast<int32>(InMenuNode->GraphPosition.Y);
 	GraphNode->CreateNewGuid();

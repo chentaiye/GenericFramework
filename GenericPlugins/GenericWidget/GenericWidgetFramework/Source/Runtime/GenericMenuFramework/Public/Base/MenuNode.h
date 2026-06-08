@@ -3,12 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MenuType.h"
 #include "UObject/Object.h"
 #include "MenuNode.generated.h"
 
 /** 承载UIMenu节点职责，衔接上层调用与模块内部实现。 */
-UCLASS(BlueprintType, EditInlineNew, DefaultToInstanced)
+UCLASS(Abstract, BlueprintType, EditInlineNew, DefaultToInstanced)
 class GENERICMENUFRAMEWORK_API UMenuNode : public UObject
 {
 	GENERATED_BODY()
@@ -40,22 +39,19 @@ public:
 
 public:
 	/** 记录节点GUID。 */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Menu")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, AdvancedDisplay, Category="Menu")
 	FGuid NodeGuid;
 
 	/** 记录Menu数据。 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Menu")
-	FMenuTableRow MenuData;
-
 	/** 持有Parent实例，供通用 UI运行时复用。 */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Menu")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, AdvancedDisplay, Category="Menu")
 	TObjectPtr<UMenuNode> Parent = nullptr;
 
 	/** 持有Children实例，供通用 UI运行时复用。 */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Menu")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, AdvancedDisplay, Category="Menu")
 	TArray<TObjectPtr<UMenuNode>> Children;
 
 	/** 记录GraphPosition。 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Menu|Editor")
+	UPROPERTY()
 	FVector2D GraphPosition = FVector2D::ZeroVector;
 };

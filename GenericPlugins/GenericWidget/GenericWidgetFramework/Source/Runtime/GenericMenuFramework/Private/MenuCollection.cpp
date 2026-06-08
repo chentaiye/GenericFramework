@@ -10,6 +10,8 @@
 #include "Group/SingleSelectionButtonGroup.h"
 #include "Base/MenuAsset.h"
 #include "Base/MenuNode.h"
+#include "Node/MenuDataNode.h"
+#include "Node/RootMenuDataNode.h"
 #include "Subsystem/GenericRouteSubsystem.h"
 #include "Subsystem/GenericWidgetSubsystem.h"
 #include "WidgetType.h"
@@ -18,7 +20,42 @@ namespace
 {
 	FString GetRuntimeMenuID(const UMenuNode* InNode)
 	{
-		return IsValid(InNode) ? InNode->MenuData.MenuID.GetResolvedMenuID().TrimStartAndEnd() : FString();
+		const URootMenuDataNode* RootDataNode = Cast<URootMenuDataNode>(InNode);
+		if (IsValid(RootDataNode))
+		{
+			return RootDataNode->MenuID.GetResolvedMenuID().TrimStartAndEnd();
+		}
+
+		const UMenuDataNode* MenuDataNode = Cast<UMenuDataNode>(InNode);
+		return IsValid(MenuDataNode) ? MenuDataNode->MenuData.MenuID.GetResolvedMenuID().TrimStartAndEnd() : FString();
+	}
+
+	const FMenuTableRow* GetMenuData(const UMenuNode* InNode)
+	{
+		const UMenuDataNode* MenuDataNode = Cast<UMenuDataNode>(InNode);
+		return IsValid(MenuDataNode) ? &MenuDataNode->MenuData : nullptr;
+	}
+
+	const FMenuContainerEntryTableRow* GetMenuContainerEntry(const UMenuNode* InNode)
+	{
+		const URootMenuDataNode* RootDataNode = Cast<URootMenuDataNode>(InNode);
+		if (IsValid(RootDataNode))
+		{
+			return &RootDataNode->ContainerEntry;
+		}
+
+		if (const FMenuTableRow* MenuData = GetMenuData(InNode))
+		{
+			return &MenuData->ContainerEntry;
+		}
+
+		return nullptr;
+	}
+
+	ESlateVisibility GetMenuLevelVisibility(const UMenuNode* InNode)
+	{
+		const FMenuTableRow* MenuData = GetMenuData(InNode);
+		return MenuData ? MenuData->Entry.Visibility : ESlateVisibility::Visible;
 	}
 
 	FString SanitizeMenuIDForFunctionName(const FString& InMenuID)
@@ -226,7 +263,8 @@ int32 UMenuCollection::BuildMenuLevel(UMenuNode* OwnerNode, bool bRequireSlotTag
 	}
 	else
 	{
-		const FGameplayTag SlotTag = OwnerNode->MenuData.ContainerEntry.ButtonContainerSlotTag;
+		const FMenuContainerEntryTableRow* ContainerEntry = GetMenuContainerEntry(OwnerNode);
+		const FGameplayTag SlotTag = ContainerEntry ? ContainerEntry->ButtonContainerSlotTag : FGameplayTag();
 		if (SlotTag.IsValid())
 		{
 			RuntimeLevel.RegisteredSlotTag = SlotTag;
@@ -298,7 +336,14 @@ UMenuContainer* UMenuCollection::CreateButtonContainer_Implementation(UMenuNode*
 		return nullptr;
 	}
 
-	UClass* ContainerClass = OwnerNode->MenuData.ContainerEntry.ButtonContainerClass.LoadSynchronous();
+	const FMenuContainerEntryTableRow* ContainerEntry = GetMenuContainerEntry(OwnerNode);
+	if (!ContainerEntry)
+	{
+		UE_LOG(GenericLogUI, Warning, TEXT("BuildMenu failed because owner node has no container data. Node: %s, Collection: %s"), *OwnerNode->GetName(), *GetName());
+		return nullptr;
+	}
+
+	UClass* ContainerClass = ContainerEntry->ButtonContainerClass.LoadSynchronous();
 	if (!ContainerClass)
 	{
 		UE_LOG(GenericLogUI, Warning, TEXT("BuildMenu failed because ButtonContainerClass is missing. Node: %s, Collection: %s"), *OwnerNode->GetName(), *GetName());
@@ -312,7 +357,7 @@ UMenuContainer* UMenuCollection::CreateButtonContainer_Implementation(UMenuNode*
 		return nullptr;
 	}
 
-	CreatedContainer->SetVisibility(OwnerNode->MenuData.Entry.Visibility);
+	CreatedContainer->SetVisibility(GetMenuLevelVisibility(OwnerNode));
 	return CreatedContainer;
 }
 
@@ -323,7 +368,14 @@ UGenericButtonGroup* UMenuCollection::CreateButtonGroup_Implementation(UMenuNode
 		return nullptr;
 	}
 
-	UClass* ButtonGroupClass = OwnerNode->MenuData.ContainerEntry.ButtonGroupClass.LoadSynchronous();
+	const FMenuContainerEntryTableRow* ContainerEntry = GetMenuContainerEntry(OwnerNode);
+	if (!ContainerEntry)
+	{
+		UE_LOG(GenericLogUI, Warning, TEXT("BuildMenu could not create button group because owner node has no container data. Node: %s"), *OwnerNode->GetName());
+		return nullptr;
+	}
+
+	UClass* ButtonGroupClass = ContainerEntry->ButtonGroupClass.LoadSynchronous();
 	if (!ButtonGroupClass)
 	{
 		if (OwnerNode->Children.Num() > 0)
@@ -348,7 +400,14 @@ UMenuWidget* UMenuCollection::CreateButtonWidget_Implementation(UMenuNode* Butto
 		return nullptr;
 	}
 
-	UClass* ButtonWidgetClass = ButtonNode->MenuData.Entry.ButtonWidgetClass.LoadSynchronous();
+	const FMenuTableRow* MenuData = GetMenuData(ButtonNode);
+	if (!MenuData)
+	{
+		UE_LOG(GenericLogUI, Warning, TEXT("BuildMenu skipped menu node '%s' because it has no menu data."), *ButtonNode->GetName());
+		return nullptr;
+	}
+
+	UClass* ButtonWidgetClass = MenuData->Entry.ButtonWidgetClass.LoadSynchronous();
 	if (!ButtonWidgetClass)
 	{
 		UE_LOG(GenericLogUI, Warning, TEXT("BuildMenu skipped menu node '%s' because ButtonWidgetClass is missing."), *ButtonNode->GetName());
@@ -373,7 +432,13 @@ bool UMenuCollection::RegisterButtonContainer_Implementation(UMenuContainer* Con
 		return false;
 	}
 
-	const FGameplayTag SlotTag = OwnerNode->MenuData.ContainerEntry.ButtonContainerSlotTag;
+	const FMenuContainerEntryTableRow* ContainerEntry = GetMenuContainerEntry(OwnerNode);
+	if (!ContainerEntry)
+	{
+		return false;
+	}
+
+	const FGameplayTag SlotTag = ContainerEntry->ButtonContainerSlotTag;
 	if (!SlotTag.IsValid())
 	{
 		if (bRequireSlotTag)
@@ -390,7 +455,7 @@ bool UMenuCollection::RegisterButtonContainer_Implementation(UMenuContainer* Con
 		return false;
 	}
 
-	if (!WidgetSubsystem->RegisterWidget(Container, SlotTag, OwnerNode->MenuData.Entry.Visibility))
+	if (!WidgetSubsystem->RegisterWidget(Container, SlotTag, GetMenuLevelVisibility(OwnerNode)))
 	{
 		UE_LOG(GenericLogUI, Warning, TEXT("BuildMenu could not register container '%s' to slot '%s'."), *Container->GetName(), *SlotTag.ToString());
 		return false;
@@ -427,14 +492,19 @@ void UMenuCollection::ApplyButtonState_Implementation(UMenuWidget* ButtonWidget,
 		return;
 	}
 
-	const FMenuTableRow& MenuData = ButtonNode->MenuData;
-	ButtonWidget->SetVisibility(MenuData.Entry.Visibility);
-	ButtonWidget->SetButtonSelectable(MenuData.Entry.bSelectable);
-	ButtonWidget->SetButtonToggleable(MenuData.Entry.bToggleable);
+	const FMenuTableRow* MenuData = GetMenuData(ButtonNode);
+	if (!MenuData)
+	{
+		return;
+	}
+
+	ButtonWidget->SetVisibility(MenuData->Entry.Visibility);
+	ButtonWidget->SetButtonSelectable(MenuData->Entry.bSelectable);
+	ButtonWidget->SetButtonToggleable(MenuData->Entry.bToggleable);
 	ButtonWidget->SetButtonDefaultSelected(false);
-	ButtonWidget->SetButtonTag(MenuData.MenuID.MenuTag);
-	ButtonWidget->SetButtonEnabled(MenuData.Entry.bButtonEnabled);
-	ButtonWidget->SetButtonInteractionEnabled(MenuData.Entry.bInteractionEnabled);
+	ButtonWidget->SetButtonTag(MenuData->MenuID.MenuTag);
+	ButtonWidget->SetButtonEnabled(MenuData->Entry.bButtonEnabled);
+	ButtonWidget->SetButtonInteractionEnabled(MenuData->Entry.bInteractionEnabled);
 }
 
 void UMenuCollection::ApplyDefaultSelections_Implementation(UMenuNode* OwnerNode)
@@ -462,7 +532,8 @@ void UMenuCollection::ApplyDefaultSelections_Implementation(UMenuNode* OwnerNode
 			continue;
 		}
 
-		const bool bDefaultSelected = ButtonEntry.Node->MenuData.Entry.bDefaultSelected;
+		const FMenuTableRow* MenuData = GetMenuData(ButtonEntry.Node);
+		const bool bDefaultSelected = MenuData ? MenuData->Entry.bDefaultSelected : false;
 		ButtonEntry.ButtonWidget->SetButtonDefaultSelected(bDefaultSelected);
 		if (!ButtonEntry.ButtonWidget->GetButtonDefaultSelected())
 		{

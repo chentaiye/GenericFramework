@@ -28,13 +28,18 @@ struct GENERICMENUFRAMEWORK_API FMenuIDTableRow : public FTableRowBase
 {
 	GENERATED_BODY()
 
+	static const FString& GetMenuIDRootPath();
+	static FString MakeMenuID(const FString& InEditableMenuIDPath);
+	static FString GetEditableMenuIDPath(const FString& InMenuID);
+	static bool SplitMenuIDPath(const FString& InMenuID, TArray<FString>& OutEditableSegments, FText* OutError = nullptr);
+
 	/** 记录Menu标签。 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Menu", meta=(Categories="GameplayUI.Button"))
 	FGameplayTag MenuTag;
 
 	/** 记录MenuID。 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Menu")
-	FString MenuID;
+	FString MenuID = TEXT("GameplayUI.Button");
 
 	virtual void OnPostDataImport(const UDataTable* InDataTable, const FName InRowName, TArray<FString>& OutCollectedImportProblems) override;
 	virtual void OnDataTableChanged(const UDataTable* InDataTable, const FName InRowName) override;
@@ -46,7 +51,10 @@ struct GENERICMENUFRAMEWORK_API FMenuIDTableRow : public FTableRowBase
 	/** 将有效的菜单标签写回文本标识，保证表格导入后的 ID 与标签一致。 */
 	void SyncMenuIDFromTag();
 
-	/** 获取运行时实际使用的菜单标识，优先使用有效标签路径。 */
+	/** 将文本标识整理成固定根路径下的菜单 ID，供详情面板和表格导入共用。 */
+	void NormalizeMenuID();
+
+	/** 获取运行时实际使用的菜单标识，优先使用固定根路径下的文本 MenuID。 */
 	FString GetResolvedMenuID() const;
 };
 

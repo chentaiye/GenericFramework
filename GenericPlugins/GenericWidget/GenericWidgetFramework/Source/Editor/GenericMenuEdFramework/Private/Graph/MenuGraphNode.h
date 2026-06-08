@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "EdGraph/EdGraphNode.h"
-#include "MenuType.h"
 #include "MenuGraphNode.generated.h"
 
 class UMenuNode;
@@ -46,8 +45,4 @@ public:
 	/** Runtime menu node represented by this editor node. */
 	UPROPERTY()
 	TObjectPtr<UMenuNode> MenuNode = nullptr;
-
-	/** Editable menu data mirrored to the runtime menu node. */
-	UPROPERTY(EditAnywhere, Category="Menu")
-	FMenuTableRow MenuData;
 };

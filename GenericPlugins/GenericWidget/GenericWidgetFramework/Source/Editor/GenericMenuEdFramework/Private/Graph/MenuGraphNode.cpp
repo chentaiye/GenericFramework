@@ -3,6 +3,8 @@
 #include "Graph/MenuGraphNode.h"
 
 #include "Base/MenuNode.h"
+#include "Node/MenuDataNode.h"
+#include "Node/RootMenuDataNode.h"
 
 const FName UMenuGraphNode::Pin_Parent(TEXT("Parent"));
 const FName UMenuGraphNode::Pin_Child(TEXT("Child"));
@@ -65,13 +67,23 @@ FText UMenuGraphNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
 		return INVTEXT("Invalid Menu Node");
 	}
 
-	FString MenuID = MenuNode->MenuData.MenuID.GetResolvedMenuID().TrimStartAndEnd();
+	const URootMenuDataNode* RootMenuDataNode = Cast<URootMenuDataNode>(MenuNode);
+	const UMenuDataNode* MenuDataNode = Cast<UMenuDataNode>(MenuNode);
+	FString MenuID = RootMenuDataNode ? RootMenuDataNode->MenuID.GetResolvedMenuID().TrimStartAndEnd() : FString();
+	if (MenuID.IsEmpty())
+	{
+		MenuID = MenuDataNode ? MenuDataNode->MenuData.MenuID.GetResolvedMenuID().TrimStartAndEnd() : FString();
+	}
 	if (MenuID.IsEmpty())
 	{
 		MenuID = MenuNode->GetName();
 	}
 
-	FString MenuName = MenuNode->MenuData.Description.PrimaryName.ToString().TrimStartAndEnd();
+	FString MenuName = MenuDataNode ? MenuDataNode->MenuData.Description.PrimaryName.ToString().TrimStartAndEnd() : FString();
+	if (MenuName.IsEmpty() && RootMenuDataNode)
+	{
+		MenuName = TEXT("Root");
+	}
 	if (MenuName.IsEmpty())
 	{
 		MenuName = TEXT("None");
@@ -94,13 +106,6 @@ bool UMenuGraphNode::CanUserDeleteNode() const
 void UMenuGraphNode::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 {
 	Super::PostEditChangeProperty(PropertyChangedEvent);
-
-	if (MenuNode)
-	{
-		MenuNode->Modify();
-		MenuNode->MenuData = MenuData;
-		MenuNode->MarkPackageDirty();
-	}
 
 	SyncPositionToMenuNode();
 }

@@ -20,15 +20,19 @@ public class GenericMenuEdFramework : ModuleRules
             new string[]
             {
                 "AssetDefinition",
+                "AssetRegistry",
                 "AssetTools",
                 "BlueprintGraph",
                 "ContentBrowser",
+                "GameplayTags",
                 "GraphEditor",
+                "InputCore",
                 "Kismet",
                 "KismetCompiler",
                 "PropertyEditor",
                 "Slate",
                 "SlateCore",
+                "ToolMenus",
                 "UnrealEd",
             }
         );
