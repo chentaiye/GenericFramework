@@ -11,3 +11,19 @@ GenericPlugins/**/*.so filter=lfs diff=lfs merge=lfs -text
 GenericPlugins/**/*.dylib filter=lfs diff=lfs merge=lfs -text
 GenericPlugins/**/*.exe filter=lfs diff=lfs merge=lfs -text
 GenericPlugins/**/*.a filter=lfs diff=lfs merge=lfs -text
+
+# Common Unreal and third-party binary payloads.
+*.uasset filter=lfs diff=lfs merge=lfs -text
+*.umap filter=lfs diff=lfs merge=lfs -text
+*.ubulk filter=lfs diff=lfs merge=lfs -text
+*.uexp filter=lfs diff=lfs merge=lfs -text
+*.dll filter=lfs diff=lfs merge=lfs -text
+*.lib filter=lfs diff=lfs merge=lfs -text
+*.so filter=lfs diff=lfs merge=lfs -text
+*.dylib filter=lfs diff=lfs merge=lfs -text
+*.exe filter=lfs diff=lfs merge=lfs -text
+*.pdb filter=lfs diff=lfs merge=lfs -text
+*.pak filter=lfs diff=lfs merge=lfs -text
+*.bin filter=lfs diff=lfs merge=lfs -text
+*.dat filter=lfs diff=lfs merge=lfs -text
+*.model filter=lfs diff=lfs merge=lfs -text
