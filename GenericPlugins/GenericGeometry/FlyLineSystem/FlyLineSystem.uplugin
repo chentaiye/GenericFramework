@@ -2,8 +2,8 @@
   "FileVersion": 3,
   "Version": 1,
   "VersionName": "1.0",
-  "FriendlyName": "GenericGeometryFramework",
-  "Description": "Generic geometry shared framework and analysis systems.",
+  "FriendlyName": "FlyLineSystem",
+  "Description": "",
   "Category": "Generic Gameplay",
   "CreatedBy": "Chan",
   "CreatedByURL": "",
@@ -20,13 +20,13 @@
       "Enabled": true
     },
     {
-      "Name": "ProceduralMeshComponent",
+      "Name": "GenericGeometryFramework",
       "Enabled": true
     }
   ],
   "Modules": [
     {
-      "Name": "GenericGeometryFramework",
+      "Name": "FlyLineSystem",
       "Type": "Runtime",
       "LoadingPhase": "Default"
     }

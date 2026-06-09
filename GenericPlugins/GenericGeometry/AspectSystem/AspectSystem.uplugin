@@ -2,8 +2,8 @@
   "FileVersion": 3,
   "Version": 1,
   "VersionName": "1.0",
-  "FriendlyName": "GenericGeometryFramework",
-  "Description": "Generic geometry shared framework and analysis systems.",
+  "FriendlyName": "AspectSystem",
+  "Description": "",
   "Category": "Generic Gameplay",
   "CreatedBy": "Chan",
   "CreatedByURL": "",
@@ -20,13 +20,17 @@
       "Enabled": true
     },
     {
+      "Name": "GenericGeometryFramework",
+      "Enabled": true
+    },
+    {
       "Name": "ProceduralMeshComponent",
       "Enabled": true
     }
   ],
   "Modules": [
     {
-      "Name": "GenericGeometryFramework",
+      "Name": "AspectSystem",
       "Type": "Runtime",
       "LoadingPhase": "Default"
     }
