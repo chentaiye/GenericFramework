@@ -22,6 +22,10 @@
     {
       "Name": "GenericVoiceFramework",
       "Enabled": true
+    },
+    {
+      "Name": "GenericVoiceThirdParty",
+      "Enabled": true
     }
   ],
   "Modules": [

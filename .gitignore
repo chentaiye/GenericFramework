@@ -80,6 +80,14 @@ DerivedDataCache/*
 # Third-party payloads must stay trackable even when they contain binaries.
 !**/ThirdParty/
 !**/ThirdParty/**
+!GenericPlugins/GenericAudio/GenericVoiceThirdParty/
+!GenericPlugins/GenericAudio/GenericVoiceThirdParty/Source/
+!GenericPlugins/GenericAudio/GenericVoiceThirdParty/Source/VolcEngineRTC/
+!GenericPlugins/GenericAudio/GenericVoiceThirdParty/Source/VolcEngineRTC/**
+!GenericPlugins/GenericAudio/GenericVoiceThirdParty/Source/VoiceWakeupSdk/
+!GenericPlugins/GenericAudio/GenericVoiceThirdParty/Source/VoiceWakeupSdk/**
+GenericPlugins/GenericAudio/GenericVoiceThirdParty/Binaries/**
+GenericPlugins/GenericAudio/GenericVoiceThirdParty/Intermediate/**
 
 # Project rules. These stay ignored even if they contain ThirdParty files.
 **/Intermediate/**

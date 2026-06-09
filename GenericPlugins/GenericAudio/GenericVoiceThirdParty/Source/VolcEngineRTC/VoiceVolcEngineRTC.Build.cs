@@ -70,7 +70,6 @@ public class VoiceVolcEngineRTC : ModuleRules
 	public VoiceVolcEngineRTC(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-		Type = ModuleType.External;
 		bEnableExceptions = true;
 
 		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "include"));
