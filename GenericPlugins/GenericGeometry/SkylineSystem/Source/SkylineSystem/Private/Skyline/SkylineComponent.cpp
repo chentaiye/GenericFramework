@@ -10,7 +10,7 @@
 
 namespace
 {
-    constexpr TCHAR SkylinePostProcessMaterialPath[] = TEXT("/GenericGeometryFramework/Materials/Skyline/M_Skyline_PostProcess.M_Skyline_PostProcess");
+    constexpr TCHAR SkylinePostProcessMaterialPath[] = TEXT("/SkylineSystem/Material/M_Skyline_PostProcess.M_Skyline_PostProcess");
     constexpr float SkylinePostProcessPriority = 10000.0f;
     const FName SkylineLineColorParameterName(TEXT("LineColor"));
     const FName SkylineLineThicknessParameterName(TEXT("LineThicknessPx"));

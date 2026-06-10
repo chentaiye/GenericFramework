@@ -35,7 +35,7 @@ namespace
     {
         if (UMaterialInterface* Material = LoadObject<UMaterialInterface>(
                 nullptr,
-                TEXT("/GenericGeometryFramework/Materials/SlopeHeatmap/M_SlopeHeatmap_Decal.M_SlopeHeatmap_Decal")))
+                TEXT("/SlopeHeatmapSystem/Material/M_SlopeHeatmap_Decal.M_SlopeHeatmap_Decal")))
         {
             return Material;
         }

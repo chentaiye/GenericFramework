@@ -201,44 +201,6 @@ protected:
 	FOnGenericPropertyValueHandlePresentationChanged OnValueHandleChangedEvent;
 };
 
-#define DECLARE_GENERIC_PROPERTY_VALUE_WIDGET( \
-	WidgetClassName, \
-	HandleClassName, \
-	ValueType, \
-	ValueParamType, \
-	EventName \
-) \
-/** typed 属性值控件声明模板，生成值句柄访问、typed 读写和蓝图变化事件。 */ \
-UCLASS(MinimalAPI, Blueprintable) \
-class WidgetClassName : public UGenericPropertyValue \
-{ \
-	GENERATED_BODY() \
-public: \
-	/** 返回 typed 控件用于读写 CurrentValue 的专用值句柄。 */ \
-	UFUNCTION(BlueprintPure, Category="Generic Property") \
-	GENERICPROPERTYFRAMEWORK_API HandleClassName* GetTypedHandle() const; \
-	/** 从句柄 CurrentValue 读取 typed 值。 */ \
-	UFUNCTION(BlueprintPure, Category="Generic Property") \
-	GENERICPROPERTYFRAMEWORK_API bool TryGetCurrentTypedValue(ValueType& OutValue) const; \
-	/** 从句柄 SourceValue 读取 typed 值。 */ \
-	UFUNCTION(BlueprintPure, Category="Generic Property") \
-	GENERICPROPERTYFRAMEWORK_API bool TryGetSourceTypedValue(ValueType& OutValue) const; \
-	/** 从句柄 DefaultValue 读取 typed 值。 */ \
-	UFUNCTION(BlueprintPure, Category="Generic Property") \
-	GENERICPROPERTYFRAMEWORK_API bool TryGetDefaultTypedValue(ValueType& OutValue) const; \
-	/** 写入 typed 当前值并走句柄校验流程。 */ \
-	UFUNCTION(BlueprintCallable, Category="Generic Property") \
-	GENERICPROPERTYFRAMEWORK_API bool SetCurrentTypedValue(ValueParamType InValue); \
-	/** 提交 typed 当前值并触发句柄变化通知。 */ \
-	UFUNCTION(BlueprintCallable, Category="Generic Property") \
-	GENERICPROPERTYFRAMEWORK_API bool CommitCurrentTypedValue(ValueParamType InValue); \
-protected: \
-	GENERICPROPERTYFRAMEWORK_API virtual void NotifyTypedValueChanged() override; \
-	/** 蓝图扩展点：typed 值变化后触发。 */ \
-	UFUNCTION(BlueprintImplementableEvent, Category="Generic Property") \
-	GENERICPROPERTYFRAMEWORK_API void EventName(); \
-};
-
 /** 布尔属性值控件，封装 bool 句柄访问并向蓝图暴露布尔变化事件。 */
 UCLASS(MinimalAPI, Blueprintable)
 class UGenericPropertyBoolValue : public UGenericPropertyValue
@@ -860,5 +822,3 @@ class UGenericPropertyWarningValue : public UGenericPropertyValue
 {
 	GENERATED_BODY()
 };
-
-#undef DECLARE_GENERIC_PROPERTY_VALUE_WIDGET

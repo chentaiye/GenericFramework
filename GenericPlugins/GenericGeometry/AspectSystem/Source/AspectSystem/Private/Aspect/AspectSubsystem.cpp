@@ -17,7 +17,7 @@ namespace
     {
         if (UMaterialInterface* Material = LoadObject<UMaterialInterface>(
                 nullptr,
-                TEXT("/GenericGeometryFramework/Materials/Aspect/M_Aspect_Decal.M_Aspect_Decal")))
+                TEXT("/AspectSystem/Material/M_Aspect_Decal.M_Aspect_Decal")))
         {
             return Material;
         }
