@@ -12,14 +12,15 @@ public class GenericMessageFramework : ModuleRules
 			new string[]
 			{
 				"Core",
+				"CoreUObject",
 				"Engine",
-				"GameplayTags"
+				"GameplayTags",
+				"StateTreeModule"
 			});
 		
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"CoreUObject",
 			});
 		
 		DynamicallyLoadedModuleNames.AddRange(

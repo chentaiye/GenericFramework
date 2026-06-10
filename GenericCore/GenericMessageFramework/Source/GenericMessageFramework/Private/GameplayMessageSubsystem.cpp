@@ -62,6 +62,12 @@ void UGameplayMessageSubsystem::Deinitialize()
 	Super::Deinitialize();
 }
 
+void UGameplayMessageSubsystem::BroadcastMessage(FGameplayTag Channel)
+{
+	FGameplayMessageChannelPayload Message;
+	BroadcastMessageInternal(Channel, FGameplayMessageChannelPayload::StaticStruct(), &Message);
+}
+
 void UGameplayMessageSubsystem::BroadcastMessageStruct(FGameplayTag Channel, const UScriptStruct* StructType, const void* MessageBytes)
 {
 	if ((StructType != nullptr) && (MessageBytes != nullptr))

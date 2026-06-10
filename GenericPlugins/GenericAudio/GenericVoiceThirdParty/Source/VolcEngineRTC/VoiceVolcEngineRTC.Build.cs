@@ -72,6 +72,8 @@ public class VoiceVolcEngineRTC : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 		bEnableExceptions = true;
 
+		PrivateDependencyModuleNames.Add("Core");
+
 		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "include"));
 		InitializeRuntimeDefinitions();
 

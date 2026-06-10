@@ -7,8 +7,6 @@
 #include "GameplayMessageType.h"
 #include "ListenForGameplayMessagesAsyncAction.generated.h"
 
-#define UE_API GENERICMESSAGEFRAMEWORK_API
-
 class UScriptStruct;
 class UWorld;
 struct FFrame;
@@ -24,16 +22,16 @@ class UListenForGameplayMessagesAsyncAction : public UCancellableAsyncAction
 public:
 	/** 创建Gameplay消息监听异步动作，在指定频道收到匹配Payload时广播给蓝图。 */
 	UFUNCTION(BlueprintCallable, Category="Messaging", meta=(WorldContext="WorldContextObject", BlueprintInternalUseOnly="true"))
-	static UE_API UListenForGameplayMessagesAsyncAction* ListenForGameplayMessages(UObject* WorldContextObject, FGameplayTag Channel, UScriptStruct* PayloadType, EGameplayMessageMatch MatchType = EGameplayMessageMatch::ExactMatch);
+	static GENERICMESSAGEFRAMEWORK_API UListenForGameplayMessagesAsyncAction* ListenForGameplayMessages(UObject* WorldContextObject, FGameplayTag Channel, UScriptStruct* PayloadType, EGameplayMessageMatch MatchType = EGameplayMessageMatch::ExactMatch);
 
 	/** 获取Payload。 */
 	UFUNCTION(BlueprintCallable, CustomThunk, Category="Messaging", meta=(CustomStructureParam="OutPayload"))
-	UE_API bool GetPayload(UPARAM(ref) int32& OutPayload);
+	GENERICMESSAGEFRAMEWORK_API bool GetPayload(UPARAM(ref) int32& OutPayload);
 
 	DECLARE_FUNCTION(execGetPayload);
 
-	UE_API virtual void Activate() override;
-	UE_API virtual void SetReadyToDestroy() override;
+	GENERICMESSAGEFRAMEWORK_API virtual void Activate() override;
+	GENERICMESSAGEFRAMEWORK_API virtual void SetReadyToDestroy() override;
 
 public:
 	UPROPERTY(BlueprintAssignable, Category="Events")
@@ -62,5 +60,3 @@ private:
 	/** 记录监听器句柄。 */
 	FGameplayMessageListenerHandle ListenerHandle;
 };
-
-#undef UE_API

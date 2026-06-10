@@ -15,6 +15,10 @@
   "Installed": false,
   "Plugins": [
     {
+      "Name": "StateTree",
+      "Enabled": true
+    },
+    {
       "Name": "GameplayTagsEditor",
       "Enabled": true
     }

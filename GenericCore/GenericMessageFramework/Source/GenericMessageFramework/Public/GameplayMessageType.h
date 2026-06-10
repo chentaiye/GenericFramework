@@ -10,6 +10,9 @@
 class UGameplayMessageRouter;
 
 GENERICMESSAGEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_GameplayMessage_Channel);
+GENERICMESSAGEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_GameplayMessage_Channel_Project);
+GENERICMESSAGEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_GameplayMessage_Channel_Project_OnEnterProject);
+GENERICMESSAGEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_GameplayMessage_Channel_Project_OnExitProject);
 
 /** 定义消息监听器匹配频道时使用的规则。 */
 UENUM(BlueprintType)
@@ -22,8 +25,15 @@ enum class EGameplayMessageMatch : uint8
 	PartialMatch
 };
 
+/** 仅用于频道广播的空消息载荷，让不关心 Payload 的监听器也能收到一次标准 GameplayMessage。 */
+USTRUCT(BlueprintType)
+struct GENERICMESSAGEFRAMEWORK_API FGameplayMessageChannelPayload
+{
+	GENERATED_BODY()
+};
+
 /** 封装Gameplay消息Listener Params。 */
-template<typename FMessageStructType>
+template <typename FMessageStructType>
 struct FGameplayMessageListenerParams
 {
 	/** 记录匹配类型。 */
@@ -33,8 +43,8 @@ struct FGameplayMessageListenerParams
 	TFunction<void(FGameplayTag, const FMessageStructType&)> OnMessageReceivedCallback;
 
 	/** 绑定对象成员函数作为消息回调，并通过弱引用避免延长对象生命周期。 */
-	template<typename TOwner = UObject>
-	void SetMessageReceivedCallback(TOwner* Object, void(TOwner::* Function)(FGameplayTag, const FMessageStructType&))
+	template <typename TOwner = UObject>
+	void SetMessageReceivedCallback(TOwner* Object, void (TOwner::*Function)(FGameplayTag, const FMessageStructType&))
 	{
 		TWeakObjectPtr<TOwner> WeakObject(Object);
 		OnMessageReceivedCallback = [WeakObject, Function](FGameplayTag Channel, const FMessageStructType& Payload)

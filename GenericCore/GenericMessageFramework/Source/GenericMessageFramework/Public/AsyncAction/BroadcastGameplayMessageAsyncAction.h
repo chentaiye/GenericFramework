@@ -6,8 +6,6 @@
 #include "GameplayTagContainer.h"
 #include "BroadcastGameplayMessageAsyncAction.generated.h"
 
-#define UE_API GENERICMESSAGEFRAMEWORK_API
-
 class UScriptStruct;
 class UWorld;
 struct FFrame;
@@ -23,12 +21,12 @@ class UBroadcastGameplayMessageAsyncAction : public UCancellableAsyncAction
 public:
 	/** 广播Gameplay消息。 */
 	UFUNCTION(BlueprintCallable, CustomThunk, Category="Messaging", meta=(WorldContext="WorldContextObject", BlueprintInternalUseOnly="true", CustomStructureParam="Message"))
-	static UE_API UBroadcastGameplayMessageAsyncAction* BroadcastGameplayMessage(UObject* WorldContextObject, FGameplayTag Channel, const int32& Message);
+	static GENERICMESSAGEFRAMEWORK_API UBroadcastGameplayMessageAsyncAction* BroadcastGameplayMessage(UObject* WorldContextObject, FGameplayTag Channel, const int32& Message);
 
 	DECLARE_FUNCTION(execBroadcastGameplayMessage);
 
-	UE_API virtual void Activate() override;
-	UE_API virtual void SetReadyToDestroy() override;
+	GENERICMESSAGEFRAMEWORK_API virtual void Activate() override;
+	GENERICMESSAGEFRAMEWORK_API virtual void SetReadyToDestroy() override;
 
 public:
 	/** 记录Completed。 */
@@ -55,5 +53,3 @@ private:
 	/** 保存消息载荷列表，供Gameplay 消息批量处理。 */
 	TArray<uint8> MessagePayload;
 };
-
-#undef UE_API

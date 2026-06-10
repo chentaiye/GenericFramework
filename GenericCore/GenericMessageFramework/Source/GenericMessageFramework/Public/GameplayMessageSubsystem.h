@@ -7,8 +7,6 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "GameplayMessageSubsystem.generated.h"
 
-#define UE_API GENERICMESSAGEFRAMEWORK_API
-
 class UGameplayMessageSubsystem;
 struct FFrame;
 
@@ -29,7 +27,7 @@ public:
 	}
 
 	/** 从消息子系统中取消当前句柄对应的监听器。 */
-	UE_API void Unregister();
+	GENERICMESSAGEFRAMEWORK_API void Unregister();
 
 	/** 判断当前句柄是否仍指向已注册的监听器。 */
 	bool IsValid() const { return ID != 0; }
@@ -88,14 +86,17 @@ class UGameplayMessageSubsystem : public UGameInstanceSubsystem
 	friend UListenForGameplayMessagesAsyncAction;
 
 public:
-	static UE_API UGameplayMessageSubsystem& Get(const UObject* WorldContextObject);
+	static GENERICMESSAGEFRAMEWORK_API UGameplayMessageSubsystem& Get(const UObject* WorldContextObject);
 
 	/** 判断是否包含实例。 */
-	static UE_API bool HasInstance(const UObject* WorldContextObject);
+	static GENERICMESSAGEFRAMEWORK_API bool HasInstance(const UObject* WorldContextObject);
 
 	//~USubsystem interface
-	UE_API virtual void Deinitialize() override;
+	GENERICMESSAGEFRAMEWORK_API virtual void Deinitialize() override;
 	//~End of USubsystem interface
+
+	/** 向指定频道广播不携带业务载荷的消息。 */
+	GENERICMESSAGEFRAMEWORK_API void BroadcastMessage(FGameplayTag Channel);
 
 	/** 执行广播消息。 */
 	template <typename FMessageStructType>
@@ -107,6 +108,24 @@ public:
 
 	/** 向指定频道广播类型擦除后的消息。 */
 	void BroadcastMessageStruct(FGameplayTag Channel, const UScriptStruct* StructType, const void* MessageBytes);
+
+	/** 注册只关心频道命中的监听器，适合不需要读取消息载荷的运行时流程。 */
+	FGameplayMessageListenerHandle RegisterListener(FGameplayTag Channel, TFunction<void(FGameplayTag)>&& Callback, EGameplayMessageMatch MatchType = EGameplayMessageMatch::ExactMatch)
+	{
+		FGameplayMessageListenerHandle Handle;
+
+		if (Callback)
+		{
+			auto ThunkCallback = [InnerCallback = MoveTemp(Callback)](FGameplayTag ActualTag, const UScriptStruct* SenderStructType, const void* SenderPayload)
+			{
+				InnerCallback(ActualTag);
+			};
+
+			Handle = RegisterListenerInternal(Channel, ThunkCallback, nullptr, MatchType);
+		}
+
+		return Handle;
+	}
 
 	/** 注册Listener。 */
 	template <typename FMessageStructType>
@@ -158,28 +177,28 @@ public:
 	}
 
 	/** 维护注销监听器在Gameplay 消息中的注册关系。 */
-	UE_API void UnregisterListener(FGameplayMessageListenerHandle Handle);
+	GENERICMESSAGEFRAMEWORK_API void UnregisterListener(FGameplayMessageListenerHandle Handle);
 
 protected:
 	/** 蓝图入口：按频道广播任意结构体消息。 */
 	UFUNCTION(BlueprintCallable, CustomThunk, Category="Messaging", meta=(CustomStructureParam="Message", AllowAbstract="false", DisplayName="Broadcast Message"))
-	UE_API void K2_BroadcastMessage(FGameplayTag Channel, const int32& Message);
+	GENERICMESSAGEFRAMEWORK_API void K2_BroadcastMessage(FGameplayTag Channel, const int32& Message);
 
 	DECLARE_FUNCTION(execK2_BroadcastMessage);
 
 private:
 	/** 把类型擦除后的消息载荷分发给所有匹配监听器。 */
-	UE_API void BroadcastMessageInternal(FGameplayTag Channel, const UScriptStruct* StructType, const void* MessageBytes);
+	GENERICMESSAGEFRAMEWORK_API void BroadcastMessageInternal(FGameplayTag Channel, const UScriptStruct* StructType, const void* MessageBytes);
 
 	/** 注册类型擦除后的消息监听器，并记录频道、结构体类型和匹配规则。 */
-	UE_API FGameplayMessageListenerHandle RegisterListenerInternal(
+	GENERICMESSAGEFRAMEWORK_API FGameplayMessageListenerHandle RegisterListenerInternal(
 		FGameplayTag Channel,
 		TFunction<void(FGameplayTag, const UScriptStruct*, const void*)>&& Callback,
 		const UScriptStruct* StructType,
 		EGameplayMessageMatch MatchType);
 
 	/** 维护注销监听器Internal在Gameplay 消息中的注册关系。 */
-	UE_API void UnregisterListenerInternal(FGameplayTag Channel, int32 HandleID);
+	GENERICMESSAGEFRAMEWORK_API void UnregisterListenerInternal(FGameplayTag Channel, int32 HandleID);
 
 private:
 	/** 保存Gameplay 消息流程中的频道监听器列表数据，供运行时传递和蓝图访问。 */
@@ -196,5 +215,3 @@ private:
 	/** 保存按频道索引的消息监听器表映射，供Gameplay 消息按键快速查找。 */
 	TMap<FGameplayTag, FChannelListenerList> ListenerMap;
 };
-
-#undef UE_API
