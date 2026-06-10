@@ -12,7 +12,7 @@ struct FPropertyChangedEvent;
 #endif
 
 /** 作为UIButtonStyle能力控件，负责把运行时状态呈现到Slate或UMG层。 */
-UCLASS(BlueprintType, Blueprintable, EditInlineNew, DefaultToInstanced)
+UCLASS(BlueprintType, Blueprintable)
 class GENERICBUTTONFRAMEWORK_API UGenericButtonStyle : public UObject
 {
 	GENERATED_BODY()

@@ -13,6 +13,13 @@
 #endif
 #include "BroadcastGameplayMessageTask.generated.h"
 
+/** 提供广播 Gameplay Message 任务的 StateTree 实例数据，确保任务节点在编译时拥有有效实例值。 */
+USTRUCT()
+struct GENERICMESSAGEFRAMEWORK_API FBroadcastGameplayMessageTaskInstanceData
+{
+	GENERATED_BODY()
+};
+
 /** 进入状态时广播一个 Gameplay Message 频道，并可选携带结构体消息载荷。 */
 USTRUCT(meta=(DisplayName="Broadcast Gameplay Message", Category="Messaging"))
 struct GENERICMESSAGEFRAMEWORK_API FBroadcastGameplayMessageTask : public FStateTreeTaskCommonBase
@@ -20,6 +27,10 @@ struct GENERICMESSAGEFRAMEWORK_API FBroadcastGameplayMessageTask : public FState
 	GENERATED_BODY()
 
 	FBroadcastGameplayMessageTask();
+
+	using FInstanceDataType = FBroadcastGameplayMessageTaskInstanceData;
+
+	virtual const UStruct* GetInstanceDataType() const override { return FInstanceDataType::StaticStruct(); }
 
 	virtual EStateTreeRunStatus EnterState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult& Transition) const override;
 

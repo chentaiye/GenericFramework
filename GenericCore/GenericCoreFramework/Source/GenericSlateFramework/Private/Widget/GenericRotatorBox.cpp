@@ -15,16 +15,16 @@ void UGenericRotatorBox::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	GenericButton_Left->OnClicked.AddUniqueDynamic(this, &UGenericRotatorBox::OnButtonLeftClicked);
-	GenericButton_Right->OnClicked.AddUniqueDynamic(this, &UGenericRotatorBox::OnButtonRightClicked);
+	Button_Left->OnClicked.AddUniqueDynamic(this, &UGenericRotatorBox::OnButtonLeftClicked);
+	Button_Right->OnClicked.AddUniqueDynamic(this, &UGenericRotatorBox::OnButtonRightClicked);
 }
 
 void UGenericRotatorBox::NativeDestruct()
 {
 	Super::NativeDestruct();
 
-	GenericButton_Left->OnClicked.RemoveAll(this);
-	GenericButton_Right->OnClicked.RemoveAll(this);
+	Button_Left->OnClicked.RemoveAll(this);
+	Button_Right->OnClicked.RemoveAll(this);
 }
 
 void UGenericRotatorBox::OnButtonLeftClicked()

@@ -7,7 +7,6 @@
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
 #include "StateTreeExecutionContext.h"
-#include "TimerManager.h"
 #include "WidgetType.h"
 
 namespace UE::GenericWidget::LoadDefaultWidgetTask
@@ -42,47 +41,21 @@ namespace UE::GenericWidget::LoadDefaultWidgetTask
 		return false;
 	}
 
-	static void ClearPendingTimer(const TSharedPtr<FLoadDefaultWidgetTaskRuntimeState>& RuntimeState)
-	{
-		if (!RuntimeState)
-		{
-			return;
-		}
-
-		if (UWorld* World = RuntimeState->World.Get())
-		{
-			World->GetTimerManager().ClearTimer(RuntimeState->CreateStartupWidgetsHandle);
-		}
-	}
-
 	static void ResetTask(FLoadDefaultWidgetTaskInstanceData& InstanceData)
 	{
-		ClearPendingTimer(InstanceData.RuntimeState);
 		InstanceData.CreatedWidgets.Reset();
 		InstanceData.bIsFinished = false;
-		InstanceData.RuntimeState.Reset();
 	}
 
-	static void CopyCreatedWidgetsToInstanceData(const TSharedRef<FLoadDefaultWidgetTaskRuntimeState>& RuntimeState, FLoadDefaultWidgetTaskInstanceData& InstanceData)
-	{
-		InstanceData.CreatedWidgets.Reset();
-		for (const TWeakObjectPtr<UGenericWidget>& Widget : RuntimeState->CreatedWidgets)
-		{
-			if (Widget.IsValid())
-			{
-				InstanceData.CreatedWidgets.Add(Widget);
-			}
-		}
-	}
-
-	static void CreateStartupWidgetsForPlayer(APlayerController* PlayerController, const TSharedRef<FLoadDefaultWidgetTaskRuntimeState>& RuntimeState)
+	static bool CreateStartupWidgetsForPlayer(APlayerController* PlayerController, const TArray<TSubclassOf<UGenericWidget>>& WidgetClasses, TArray<TWeakObjectPtr<UGenericWidget>>& OutCreatedWidgets)
 	{
 		if (!PlayerController)
 		{
-			return;
+			return true;
 		}
 
-		for (const TSubclassOf<UGenericWidget>& WidgetClass : RuntimeState->GenericWidgetClasses)
+		bool bSucceeded = true;
+		for (const TSubclassOf<UGenericWidget>& WidgetClass : WidgetClasses)
 		{
 			if (!WidgetClass)
 			{
@@ -92,7 +65,7 @@ namespace UE::GenericWidget::LoadDefaultWidgetTask
 			UGenericWidget* Widget = CreateWidget<UGenericWidget>(PlayerController, WidgetClass);
 			if (!Widget)
 			{
-				RuntimeState->bHasFailed = true;
+				bSucceeded = false;
 				UE_LOG(GenericLogUI, Warning, TEXT("LoadDefaultWidgetTask failed to create startup widget. Class: %s"), *WidgetClass->GetName());
 				continue;
 			}
@@ -100,47 +73,21 @@ namespace UE::GenericWidget::LoadDefaultWidgetTask
 			Widget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 			if (!Widget->AddToPlayerScreen())
 			{
-				RuntimeState->bHasFailed = true;
+				bSucceeded = false;
 				UE_LOG(GenericLogUI, Warning, TEXT("LoadDefaultWidgetTask failed to add startup widget to player screen. Widget: %s"), *Widget->GetName());
 				continue;
 			}
 
-			RuntimeState->CreatedWidgets.Add(Widget);
-		}
-	}
-
-	static void CreateStartupWidgetsAfterRouteTreeBuilt(TSharedRef<FLoadDefaultWidgetTaskRuntimeState> RuntimeState)
-	{
-		if (RuntimeState->bIsFinished || RuntimeState->bHasFailed)
-		{
-			return;
+			OutCreatedWidgets.Add(Widget);
 		}
 
-		UWorld* World = RuntimeState->World.Get();
-		if (!World)
-		{
-			RuntimeState->bHasFailed = true;
-			return;
-		}
-
-		for (FConstPlayerControllerIterator It = World->GetPlayerControllerIterator(); It; ++It)
-		{
-			APlayerController* PlayerController = It->Get();
-			if (!PlayerController || !PlayerController->IsLocalController())
-			{
-				continue;
-			}
-
-			CreateStartupWidgetsForPlayer(PlayerController, RuntimeState);
-		}
-
-		RuntimeState->bIsFinished = !RuntimeState->bHasFailed;
+		return bSucceeded;
 	}
 }
 
 FLoadDefaultWidgetTask::FLoadDefaultWidgetTask()
 {
-	bShouldCallTick = true;
+	bShouldCallTick = false;
 	bShouldCopyBoundPropertiesOnTick = false;
 }
 
@@ -155,48 +102,32 @@ EStateTreeRunStatus FLoadDefaultWidgetTask::EnterState(FStateTreeExecutionContex
 		return EStateTreeRunStatus::Failed;
 	}
 
-	TSharedRef<FLoadDefaultWidgetTaskRuntimeState> RuntimeState = MakeShared<FLoadDefaultWidgetTaskRuntimeState>();
-	RuntimeState->World = World;
-	RuntimeState->GenericWidgetClasses = GenericWidgetClasses;
-	InstanceData.RuntimeState = RuntimeState;
-
 	const bool bHasLocalPlayer = UE::GenericWidget::LoadDefaultWidgetTask::HasLocalPlayerController(World);
 	if (GenericWidgetClasses.IsEmpty() || !bHasLocalPlayer)
 	{
-		RuntimeState->bIsFinished = true;
 		InstanceData.bIsFinished = true;
 		return EStateTreeRunStatus::Succeeded;
 	}
 
-	RuntimeState->CreateStartupWidgetsHandle = World->GetTimerManager().SetTimerForNextTick(FTimerDelegate::CreateLambda(
-		[RuntimeState]()
+	TArray<TWeakObjectPtr<UGenericWidget>> CreatedWidgets;
+	bool bSucceeded = true;
+	for (FConstPlayerControllerIterator It = World->GetPlayerControllerIterator(); It; ++It)
+	{
+		APlayerController* PlayerController = It->Get();
+		if (!PlayerController || !PlayerController->IsLocalController())
 		{
-			UE::GenericWidget::LoadDefaultWidgetTask::CreateStartupWidgetsAfterRouteTreeBuilt(RuntimeState);
-		}));
+			continue;
+		}
 
-	return EStateTreeRunStatus::Running;
-}
+		bSucceeded &= UE::GenericWidget::LoadDefaultWidgetTask::CreateStartupWidgetsForPlayer(PlayerController, GenericWidgetClasses, CreatedWidgets);
+	}
 
-void FLoadDefaultWidgetTask::ExitState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult& Transition) const
-{
-	FInstanceDataType& InstanceData = Context.GetInstanceData(*this);
-	UE::GenericWidget::LoadDefaultWidgetTask::ClearPendingTimer(InstanceData.RuntimeState);
-}
-
-EStateTreeRunStatus FLoadDefaultWidgetTask::Tick(FStateTreeExecutionContext& Context, float DeltaTime) const
-{
-	const FInstanceDataType& InstanceData = Context.GetInstanceData(*this);
-	if (!InstanceData.RuntimeState || InstanceData.RuntimeState->bHasFailed)
+	if (!bSucceeded)
 	{
 		return EStateTreeRunStatus::Failed;
 	}
 
-	if (InstanceData.RuntimeState->bIsFinished)
-	{
-		UE::GenericWidget::LoadDefaultWidgetTask::CopyCreatedWidgetsToInstanceData(InstanceData.RuntimeState.ToSharedRef(), Context.GetInstanceData(*this));
-		Context.GetInstanceData(*this).bIsFinished = true;
-		return EStateTreeRunStatus::Succeeded;
-	}
-
-	return EStateTreeRunStatus::Running;
+	InstanceData.CreatedWidgets = MoveTemp(CreatedWidgets);
+	InstanceData.bIsFinished = true;
+	return EStateTreeRunStatus::Succeeded;
 }

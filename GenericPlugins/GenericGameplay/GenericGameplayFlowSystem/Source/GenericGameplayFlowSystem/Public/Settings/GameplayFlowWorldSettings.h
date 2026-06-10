@@ -14,12 +14,12 @@ class UGameplayFlowWorldSettings : public UGenericWorldSettings
 	GENERATED_BODY()
 
 public:
-	/** 世界 BeginPlay 后进入的 Gameplay Flow 状态树，资产必须使用 GameplayFlowStateTreeSchema。 */
+	/** 世界完成 BeginPlay 广播后进入的 Gameplay Flow 状态树，资产必须使用 GameplayFlowStateTreeSchema。 */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GameplayFlow", meta=(Schema="/Script/GenericGameplayFlowSystem.GameplayFlowStateTreeSchema"))
 	FStateTreeReference StateTreeReference;
 
 protected:
-	virtual void OnWorldSettingsBeginPlay_Implementation(UWorld* World) override;
+	virtual void OnWorldSettingsPostBeginPlay_Implementation(UWorld* World) override;
 
 #if WITH_EDITOR
 	virtual FName GetSettingsCategory_Implementation() const override;

@@ -142,17 +142,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Button", meta=(EditCondition="bSelectable"))
 	bool bDefaultSelected = false;
 
-	/** 持有DisabledStyle实例，供通用 UI运行时复用。 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, Category="Button|Style")
-	TObjectPtr<UGenericButtonStyle> DisabledStyle = nullptr;
+	/** 指定按钮禁用状态使用的样式蓝图类。 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Button|Style")
+	TSubclassOf<UGenericButtonStyle> DisabledStyleClass = nullptr;
 
-	/** 持有NormalStyle实例，供通用 UI运行时复用。 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, Category="Button|Style")
-	TObjectPtr<UGenericButtonStyle> NormalStyle = nullptr;
+	/** 指定按钮普通状态使用的样式蓝图类。 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Button|Style")
+	TSubclassOf<UGenericButtonStyle> NormalStyleClass = nullptr;
 
-	/** 持有SelectedStyle实例，供通用 UI运行时复用。 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, Category="Button|Style")
-	TObjectPtr<UGenericButtonStyle> SelectedStyle = nullptr;
+	/** 指定按钮选中状态使用的样式蓝图类。 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Button|Style")
+	TSubclassOf<UGenericButtonStyle> SelectedStyleClass = nullptr;
 
 #if WITH_EDITORONLY_DATA
 	/** 记录DesiredButtonStyle。 */
@@ -350,6 +350,8 @@ private:
 	bool CanExecuteButtonInteraction() const;
 	bool CanExecuteButtonHover() const;
 	const UGenericButtonStyle* GetCurrentStyle() const;
+	/** 解析样式类引用，并兼容旧资产里保存的内联样式实例。 */
+	const UGenericButtonStyle* ResolveStyle(TSubclassOf<UGenericButtonStyle> InStyleClass, const UGenericButtonStyle* InLegacyStyle) const;
 
 private:
 	/** 缓存运行时包裹出的通用按钮。 */
@@ -371,4 +373,16 @@ private:
 	/** 标记是否已经完成过一次样式应用。 */
 	UPROPERTY(Transient)
 	bool bHasAppliedButtonStyle = false;
+
+	/** 兼容旧资产里内联保存的禁用样式实例。 */
+	UPROPERTY()
+	TObjectPtr<UGenericButtonStyle> DisabledStyle = nullptr;
+
+	/** 兼容旧资产里内联保存的普通样式实例。 */
+	UPROPERTY()
+	TObjectPtr<UGenericButtonStyle> NormalStyle = nullptr;
+
+	/** 兼容旧资产里内联保存的选中样式实例。 */
+	UPROPERTY()
+	TObjectPtr<UGenericButtonStyle> SelectedStyle = nullptr;
 };

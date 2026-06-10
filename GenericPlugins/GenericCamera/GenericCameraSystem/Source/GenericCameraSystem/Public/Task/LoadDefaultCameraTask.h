@@ -9,6 +9,13 @@
 
 class UGenericCameraSwitchMethod;
 
+/** 提供默认相机加载任务的 StateTree 实例数据，确保任务节点在编译时拥有有效实例值。 */
+USTRUCT()
+struct GENERICCAMERASYSTEM_API FLoadDefaultCameraTaskInstanceData
+{
+	GENERATED_BODY()
+};
+
 /** StateTree 状态进入时，把每个本地玩家的相机子系统切到指定 CameraPoint。 */
 USTRUCT(meta=(DisplayName="Load Default Camera", Category="Project"))
 struct GENERICCAMERASYSTEM_API FLoadDefaultCameraTask : public FStateTreeTaskCommonBase
@@ -16,6 +23,10 @@ struct GENERICCAMERASYSTEM_API FLoadDefaultCameraTask : public FStateTreeTaskCom
 	GENERATED_BODY()
 
 	FLoadDefaultCameraTask();
+
+	using FInstanceDataType = FLoadDefaultCameraTaskInstanceData;
+
+	virtual const UStruct* GetInstanceDataType() const override { return FInstanceDataType::StaticStruct(); }
 
 	virtual EStateTreeRunStatus EnterState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult& Transition) const override;
 

@@ -8,6 +8,13 @@
 
 class UDataLayerAsset;
 
+/** 提供默认 World Partition DataLayer 任务的 StateTree 实例数据，确保任务节点在编译时拥有有效实例值。 */
+USTRUCT()
+struct GENERICWORLDPARTITIONFRAMEWORK_API FLoadDefaultWorldPartitionLayerTaskInstanceData
+{
+	GENERATED_BODY()
+};
+
 /** 在 World Partition 世界中应用启动 DataLayer 状态，非分区世界或任一状态切换失败都会让任务失败。 */
 USTRUCT(meta=(DisplayName="Load Default World Partition Layer", Category="Project"))
 struct GENERICWORLDPARTITIONFRAMEWORK_API FLoadDefaultWorldPartitionLayerTask : public FStateTreeTaskCommonBase
@@ -15,6 +22,10 @@ struct GENERICWORLDPARTITIONFRAMEWORK_API FLoadDefaultWorldPartitionLayerTask : 
 	GENERATED_BODY()
 
 	FLoadDefaultWorldPartitionLayerTask();
+
+	using FInstanceDataType = FLoadDefaultWorldPartitionLayerTaskInstanceData;
+
+	virtual const UStruct* GetInstanceDataType() const override { return FInstanceDataType::StaticStruct(); }
 
 	virtual EStateTreeRunStatus EnterState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult& Transition) const override;
 

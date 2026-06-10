@@ -570,25 +570,35 @@ const UGenericButtonStyle* UGenericButtonWidget::GetCurrentStyle() const
 		switch (DesiredButtonStyle)
 		{
 		case EGenericButtonDesiredStyle::Disabled:
-			return DisabledStyle;
+			return ResolveStyle(DisabledStyleClass, DisabledStyle);
 		case EGenericButtonDesiredStyle::Selected:
-			return SelectedStyle;
+			return ResolveStyle(SelectedStyleClass, SelectedStyle);
 		case EGenericButtonDesiredStyle::Normal:
 		default:
-			return NormalStyle;
+			return ResolveStyle(NormalStyleClass, NormalStyle);
 		}
 	}
 #endif
 
 	if (!bButtonEnabled)
 	{
-		return DisabledStyle;
+		return ResolveStyle(DisabledStyleClass, DisabledStyle);
 	}
 
 	if (bSelected)
 	{
-		return SelectedStyle;
+		return ResolveStyle(SelectedStyleClass, SelectedStyle);
 	}
 
-	return NormalStyle;
+	return ResolveStyle(NormalStyleClass, NormalStyle);
+}
+
+const UGenericButtonStyle* UGenericButtonWidget::ResolveStyle(TSubclassOf<UGenericButtonStyle> InStyleClass, const UGenericButtonStyle* InLegacyStyle) const
+{
+	if (InStyleClass)
+	{
+		return InStyleClass->GetDefaultObject<UGenericButtonStyle>();
+	}
+
+	return InLegacyStyle;
 }

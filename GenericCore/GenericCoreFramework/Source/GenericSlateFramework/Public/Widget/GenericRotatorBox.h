@@ -83,12 +83,12 @@ public:
 
 private:
 	/** 绑定左侧按钮控件，用于驱动上一项轮播。 */
-	UPROPERTY(BlueprintReadOnly, Category="Generic Rotator Box", meta=(BindWidget, BlueprintProtected=true, AllowPrivateAccess=true))
-	TObjectPtr<UButton> GenericButton_Left;
+	UPROPERTY(BlueprintReadOnly, Category="Generic Rotator Box", meta=(BindWidgetOptional, BlueprintProtected=true, AllowPrivateAccess=true))
+	TObjectPtr<UButton> Button_Left;
 
 	/** 绑定右侧按钮控件，用于驱动下一项轮播。 */
-	UPROPERTY(BlueprintReadOnly, Category="Generic Rotator Box", meta=(BindWidget, BlueprintProtected=true, AllowPrivateAccess=true))
-	TObjectPtr<UButton> GenericButton_Right;
+	UPROPERTY(BlueprintReadOnly, Category="Generic Rotator Box", meta=(BindWidgetOptional, BlueprintProtected=true, AllowPrivateAccess=true))
+	TObjectPtr<UButton> Button_Right;
 
 	/** 绑定当前文本显示控件，轮播索引变化时更新内容。 */
 	UPROPERTY(BlueprintReadOnly, Category="Generic Rotator Box", meta=(BindWidget, BlueprintProtected=true, AllowPrivateAccess=true))
